@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+	<class name="Rhino.Security.Domain.UsersGroup, Rhino.Security.Domain" table="`security_UsersGroups`" schema="`dbo`">
+
+		<id name="Id" column="`Id`" type="Guid" >
+			<generator class="assigned" />
+		</id>
+
+
+		<property name="Name" column="`Name`" type="String" not-null="true" />
+
+
+		<many-to-one name="Parent" column="`Parent`" class="Rhino.Security.Domain.UsersGroup, Rhino.Security.Domain" />
+
+
+		<set name="AllParent" inverse="true" cascade="save-update" lazy="true">
+			<key column="`Parent`"/>
+			<one-to-many class="Rhino.Security.Domain.UsersGroup, Rhino.Security.Domain"/>
+		</set>
+
+
+		<set name="Users" table="`security_UsersToUsersGroups`" schema="`dbo`" inverse="true" cascade="save-update" lazy="true">
+			<key column="`GroupId`"/>
+			<many-to-many class="Rhino.Security.Domain.User, Rhino.Security.Domain" column="`UserId`" />
+		</set>
+
+		<set name="AllChildren" table="`security_UsersGroupsHierarchy`" schema="`dbo`" inverse="true" cascade="save-update" lazy="true">
+			<key column="`ChildGroup`"/>
+			<many-to-many class="Rhino.Security.Domain.UsersGroup, Rhino.Security.Domain" column="`ParentGroup`" />
+		</set>
+
+		<set name="DirectChildren" table="`security_UsersGroupsHierarchy`" schema="`dbo`" inverse="false" cascade="save-update" lazy="true">
+			<key column="`ParentGroup`"/>
+			<many-to-many class="Rhino.Security.Domain.UsersGroup, Rhino.Security.Domain" column="`ChildGroup`" />
+		</set>
+
+	</class>
+</hibernate-mapping>

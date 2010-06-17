@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" xmlns:mergens="http://schemas.nexida.com/xmlmerger/1">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A8907AB6-53D0-4A4D-A591-B2278B1EEBCA}</ProjectGuid>
+    <ProjectTypeGuids>{F85E285D-A4E0-4152-9332-AB1D724D3325};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Rhino.Security</RootNamespace>
+    <AssemblyName>Rhino.Security.Mgmt</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=1.1.0.188, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL" />
+    <Reference Include="Castle.Core, Version=1.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL" />
+    <Reference Include="Castle.DynamicProxy2, Version=2.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL" />
+    <Reference Include="Castle.MicroKernel, Version=2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL" />
+    <Reference Include="Castle.Windsor, Version=2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL" />
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="NHibernate, Version=2.1.2.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL" />
+    <Reference Include="NHibernate.ByteCode.Castle, Version=2.1.2.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL" />
+    <Reference Include="NHibernate.Linq, Version=1.1.0.1001, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="NHibernate.Validator, Version=1.2.0.3001, Culture=neutral, PublicKeyToken=70154e18752585bd, processorArchitecture=MSIL" />
+    <Reference Include="nunit.framework, Version=2.5.5.10112, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\NUnit-2.5.5.10112\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Security, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\References\Rhino.Security 1.3.0.0\Rhino.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Linq.Dynamic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Compile Include="Rhino.Security.Domain\EntitiesGroupFactory.cs" />
+    <Compile Include="Rhino.Security.Domain\EntityReferenceFactory.cs" />
+    <Compile Include="Rhino.Security.Domain\EntityTypeFactory.cs" />
+    <Compile Include="Rhino.Security.Domain\OperationFactory.cs" />
+    <Compile Include="Rhino.Security.Domain\PermissionFactory.cs" />
+    <Compile Include="Rhino.Security.Domain\UsersGroupFactory.cs" />
+    <Compile Include="Rhino.Security.Domain\UserFactory.cs" />
+    <Compile Include="Rhino.Security.Dtos\EntitiesGroupDto.cs" />
+    <Compile Include="Rhino.Security.Dtos\EntityReferenceDto.cs" />
+    <Compile Include="Rhino.Security.Dtos\EntityTypeDto.cs" />
+    <Compile Include="Rhino.Security.Dtos\OperationDto.cs" />
+    <Compile Include="Rhino.Security.Dtos\PermissionDto.cs" />
+    <Compile Include="Rhino.Security.Dtos\UsersGroupDto.cs" />
+    <Compile Include="Rhino.Security.Dtos\UserDto.cs" />
+    <Compile Include="Rhino.Security.Dtos\EntitiesGroupReferenceDto.cs" />
+    <Compile Include="Rhino.Security.Dtos\EntityReferenceReferenceDto.cs" />
+    <Compile Include="Rhino.Security.Dtos\EntityTypeReferenceDto.cs" />
+    <Compile Include="Rhino.Security.Dtos\OperationReferenceDto.cs" />
+    <Compile Include="Rhino.Security.Dtos\PermissionReferenceDto.cs" />
+    <Compile Include="Rhino.Security.Dtos\UsersGroupReferenceDto.cs" />
+    <Compile Include="Rhino.Security.Dtos\UserReferenceDto.cs" />
+    <Compile Include="Rhino.Security.Dtos\MappingEngineBuilder.cs" />
+    <Compile Include="Rhino.Security.Data\EntitiesGroupStringConverter.cs" />
+    <Compile Include="Rhino.Security.Data\EntityReferenceStringConverter.cs" />
+    <Compile Include="Rhino.Security.Data\EntityTypeStringConverter.cs" />
+    <Compile Include="Rhino.Security.Data\OperationStringConverter.cs" />
+    <Compile Include="Rhino.Security.Data\PermissionStringConverter.cs" />
+    <Compile Include="Rhino.Security.Data\UsersGroupStringConverter.cs" />
+    <Compile Include="Rhino.Security.Data\UserStringConverter.cs" />
+    <Compile Include="Rhino.Security.Data\EntitiesGroupRepository.cs" />
+    <Compile Include="Rhino.Security.Data\EntityReferenceRepository.cs" />
+    <Compile Include="Rhino.Security.Data\EntityTypeRepository.cs" />
+    <Compile Include="Rhino.Security.Data\OperationRepository.cs" />
+    <Compile Include="Rhino.Security.Data\PermissionRepository.cs" />
+    <Compile Include="Rhino.Security.Data\UsersGroupRepository.cs" />
+    <Compile Include="Rhino.Security.Data\UserRepository.cs" />
+    <Compile Include="Rhino.Security.Controllers\EntitiesGroupController.cs" />
+    <Compile Include="Rhino.Security.Controllers\EntityReferenceController.cs" />
+    <Compile Include="Rhino.Security.Controllers\EntityTypeController.cs" />
+    <Compile Include="Rhino.Security.Controllers\OperationController.cs" />
+    <Compile Include="Rhino.Security.Controllers\PermissionController.cs" />
+    <Compile Include="Rhino.Security.Controllers\UsersGroupController.cs" />
+    <Compile Include="Rhino.Security.Controllers\UserController.cs" />
+    <Content Include="Rhino.Security.Web\Views\Home\Index.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastructure.Mvc\ValidationHelpers.cs" />
+    <Compile Include="Infrastructure\IConversation.cs" />
+    <Compile Include="Infrastructure\IFactory.cs" />
+    <Compile Include="Infrastructure\IPresentableSet.cs" />
+    <Compile Include="Infrastructure\IRepository.cs" />
+    <Compile Include="Infrastructure\IStringConverter.cs" />
+    <Compile Include="Infrastructure\IValidator.cs" />
+    <Compile Include="Infrastructure\QueryablePresentableSet.cs" />
+    <Compile Include="Infrastructure\ValidationError.cs" />
+    <Compile Include="Infrastructure\NhibernateValidator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rhino.Security.Domain\User.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Global.asax" />
+    <Content Include="References\AutoMapper-1.1\AutoMapper.dll" />
+    <Content Include="References\CastleWindsor-2.1.1\Castle.Core.dll" />
+    <Content Include="References\CastleWindsor-2.1.1\Castle.Core.xml" />
+    <Content Include="References\CastleWindsor-2.1.1\Castle.DynamicProxy2.dll" />
+    <Content Include="References\CastleWindsor-2.1.1\Castle.DynamicProxy2.xml" />
+    <Content Include="References\CastleWindsor-2.1.1\Castle.Facilities.Logging.dll" />
+    <Content Include="References\CastleWindsor-2.1.1\Castle.Facilities.Logging.xml" />
+    <Content Include="References\CastleWindsor-2.1.1\Castle.MicroKernel.dll" />
+    <Content Include="References\CastleWindsor-2.1.1\Castle.MicroKernel.xml" />
+    <Content Include="References\CastleWindsor-2.1.1\Castle.Services.Logging.log4netIntegration.dll" />
+    <Content Include="References\CastleWindsor-2.1.1\Castle.Services.Logging.log4netIntegration.xml" />
+    <Content Include="References\CastleWindsor-2.1.1\Castle.Windsor.dll" />
+    <Content Include="References\CastleWindsor-2.1.1\Castle.Windsor.xml" />
+    <Content Include="References\CommonServiceLocator\Microsoft.Practices.ServiceLocation.dll" />
+    <Content Include="References\CommonServiceLocator\Microsoft.Practices.ServiceLocation.pdb" />
+    <Content Include="References\CommonServiceLocator\Microsoft.Practices.ServiceLocation.XML" />
+    <Content Include="References\Log4Net-1.2.10\log4net.dll" />
+    <Content Include="References\Log4Net-1.2.10\log4net.xml" />
+    <Content Include="References\NHibernate-2.1.2.4000_DynamicProxy-2.2.0.0_Integration\NHibernate.ByteCode.Castle.dll" />
+    <Content Include="References\NHibernate-2.1.2.4000_DynamicProxy-2.2.0.0_Integration\Readme.txt" />
+    <Content Include="References\NHibernate-2.1.2.GA\Antlr3.Runtime.dll" />
+    <Content Include="References\NHibernate-2.1.2.GA\Iesi.Collections.dll" />
+    <Content Include="References\NHibernate-2.1.2.GA\Iesi.Collections.xml" />
+    <Content Include="References\NHibernate-2.1.2.GA\NHibernate.dll" />
+    <Content Include="References\NHibernate-2.1.2.GA\NHibernate.xml" />
+    <Content Include="References\NHibernate.Linq-2.1.2.GA\NHibernate.Linq.dll" />
+    <Content Include="References\NHibernate.Linq-2.1.2.GA\NHibernate.Linq.pdb" />
+    <Content Include="References\NHibernate.Linq-2.1.2.GA\NHibernate.Linq.xml" />
+    <Content Include="References\NHibernateValidator-1.2.0.CR1\de\NHibernate.Validator.resources.dll" />
+    <Content Include="References\NHibernateValidator-1.2.0.CR1\en\NHibernate.Validator.Tests.resources.dll" />
+    <Content Include="References\NHibernateValidator-1.2.0.CR1\es\NHibernate.Validator.resources.dll" />
+    <Content Include="References\NHibernateValidator-1.2.0.CR1\fr\NHibernate.Validator.resources.dll" />
+    <Content Include="References\NHibernateValidator-1.2.0.CR1\it\NHibernate.Validator.resources.dll" />
+    <Content Include="References\NHibernateValidator-1.2.0.CR1\lv\NHibernate.Validator.resources.dll" />
+    <Content Include="References\NHibernateValidator-1.2.0.CR1\NHibernate.Validator.dll" />
+    <Content Include="References\NHibernateValidator-1.2.0.CR1\NHibernate.Validator.Specific.dll" />
+    <Content Include="References\NHibernateValidator-1.2.0.CR1\NHibernate.Validator.Specific.xml" />
+    <Content Include="References\NHibernateValidator-1.2.0.CR1\NHibernate.Validator.xml" />
+    <Content Include="References\NHibernateValidator-1.2.0.CR1\nl\NHibernate.Validator.resources.dll" />
+    <Content Include="References\NHibernateValidator-1.2.0.CR1\pl\NHibernate.Validator.resources.dll" />
+    <Content Include="References\System.Linq.Dynamic\Readme.txt" />
+    <Content Include="References\System.Linq.Dynamic\System.Linq.Dynamic.dll" />
+    <Content Include="Web.config" />
+    <Content Include="Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rhino.Security.Domain\User.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Rhino.Security.Domain.Test\" />
+    <Folder Include="Views\Shared\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target> -->
+  <Target Name="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(ProjectDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>5717</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

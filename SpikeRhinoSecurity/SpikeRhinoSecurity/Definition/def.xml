@@ -2,7 +2,7 @@
 <definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.nexida.com/codegeneration/definitions/1">
   <types>
     <type id="NorthwindWithSecurity.dbo.security_EntitiesGroups">
-      <name>SecurityEntitiesGroup</name>
+      <name>EntitiesGroup</name>
       <namespace />
       <isDetail>false</isDetail>
       <fields>
@@ -42,7 +42,7 @@
           <typeId>NorthwindWithSecurity.dbo.security_EntitiesGroups</typeId>
           <canBeEmpty>true</canBeEmpty>
           <many>false</many>
-          <name>SecurityEntitiesGroup_1</name>
+          <name>Parent</name>
           <associationIdentifier>Fkd0398Ec71Cf0F16E</associationIdentifier>
           <isInverseAssociation>true</isInverseAssociation>
           <relationalMapping>
@@ -59,7 +59,7 @@
           <typeId>NorthwindWithSecurity.dbo.security_EntitiesGroups</typeId>
           <canBeEmpty>false</canBeEmpty>
           <many>true</many>
-          <name>Securityentitiesgroups</name>
+          <name>DirectChildren</name>
           <associationIdentifier>Fkd0398Ec71Cf0F16E</associationIdentifier>
           <isInverseAssociation>false</isInverseAssociation>
           <relationalMapping>
@@ -76,7 +76,7 @@
           <typeId>NorthwindWithSecurity.dbo.security_EntityReferences</typeId>
           <canBeEmpty>false</canBeEmpty>
           <many>true</many>
-          <name>Securityentityreferences</name>
+          <name>Entities</name>
           <associationIdentifier>SecurityEntityReferencesToEntitiesGroups</associationIdentifier>
           <isInverseAssociation>true</isInverseAssociation>
           <relationalMapping>
@@ -96,7 +96,7 @@
           <typeId>NorthwindWithSecurity.dbo.security_EntitiesGroups</typeId>
           <canBeEmpty>false</canBeEmpty>
           <many>true</many>
-          <name>Securityentitiesgroups_1</name>
+          <name>AllChildren</name>
           <associationIdentifier>SecurityEntityGroupsHierarchy</associationIdentifier>
           <isInverseAssociation>true</isInverseAssociation>
           <relationalMapping>
@@ -116,7 +116,7 @@
           <typeId>NorthwindWithSecurity.dbo.security_EntitiesGroups</typeId>
           <canBeEmpty>false</canBeEmpty>
           <many>true</many>
-          <name>Securityentitiesgroups_2</name>
+          <name>AllParents</name>
           <associationIdentifier>SecurityEntityGroupsHierarchy</associationIdentifier>
           <isInverseAssociation>false</isInverseAssociation>
           <relationalMapping>
@@ -125,23 +125,6 @@
             <manyToManyTableName>security_EntityGroupsHierarchy</manyToManyTableName>
             <manyToManyOtherFkColumnName>ChildGroup</manyToManyOtherFkColumnName>
             <manyToManySchemaName>dbo</manyToManySchemaName>
-          </relationalMapping>
-          <presentation>
-            <orderInInstanceDescription xsi:nil="true" />
-            <orderInDetailView>1</orderInDetailView>
-            <orderInGridView xsi:nil="true" />
-          </presentation>
-        </field>
-        <field id="NorthwindWithSecurity.dbo.security_Permissions.EntitiesGroup">
-          <typeId>NorthwindWithSecurity.dbo.security_Permissions</typeId>
-          <canBeEmpty>false</canBeEmpty>
-          <many>true</many>
-          <name>Securitypermissions</name>
-          <associationIdentifier>Fkea223C4C6C8Ec3A5</associationIdentifier>
-          <isInverseAssociation>true</isInverseAssociation>
-          <relationalMapping>
-            <readOnly>false</readOnly>
-            <columnName>EntitiesGroup</columnName>
           </relationalMapping>
           <presentation>
             <orderInInstanceDescription xsi:nil="true" />
@@ -190,7 +173,7 @@
       <security />
     </type>
     <type id="NorthwindWithSecurity.dbo.security_EntityReferences">
-      <name>SecurityEntityReference</name>
+      <name>EntityReference</name>
       <namespace />
       <isDetail>false</isDetail>
       <fields>
@@ -226,31 +209,11 @@
             <orderInGridView>1</orderInGridView>
           </presentation>
         </field>
-        <field id="NorthwindWithSecurity.dbo.security_EntityReferencesToEntitiesGroups.EntityReferenceId">
-          <typeId>NorthwindWithSecurity.dbo.security_EntitiesGroups</typeId>
-          <canBeEmpty>false</canBeEmpty>
-          <many>true</many>
-          <name>Securityentitiesgroups</name>
-          <associationIdentifier>SecurityEntityReferencesToEntitiesGroups</associationIdentifier>
-          <isInverseAssociation>false</isInverseAssociation>
-          <relationalMapping>
-            <readOnly>false</readOnly>
-            <columnName>EntityReferenceId</columnName>
-            <manyToManyTableName>security_EntityReferencesToEntitiesGroups</manyToManyTableName>
-            <manyToManyOtherFkColumnName>GroupId</manyToManyOtherFkColumnName>
-            <manyToManySchemaName>dbo</manyToManySchemaName>
-          </relationalMapping>
-          <presentation>
-            <orderInInstanceDescription xsi:nil="true" />
-            <orderInDetailView>1</orderInDetailView>
-            <orderInGridView xsi:nil="true" />
-          </presentation>
-        </field>
         <field id="Type">
           <typeId>NorthwindWithSecurity.dbo.security_EntityTypes</typeId>
           <canBeEmpty>false</canBeEmpty>
           <many>false</many>
-          <name>SecurityEntityType</name>
+          <name>Type</name>
           <associationIdentifier>Fkbbe4029387Cc6C80</associationIdentifier>
           <isInverseAssociation>true</isInverseAssociation>
           <relationalMapping>
@@ -304,7 +267,7 @@
       <security />
     </type>
     <type id="NorthwindWithSecurity.dbo.security_EntityTypes">
-      <name>SecurityEntityType</name>
+      <name>EntityType</name>
       <namespace />
       <isDetail>false</isDetail>
       <fields>
@@ -338,23 +301,6 @@
             <orderInInstanceDescription xsi:nil="true" />
             <orderInDetailView>1</orderInDetailView>
             <orderInGridView>1</orderInGridView>
-          </presentation>
-        </field>
-        <field id="NorthwindWithSecurity.dbo.security_EntityReferences.Type">
-          <typeId>NorthwindWithSecurity.dbo.security_EntityReferences</typeId>
-          <canBeEmpty>false</canBeEmpty>
-          <many>true</many>
-          <name>Securityentityreferences</name>
-          <associationIdentifier>Fkbbe4029387Cc6C80</associationIdentifier>
-          <isInverseAssociation>false</isInverseAssociation>
-          <relationalMapping>
-            <readOnly>false</readOnly>
-            <columnName>Type</columnName>
-          </relationalMapping>
-          <presentation>
-            <orderInInstanceDescription xsi:nil="true" />
-            <orderInDetailView>1</orderInDetailView>
-            <orderInGridView xsi:nil="true" />
           </presentation>
         </field>
       </fields>
@@ -398,7 +344,7 @@
       <security />
     </type>
     <type id="NorthwindWithSecurity.dbo.security_Operations">
-      <name>SecurityOperation</name>
+      <name>Operation</name>
       <namespace />
       <isDetail>false</isDetail>
       <fields>
@@ -454,7 +400,7 @@
           <typeId>NorthwindWithSecurity.dbo.security_Operations</typeId>
           <canBeEmpty>true</canBeEmpty>
           <many>false</many>
-          <name>SecurityOperation_1</name>
+          <name>Parent</name>
           <associationIdentifier>Fke58Bbff82B7Cdcd3</associationIdentifier>
           <isInverseAssociation>true</isInverseAssociation>
           <relationalMapping>
@@ -471,29 +417,12 @@
           <typeId>NorthwindWithSecurity.dbo.security_Operations</typeId>
           <canBeEmpty>false</canBeEmpty>
           <many>true</many>
-          <name>Securityoperations</name>
+          <name>Children</name>
           <associationIdentifier>Fke58Bbff82B7Cdcd3</associationIdentifier>
           <isInverseAssociation>false</isInverseAssociation>
           <relationalMapping>
             <readOnly>false</readOnly>
             <columnName>Parent</columnName>
-          </relationalMapping>
-          <presentation>
-            <orderInInstanceDescription xsi:nil="true" />
-            <orderInDetailView>1</orderInDetailView>
-            <orderInGridView xsi:nil="true" />
-          </presentation>
-        </field>
-        <field id="NorthwindWithSecurity.dbo.security_Permissions.Operation">
-          <typeId>NorthwindWithSecurity.dbo.security_Permissions</typeId>
-          <canBeEmpty>false</canBeEmpty>
-          <many>true</many>
-          <name>Securitypermissions</name>
-          <associationIdentifier>Fkea223C4C71C937C7</associationIdentifier>
-          <isInverseAssociation>true</isInverseAssociation>
-          <relationalMapping>
-            <readOnly>false</readOnly>
-            <columnName>Operation</columnName>
           </relationalMapping>
           <presentation>
             <orderInInstanceDescription xsi:nil="true" />
@@ -542,7 +471,7 @@
       <security />
     </type>
     <type id="NorthwindWithSecurity.dbo.security_Permissions">
-      <name>SecurityPermission</name>
+      <name>Permission</name>
       <namespace />
       <isDetail>false</isDetail>
       <fields>
@@ -630,7 +559,7 @@
           <typeId>NorthwindWithSecurity.dbo.security_EntitiesGroups</typeId>
           <canBeEmpty>true</canBeEmpty>
           <many>false</many>
-          <name>SecurityEntitiesGroup</name>
+          <name>EntitiesGroup</name>
           <associationIdentifier>Fkea223C4C6C8Ec3A5</associationIdentifier>
           <isInverseAssociation>false</isInverseAssociation>
           <relationalMapping>
@@ -647,7 +576,7 @@
           <typeId>NorthwindWithSecurity.dbo.security_Operations</typeId>
           <canBeEmpty>false</canBeEmpty>
           <many>false</many>
-          <name>SecurityOperation</name>
+          <name>Operation</name>
           <associationIdentifier>Fkea223C4C71C937C7</associationIdentifier>
           <isInverseAssociation>false</isInverseAssociation>
           <relationalMapping>
@@ -664,7 +593,7 @@
           <typeId>NorthwindWithSecurity.dbo.security_UsersGroups</typeId>
           <canBeEmpty>true</canBeEmpty>
           <many>false</many>
-          <name>SecurityUsersGroup</name>
+          <name>UsersGroup</name>
           <associationIdentifier>Fkea223C4C2Ee8F612</associationIdentifier>
           <isInverseAssociation>true</isInverseAssociation>
           <relationalMapping>
@@ -735,7 +664,7 @@
       <security />
     </type>
     <type id="NorthwindWithSecurity.dbo.security_UsersGroups">
-      <name>SecurityUsersGroup</name>
+      <name>UsersGroup</name>
       <namespace />
       <isDetail>false</isDetail>
       <fields>
@@ -771,28 +700,11 @@
             <orderInGridView>1</orderInGridView>
           </presentation>
         </field>
-        <field id="NorthwindWithSecurity.dbo.security_Permissions.UsersGroup">
-          <typeId>NorthwindWithSecurity.dbo.security_Permissions</typeId>
-          <canBeEmpty>false</canBeEmpty>
-          <many>true</many>
-          <name>Securitypermissions</name>
-          <associationIdentifier>Fkea223C4C2Ee8F612</associationIdentifier>
-          <isInverseAssociation>false</isInverseAssociation>
-          <relationalMapping>
-            <readOnly>false</readOnly>
-            <columnName>UsersGroup</columnName>
-          </relationalMapping>
-          <presentation>
-            <orderInInstanceDescription xsi:nil="true" />
-            <orderInDetailView>1</orderInDetailView>
-            <orderInGridView xsi:nil="true" />
-          </presentation>
-        </field>
         <field id="Parent">
           <typeId>NorthwindWithSecurity.dbo.security_UsersGroups</typeId>
           <canBeEmpty>true</canBeEmpty>
           <many>false</many>
-          <name>SecurityUsersGroup_1</name>
+          <name>Parent</name>
           <associationIdentifier>Fkec3Af233D0Cb87D0</associationIdentifier>
           <isInverseAssociation>true</isInverseAssociation>
           <relationalMapping>
@@ -809,7 +721,7 @@
           <typeId>NorthwindWithSecurity.dbo.security_UsersGroups</typeId>
           <canBeEmpty>false</canBeEmpty>
           <many>true</many>
-          <name>Securityusersgroups</name>
+          <name>AllParent</name>
           <associationIdentifier>Fkec3Af233D0Cb87D0</associationIdentifier>
           <isInverseAssociation>false</isInverseAssociation>
           <relationalMapping>
@@ -846,7 +758,7 @@
           <typeId>NorthwindWithSecurity.dbo.security_UsersGroups</typeId>
           <canBeEmpty>false</canBeEmpty>
           <many>true</many>
-          <name>Securityusersgroups_1</name>
+          <name>AllChildren</name>
           <associationIdentifier>SecurityUsersGroupsHierarchy</associationIdentifier>
           <isInverseAssociation>true</isInverseAssociation>
           <relationalMapping>
@@ -866,7 +778,7 @@
           <typeId>NorthwindWithSecurity.dbo.security_UsersGroups</typeId>
           <canBeEmpty>false</canBeEmpty>
           <many>true</many>
-          <name>Securityusersgroups_2</name>
+          <name>DirectChildren</name>
           <associationIdentifier>SecurityUsersGroupsHierarchy</associationIdentifier>
           <isInverseAssociation>false</isInverseAssociation>
           <relationalMapping>
@@ -957,43 +869,6 @@
             <orderInInstanceDescription xsi:nil="true" />
             <orderInDetailView>1</orderInDetailView>
             <orderInGridView>1</orderInGridView>
-          </presentation>
-        </field>
-        <field id="NorthwindWithSecurity.dbo.security_Permissions.User">
-          <typeId>NorthwindWithSecurity.dbo.security_Permissions</typeId>
-          <canBeEmpty>false</canBeEmpty>
-          <many>true</many>
-          <name>Securitypermissions</name>
-          <associationIdentifier>Fkea223C4Cfc8C2B95</associationIdentifier>
-          <isInverseAssociation>false</isInverseAssociation>
-          <relationalMapping>
-            <readOnly>false</readOnly>
-            <columnName>User</columnName>
-          </relationalMapping>
-          <presentation>
-            <orderInInstanceDescription xsi:nil="true" />
-            <orderInDetailView>1</orderInDetailView>
-            <orderInGridView xsi:nil="true" />
-          </presentation>
-        </field>
-        <field id="NorthwindWithSecurity.dbo.security_UsersToUsersGroups.UserId">
-          <typeId>NorthwindWithSecurity.dbo.security_UsersGroups</typeId>
-          <canBeEmpty>false</canBeEmpty>
-          <many>true</many>
-          <name>Securityusersgroups</name>
-          <associationIdentifier>SecurityUsersToUsersGroups</associationIdentifier>
-          <isInverseAssociation>false</isInverseAssociation>
-          <relationalMapping>
-            <readOnly>false</readOnly>
-            <columnName>UserId</columnName>
-            <manyToManyTableName>security_UsersToUsersGroups</manyToManyTableName>
-            <manyToManyOtherFkColumnName>GroupId</manyToManyOtherFkColumnName>
-            <manyToManySchemaName>dbo</manyToManySchemaName>
-          </relationalMapping>
-          <presentation>
-            <orderInInstanceDescription xsi:nil="true" />
-            <orderInDetailView>1</orderInDetailView>
-            <orderInGridView xsi:nil="true" />
           </presentation>
         </field>
       </fields>
@@ -1724,6 +1599,6 @@
     </service>
   </services>
   <settings>
-    <baseNamespace>RhinoSecurity.UI</baseNamespace>
+    <baseNamespace>Rhino.Security</baseNamespace>
   </settings>
 </definitions>

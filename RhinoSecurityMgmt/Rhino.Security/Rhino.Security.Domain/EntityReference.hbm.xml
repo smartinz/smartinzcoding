@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+	<class name="Rhino.Security.Domain.EntityReference, Rhino.Security.Domain" table="`security_EntityReferences`" schema="`dbo`">
+
+		<id name="Id" column="`Id`" type="Guid" >
+			<generator class="assigned" />
+		</id>
+
+
+		<property name="EntitySecurityKey" column="`EntitySecurityKey`" type="Guid" not-null="true" />
+
+
+		<many-to-one name="Type" column="`Type`" class="Rhino.Security.Domain.EntityType, Rhino.Security.Domain" />
+
+	</class>
+</hibernate-mapping>
