@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-configuration xmlns="urn:nhibernate-configuration-2.2">
+	<session-factory>
+		<property name="proxyfactory.factory_class">NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle</property>
+		<property name="connection.provider">NHibernate.Connection.DriverConnectionProvider</property>
+		<!-- Use can also use "connection.connection_string_name" property to use connectionstring from <connectionStrings> section in Web.config/App.config -->
+		
+		<!-- Example with Northwind database in local instance of SQLExpress 2005-->
+		<property name="connection.driver_class">NHibernate.Driver.SqlClientDriver</property>
+		<property name="dialect">NHibernate.Dialect.MsSql2005Dialect</property>
+		<property name="connection.connection_string">Data Source=.\SQLEXPRESS;Initial Catalog=NorthwindWithSecurity;Integrated Security=True</property>
+		
+
+		<!-- Example with local instance of Oracle db using ODP.NET
+		<property name="connection.driver_class">NHibernate.Driver.OracleDataClientDriver</property>
+		<property name="dialect">NHibernate.Dialect.Oracle9iDialect</property>
+		<property name="connection.connection_string">Data Source=localhost;User ID=user;Password=***;</property>
+		-->
+
+		<!-- Example with local instance of DB2 using OleDb
+		<property name="connection.driver_class">NHibernate.Driver.OleDbDriver</property>
+		<property name="connection.connection_string">Provider=IBMDADB2.DB2COPY1;Persist Security Info=False;User ID="";Data Source=ds;Location="";Extended Properties="trusted_connection=yes"</property>
+		<property name="dialect">NHibernate.Dialect.DB2Dialect</property>
+		-->
+
+		<!-- Example with local instance of MySql
+		<property name="connection.driver_class">NHibernate.Driver.MySqlDataDriver</property>
+		<property name="dialect">NHibernate.Dialect.MySQLDialect</property>
+		<property name="connection.connection_string">Server=127.0.0.1;Database=dbo;User ID=root;Password=</property>
+		<property name="hbm2ddl.keywords">none</property>
+		-->
+
+		<property name="show_sql">false</property>
+		<mapping assembly="SpikeRhinoSecurity"/>
+	</session-factory>
+</hibernate-configuration>
