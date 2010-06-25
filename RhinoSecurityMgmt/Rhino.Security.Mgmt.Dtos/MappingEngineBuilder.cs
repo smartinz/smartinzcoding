@@ -134,6 +134,7 @@ namespace Rhino.Security.Mgmt.Dtos
 						Mapper.CreateMap<UserDto, Rhino.Security.Model.User>()
 							.ConstructUsing(s => string.IsNullOrEmpty(s.StringId) ? sl.GetInstance<Nexida.Infrastructure.IFactory<Rhino.Security.Model.User>>().Create() : sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.User>>().FromString(s.StringId))
 											.ForMember(d => d.Id, o => o.Ignore())
+											.ForMember(d => d.Groups, o => o.Ignore())
 											;
 						Mapper.CreateMap<UserReferenceDto, Rhino.Security.Model.User>()
 							.ConstructUsing(s => string.IsNullOrEmpty(s.StringId) ? sl.GetInstance<Nexida.Infrastructure.IFactory<Rhino.Security.Model.User>>().Create() : sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.User>>().FromString(s.StringId))

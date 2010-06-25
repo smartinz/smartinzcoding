@@ -871,6 +871,26 @@
             <orderInGridView>1</orderInGridView>
           </presentation>
         </field>
+        <field id="17c74fad40a84facabb61a6908fe79f7">
+          <typeId>NorthwindWithSecurity.dbo.security_UsersGroups</typeId>
+          <canBeEmpty>false</canBeEmpty>
+          <many>true</many>
+          <name>Groups</name>
+          <associationIdentifier>SecurityUsersToUsersGroups</associationIdentifier>
+          <isInverseAssociation>false</isInverseAssociation>
+          <relationalMapping>
+            <readOnly>false</readOnly>
+            <columnName>UserId</columnName>
+            <manyToManyTableName>security_UsersToUsersGroups</manyToManyTableName>
+            <manyToManyOtherFkColumnName>GroupId</manyToManyOtherFkColumnName>
+            <manyToManySchemaName>dbo</manyToManySchemaName>
+          </relationalMapping>
+          <presentation>
+            <orderInInstanceDescription xsi:nil="true" />
+            <orderInDetailView xsi:nil="true" />
+            <orderInGridView xsi:nil="true" />
+          </presentation>
+        </field>
       </fields>
       <repository>
         <create>
@@ -1599,6 +1619,6 @@
     </service>
   </services>
   <settings>
-    <baseNamespace>Rhino.Securitys</baseNamespace>
+    <baseNamespace>Rhino.Security</baseNamespace>
   </settings>
 </definitions>

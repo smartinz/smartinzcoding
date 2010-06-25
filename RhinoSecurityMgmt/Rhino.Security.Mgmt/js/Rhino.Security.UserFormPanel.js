@@ -14,6 +14,18 @@ Rhino.Security.UserFormPanel = Ext.extend(Ext.form.FormPanel, {
 
 	initComponent: function () {
 		// see http://www.extjs.com/forum/showthread.php?98131
+		_pagingToolbar = new Ext.PagingToolbar({
+//			store: _store,
+			displayInfo: true,
+			pageSize: 25,
+			prependButtons: true
+		}),
+		_gridPanel = new Rhino.Security.UsersGroupGridPanel({
+/*			region: 'center',
+			store: _store,*/
+			//bbar: _pagingToolbar
+		}),
+		
 		this.items = [{
 			layout: 'form',
 			border: false,
@@ -21,7 +33,31 @@ Rhino.Security.UserFormPanel = Ext.extend(Ext.form.FormPanel, {
 			items: [
 				{ name: 'StringId', xtype: 'hidden' },
 				{ name: 'Id', fieldLabel: 'Id', xtype: 'numberfield' },
-				{ name: 'Name', fieldLabel: 'Name', xtype: 'textfield' }
+				{ name: 'Name', fieldLabel: 'Name', xtype: 'textfield' },
+				{ 
+					xtype: 'panel',
+					title: 'Groups',
+					collapsible: true,
+					titleCollapse: true,
+					tbar: {
+						xtype: 'toolbar',
+						items: [
+							{ text: 'Add', icon: 'images/add.png', cls: 'x-btn-text-icon' },
+							{ text: 'Delete', icon: 'images/delete.png', cls: 'x-btn-text-icon' }
+						]
+					},
+					items: [ _gridPanel ]
+				}
+			]
+		}, {
+			flex: 1,
+			xtype: 'tabpanel',
+			plain: true,
+			border: false,
+			activeTab: 0,
+			deferredRender: false, // IMPORTANT! See http://www.extjs.com/deploy/dev/examples/form/dynamic.js
+			items: [
+				{ name: 'Groups', title: 'Groups', xtype: 'Rhino.Security.UsersGroupListField' }
 			]
 		}];
 
