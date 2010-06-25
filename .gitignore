@@ -1,8 +1,10 @@
 
-*/bin/*
-*/bin/*
-bin/
 obj/
+bin/
+*.csproj.user
+*ReSharper.user
+_ReSharper*
+*resharper*
 *.suo
-.suo
-SpikeRhinoSecurity/SpikeRhinoSecurity/SpikeRhinoSecurity.suo
+*.cache
+* Thumbs.db
