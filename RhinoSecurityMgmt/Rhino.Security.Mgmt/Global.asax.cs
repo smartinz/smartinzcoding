@@ -24,6 +24,9 @@ using NHibernate.Validator.Cfg;
 using NHibernate.Validator.Engine;
 using Nexida.CodeGen.TemplateProject.CSharp.MvcExt.Infrastructure;
 using Rhino.Security.Mgmt.Model;
+using Rhino.Security.Interfaces;
+using Rhino.Security.Services;
+using System;
 
 namespace Rhino.Security.Mgmt
 {
@@ -44,6 +47,11 @@ namespace Rhino.Security.Mgmt
 				);
 		}
 
+		//protected void Application_BeginRequest(object sender, EventArgs e)
+		//{
+		//    ;
+		//}
+
 		protected void Application_Start()
 		{
 			XmlConfigurator.Configure();
@@ -55,6 +63,15 @@ namespace Rhino.Security.Mgmt
 			ioc.Register(Component.For<Nexida.Infrastructure.IValidator>().ImplementedBy<NHibernateValidator>());
 
 			ioc.Register(Component.For<ISessionFactory>().UsingFactoryMethod(CreateSessionFactory));
+
+			// start setup Rhino Security services
+			ioc.Register(Component.For<ISession>().UsingFactoryMethod(CreateSession).LifeStyle.PerWebRequest);
+			ioc.Register(Component.For<IAuthorizationRepository>().UsingFactoryMethod(CreateAuthorizationRepository).LifeStyle.PerWebRequest);
+			ioc.Register(Component.For<IPermissionsService>().UsingFactoryMethod(CreatePermissionService).LifeStyle.PerWebRequest);
+			ioc.Register(Component.For<IAuthorizationService>().UsingFactoryMethod(CreateAuthorizationService).LifeStyle.PerWebRequest);
+			ioc.Register(Component.For<IPermissionsBuilderService>().UsingFactoryMethod(CreatePermissionsBuilderService).LifeStyle.PerWebRequest);
+			// end setup Rhino Security services
+
 			ioc.Register(Component.For<IConversationFactory>().UsingFactoryMethod(CreateConversationFactory));
 			ioc.Register(Component.For<IConversation>().UsingFactoryMethod(CreateConversation).LifeStyle.PerWebRequest);
 
@@ -74,6 +91,31 @@ namespace Rhino.Security.Mgmt
 			ServiceLocator.SetLocatorProvider(() => new WindsorServiceLocator(ioc));
 		}
 
+		private static IPermissionsBuilderService CreatePermissionsBuilderService(IKernel kernel)
+		{
+			return new PermissionsBuilderService(kernel.Resolve<ISession>(), kernel.Resolve<IAuthorizationRepository>());
+		}
+
+		private static IAuthorizationService CreateAuthorizationService(IKernel kernel)
+		{
+ 			return new AuthorizationService(kernel.Resolve<IPermissionsService>(), kernel.Resolve<IAuthorizationRepository>());
+		}
+
+		private static IPermissionsService CreatePermissionService(IKernel kernel)
+		{
+			return new PermissionsService(kernel.Resolve<IAuthorizationRepository>(), kernel.Resolve<ISession>());
+		}
+
+		private static ISession CreateSession(IKernel kernel)
+		{
+			return kernel.Resolve<ISessionFactory>().GetCurrentSession();
+		}
+
+		private static IAuthorizationRepository CreateAuthorizationRepository(IKernel kernel)
+		{
+			return new AuthorizationRepository(kernel.Resolve<ISession>());
+		}
+
 		private static ValidatorEngine CreateValidatorEngine()
 		{
 			var cfg = new XmlConfiguration();
@@ -87,15 +129,17 @@ namespace Rhino.Security.Mgmt
 		{
 			var validatorEngine = kernel.Resolve<ValidatorEngine>();
 
-			var nhConfig = new NHibernate.Cfg.Configuration();
-			Security.Configure<User>(nhConfig, SecurityTableStructure.Prefix);
-
-			NHibernate.Cfg.Configuration nhCfg = new NHibernate.Cfg.Configuration().Configure()
+			var nhConfig = new NHibernate.Cfg.Configuration().Configure()
 				.SetProperty(NHibernate.Cfg.Environment.CurrentSessionContextClass, typeof(ConversationSessionContext).AssemblyQualifiedName)
 				.AddAssembly(typeof(User).Assembly);
+			Security.Configure<User>(nhConfig, SecurityTableStructure.Prefix);
 
-			nhCfg.Initialize(validatorEngine);
-			return nhCfg.BuildSessionFactory();
+			//NHibernate.Cfg.Configuration nhCfg = new NHibernate.Cfg.Configuration().Configure()
+			//    .SetProperty(NHibernate.Cfg.Environment.CurrentSessionContextClass, typeof(ConversationSessionContext).AssemblyQualifiedName)
+			//    .AddAssembly(typeof(User).Assembly);
+
+			nhConfig.Initialize(validatorEngine);
+			return nhConfig.BuildSessionFactory();
 		}
 
 		private static IConversationFactory CreateConversationFactory(IKernel kernel)

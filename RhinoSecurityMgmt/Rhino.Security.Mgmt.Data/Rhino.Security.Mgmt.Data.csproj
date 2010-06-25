@@ -37,6 +37,10 @@
     <Reference Include="Iesi.Collections">
       <HintPath>..\..\References\NHibernate-2.1.2.GA\Iesi.Collections.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\References\CommonServiceLocator\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate">
       <HintPath>..\..\References\NHibernate-2.1.2.GA\NHibernate.dll</HintPath>
     </Reference>

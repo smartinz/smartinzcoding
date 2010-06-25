@@ -1,4 +1,5 @@
 ﻿using System;
+using NHibernate;
 
 namespace Conversation
 {
@@ -10,5 +11,7 @@ namespace Conversation
 		void Flush();
 
 		void Close();
+
+		ISession GetASession();
 	}
 }

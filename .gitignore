@@ -3,3 +3,6 @@
 */bin/*
 bin/
 obj/
+*.suo
+.suo
+SpikeRhinoSecurity/SpikeRhinoSecurity/SpikeRhinoSecurity.suo

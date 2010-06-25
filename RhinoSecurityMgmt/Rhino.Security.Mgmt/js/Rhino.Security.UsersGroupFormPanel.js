@@ -20,7 +20,7 @@ Rhino.Security.UsersGroupFormPanel = Ext.extend(Ext.form.FormPanel, {
 			padding: 10,
 			items: [
 				{ name: 'StringId', xtype: 'hidden' },
-				{ name: 'Id', fieldLabel: 'Id', xtype: 'textfield' },
+				//{ name: 'Id', fieldLabel: 'Id', xtype: 'textfield' },
 				{ name: 'Name', fieldLabel: 'Name', xtype: 'textfield' }
 			]
 		}];

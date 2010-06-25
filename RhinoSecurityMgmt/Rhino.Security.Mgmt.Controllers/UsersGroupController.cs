@@ -12,6 +12,7 @@ namespace Rhino.Security.Mgmt.Controllers
 		private readonly Nexida.Infrastructure.IValidator _validator;
 		private readonly Conversation.IConversation _conversation;
 		private readonly Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.UsersGroup> _stringConverter;
+		private Rhino.Security.Services.AuthorizationRepository _authorizationRespository;
 
 		public UsersGroupController(Conversation.IConversation conversation, AutoMapper.IMappingEngine mapper, Rhino.Security.Mgmt.Data.UsersGroupRepository repository, Nexida.Infrastructure.IValidator validator, Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.UsersGroup> stringConverter)
 		{
@@ -74,7 +75,6 @@ namespace Rhino.Security.Mgmt.Controllers
 			Log.DebugFormat("Search called");
 			using (_conversation.SetAsCurrent())
 			{
-
 				var set = _repository.Search(id, name);
 				var items = set.Skip(start).Take(limit).Sort(sort, dir == "ASC").AsEnumerable();
 				var dtos = _mapper.Map<IEnumerable<Rhino.Security.Model.UsersGroup>, Rhino.Security.Mgmt.Dtos.UsersGroupDto[]>(items);
