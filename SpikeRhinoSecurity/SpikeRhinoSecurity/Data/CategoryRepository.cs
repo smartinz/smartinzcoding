@@ -1,6 +1,9 @@
 using System.Linq;
 using NHibernate.Linq;
 using SpikeRhinoSecurity.Infrastructure;
+using Microsoft.Practices.ServiceLocation;
+using Rhino.Security.Interfaces;
+using Rhino.Security;
 
 namespace SpikeRhinoSecurity.Data
 {
@@ -59,6 +62,12 @@ namespace SpikeRhinoSecurity.Data
 		public IPresentableSet<SpikeRhinoSecurity.Domain.Category> Search()
 		{
 			IQueryable<SpikeRhinoSecurity.Domain.Category> queryable = _northwind.GetCurrentSession().Linq<SpikeRhinoSecurity.Domain.Category>();
+
+			((INHibernateQueryable)queryable).QueryOptions.RegisterCustomAction(x =>
+ServiceLocator.Current.GetInstance<IAuthorizationService>().AddPermissionsToQuery(ServiceLocator.Current.GetInstance<IUser>(),
+"/Category/Search",
+x));
+
 			return new SpikeRhinoSecurity.Infrastructure.QueryablePresentableSet<SpikeRhinoSecurity.Domain.Category>(queryable);
 		}
 

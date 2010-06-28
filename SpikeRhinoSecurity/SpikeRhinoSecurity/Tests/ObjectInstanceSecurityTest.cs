@@ -13,14 +13,14 @@ using SpikeRhinoSecurity.Domain;
 namespace SpikeRhinoSecurity.Tests
 {
 	[TestFixture]
-	public class EntityLevelSecurityTest : BaseTest
+	public class ObjectInstanceSecurityTest : BaseTest
 	{
 		[Test]
 		public void Default_should_be_deny()
 		{
 			var operationName = "/Customer/Read";
 			var readOperationOnCustomer = AuthZRepository.CreateOperation(operationName);
-			UsersGroup guestGroup = AuthZRepository.CreateUsersGroup("Guests");
+			UsersGroup guestGroup = AuthZRepository.CreateUsersGroup("TmpGuests");
 			AuthZRepository.AssociateUserWith(SampleUser, guestGroup);
 
 			var customerRepository = ServiceLocator.Current.GetInstance<CustomerRepository>();
@@ -44,7 +44,7 @@ namespace SpikeRhinoSecurity.Tests
 		{
 			var operationName = "/Customer/Read";
 			var readOperationOnCustomer = AuthZRepository.CreateOperation(operationName);
-			UsersGroup guestGroup = AuthZRepository.CreateUsersGroup("Guests");
+			UsersGroup guestGroup = AuthZRepository.CreateUsersGroup("TmpGuests");
 			AuthZRepository.AssociateUserWith(SampleUser, guestGroup);
 
 			var customerRepository = ServiceLocator.Current.GetInstance<CustomerRepository>();
@@ -68,7 +68,7 @@ namespace SpikeRhinoSecurity.Tests
 		{
 			var operationName = "/Customer/Read";
 			var readOperationOnCustomer = AuthZRepository.CreateOperation(operationName);
-			UsersGroup guestGroup = AuthZRepository.CreateUsersGroup("Guests");
+			UsersGroup guestGroup = AuthZRepository.CreateUsersGroup("TmpGuests");
 			AuthZRepository.AssociateUserWith(SampleUser, guestGroup);
 
 			var customerRepository = ServiceLocator.Current.GetInstance<CustomerRepository>();
@@ -95,7 +95,7 @@ namespace SpikeRhinoSecurity.Tests
 		{
 			var operationName = "/Customer/Read";
 			var readOperationOnCustomer = AuthZRepository.CreateOperation(operationName);
-			UsersGroup guestGroup = AuthZRepository.CreateUsersGroup("Guests");
+			UsersGroup guestGroup = AuthZRepository.CreateUsersGroup("TmpGuests");
 			AuthZRepository.AssociateUserWith(SampleUser, guestGroup);
 
 			var customerRepository = ServiceLocator.Current.GetInstance<CustomerRepository>();

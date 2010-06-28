@@ -2,6 +2,11 @@ using System.Linq;
 using NHibernate.Linq;
 using SpikeRhinoSecurity.Infrastructure;
 using SpikeRhinoSecurity.Domain;
+using Microsoft.Practices.ServiceLocation;
+using Rhino.Security.Interfaces;
+using Rhino.Security;
+using NHibernate;
+using NHibernate.Criterion;
 
 namespace SpikeRhinoSecurity.Data
 {
@@ -88,6 +93,10 @@ namespace SpikeRhinoSecurity.Data
 			{
 				queryable = queryable.Where(x => x.Category == category);
 			}
+
+			((INHibernateQueryable)queryable).QueryOptions.RegisterCustomAction(x =>
+				ServiceLocator.Current.GetInstance<IAuthorizationService>().AddPermissionsToQuery(ServiceLocator.Current.GetInstance<IUser>(),
+				"/Category/Read", x));
 
 			return new SpikeRhinoSecurity.Infrastructure.QueryablePresentableSet<SpikeRhinoSecurity.Domain.Product>(queryable);
 		}

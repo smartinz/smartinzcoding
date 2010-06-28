@@ -13,6 +13,7 @@
 
 		<property name="Picture" column="`Picture`" type="BinaryBlob" not-null="false" />
 
+		<property name="EntitySecurityKey" column="`EntitySecurityKey`" type="Guid" not-null="false" />
 
 		<set name="Products" inverse="true" cascade="save-update" lazy="true">
 			<key column="`CategoryID`"/>

@@ -58,10 +58,11 @@ namespace SpikeRhinoSecurity.Tests
 			CurrentSession = SessionFactory.GetCurrentSession();
 			CurrentSession.BeginTransaction();
 
-			SampleUser = new User { Name = ("Stefano") };
+			//SampleUser = new User { Id=105, Name = "TmpStefano" };
+			SampleUser = new User { Name = "TmpStefano" };
 			CurrentSession.Save(SampleUser);
 
-			AdminUser = new User { Name = ("Admin") };
+			AdminUser = new User { Name = ("TmpAdmin") };
 			CurrentSession.Save(AdminUser);
 
 			CurrentUser = AdminUser;
@@ -122,6 +123,8 @@ namespace SpikeRhinoSecurity.Tests
 			impl.Add(typeof(IPermissionsBuilderService), () => new PermissionsBuilderService(SessionFactory.GetCurrentSession(), ServiceLocator.Current.GetInstance<IAuthorizationRepository>()));
 
 			impl.Add(typeof(IEntityInformationExtractor<Customer>), () => new CustomerInformationExtractor());
+			impl.Add(typeof(IEntityInformationExtractor<Product>), () => new ProductInformationExtractor());
+			impl.Add(typeof(IEntityInformationExtractor<Category>), () => new CategoryInformationExtractor());
 
 			return impl;
 		}

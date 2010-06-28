@@ -21,6 +21,8 @@
 
 		<property name="Discontinued" column="`Discontinued`" type="Boolean" not-null="true" />
 
+		<property name="EntitySecurityKey" column="`EntitySecurityKey`" type="Guid" not-null="false" />
+
 
 		<many-to-one name="Category" column="`CategoryID`" class="SpikeRhinoSecurity.Domain.Category, SpikeRhinoSecurity" />
 

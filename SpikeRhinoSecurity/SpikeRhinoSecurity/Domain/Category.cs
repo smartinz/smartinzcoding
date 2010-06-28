@@ -1,7 +1,9 @@
+using System;
 namespace SpikeRhinoSecurity.Domain
 {
 	public class Category
 	{
+		private Guid _entitySecurityKey;
 
 		private int _categoryId;
 
@@ -13,6 +15,17 @@ namespace SpikeRhinoSecurity.Domain
 
 		private System.Collections.Generic.ICollection<SpikeRhinoSecurity.Domain.Product> _products = new System.Collections.Generic.HashSet<SpikeRhinoSecurity.Domain.Product>();
 
+		public virtual Guid EntitySecurityKey
+		{
+			get
+			{
+				return _entitySecurityKey;
+			}
+			set
+			{
+				_entitySecurityKey = value;
+			}
+		}
 
 		public virtual int CategoryId
 		{

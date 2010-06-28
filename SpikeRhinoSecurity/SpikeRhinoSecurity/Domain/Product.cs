@@ -1,165 +1,178 @@
+using System;
 namespace SpikeRhinoSecurity.Domain
 {
-	public class Product 
+	public class Product
 	{
+		private Guid _entitySecurityKey;
 
-				private int _productId;
-				
-				private string _productName;
-				
-				private string _quantityPerUnit;
-				
-				private decimal? _unitPrice;
-				
-				private short? _unitsInStock;
-				
-				private short? _unitsOnOrder;
-				
-				private short? _reorderLevel;
-				
-				private bool _discontinued;
-				
-				private SpikeRhinoSecurity.Domain.Category _category;
-				
-				private SpikeRhinoSecurity.Domain.Supplier _supplier;
-				
+		private int _productId;
 
-				public virtual int ProductId
-				{ 
-					get
-					{
-						return _productId;
-					}
-		set
-					{
-						_productId = value;
-					}
-				}
-				
-				[NHibernate.Validator.Constraints.NotNullNotEmpty]
-				public virtual string ProductName
-				{ 
-					get
-					{
-						return _productName;
-					}
-		set
-					{
-						_productName = value;
-					}
-				}
-				
-				public virtual string QuantityPerUnit
-				{ 
-					get
-					{
-						return _quantityPerUnit;
-					}
-		set
-					{
-						_quantityPerUnit = value;
-					}
-				}
-				
-				public virtual decimal? UnitPrice
-				{ 
-					get
-					{
-						return _unitPrice;
-					}
-		set
-					{
-						_unitPrice = value;
-					}
-				}
-				
-				public virtual short? UnitsInStock
-				{ 
-					get
-					{
-						return _unitsInStock;
-					}
-		set
-					{
-						_unitsInStock = value;
-					}
-				}
-				
-				public virtual short? UnitsOnOrder
-				{ 
-					get
-					{
-						return _unitsOnOrder;
-					}
-		set
-					{
-						_unitsOnOrder = value;
-					}
-				}
-				
-				public virtual short? ReorderLevel
-				{ 
-					get
-					{
-						return _reorderLevel;
-					}
-		set
-					{
-						_reorderLevel = value;
-					}
-				}
-				
-				public virtual bool Discontinued
-				{ 
-					get
-					{
-						return _discontinued;
-					}
-		set
-					{
-						_discontinued = value;
-					}
-				}
-				
-				public virtual SpikeRhinoSecurity.Domain.Category Category
-				{ 
-					get
-					{
-						return _category;
-					}
-		set
-					{
-						_category = value;
-					}
-				}
-				
-				public virtual SpikeRhinoSecurity.Domain.Supplier Supplier
-				{ 
-					get
-					{
-						return _supplier;
-					}
-		set
-					{
-						_supplier = value;
-					}
-				}
-				
+		private string _productName;
+
+		private string _quantityPerUnit;
+
+		private decimal? _unitPrice;
+
+		private short? _unitsInStock;
+
+		private short? _unitsOnOrder;
+
+		private short? _reorderLevel;
+
+		private bool _discontinued;
+
+		private SpikeRhinoSecurity.Domain.Category _category;
+
+		private SpikeRhinoSecurity.Domain.Supplier _supplier;
+
+		public virtual Guid EntitySecurityKey
+		{
+			get
+			{
+				return _entitySecurityKey;
+			}
+			set
+			{
+				_entitySecurityKey = value;
+			}
+		}
+
+		public virtual int ProductId
+		{
+			get
+			{
+				return _productId;
+			}
+			set
+			{
+				_productId = value;
+			}
+		}
+
+		[NHibernate.Validator.Constraints.NotNullNotEmpty]
+		public virtual string ProductName
+		{
+			get
+			{
+				return _productName;
+			}
+			set
+			{
+				_productName = value;
+			}
+		}
+
+		public virtual string QuantityPerUnit
+		{
+			get
+			{
+				return _quantityPerUnit;
+			}
+			set
+			{
+				_quantityPerUnit = value;
+			}
+		}
+
+		public virtual decimal? UnitPrice
+		{
+			get
+			{
+				return _unitPrice;
+			}
+			set
+			{
+				_unitPrice = value;
+			}
+		}
+
+		public virtual short? UnitsInStock
+		{
+			get
+			{
+				return _unitsInStock;
+			}
+			set
+			{
+				_unitsInStock = value;
+			}
+		}
+
+		public virtual short? UnitsOnOrder
+		{
+			get
+			{
+				return _unitsOnOrder;
+			}
+			set
+			{
+				_unitsOnOrder = value;
+			}
+		}
+
+		public virtual short? ReorderLevel
+		{
+			get
+			{
+				return _reorderLevel;
+			}
+			set
+			{
+				_reorderLevel = value;
+			}
+		}
+
+		public virtual bool Discontinued
+		{
+			get
+			{
+				return _discontinued;
+			}
+			set
+			{
+				_discontinued = value;
+			}
+		}
+
+		public virtual SpikeRhinoSecurity.Domain.Category Category
+		{
+			get
+			{
+				return _category;
+			}
+			set
+			{
+				_category = value;
+			}
+		}
+
+		public virtual SpikeRhinoSecurity.Domain.Supplier Supplier
+		{
+			get
+			{
+				return _supplier;
+			}
+			set
+			{
+				_supplier = value;
+			}
+		}
+
 		public override string ToString()
 		{
 			return (_productId == null ? "" : _productId.ToString());
 		}
 
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
+
+
+
+
+
+
+
+
+
+
 
 		public virtual bool Equals(Product other)
 		{
@@ -179,7 +192,7 @@ namespace SpikeRhinoSecurity.Domain
 			if (obj.GetType() != typeof(Product)) return false;
 			return Equals((Product)obj);
 		}
-		
+
 		public static bool operator ==(Product left, Product right)
 		{
 			return Equals(left, right);
@@ -189,7 +202,7 @@ namespace SpikeRhinoSecurity.Domain
 		{
 			return !Equals(left, right);
 		}
-				
+
 		public override int GetHashCode()
 		{
 			unchecked
@@ -214,8 +227,8 @@ namespace SpikeRhinoSecurity.Domain
 				}
 				return result;
 			}
-		}	
+		}
 
-		
+
 	}
 }
