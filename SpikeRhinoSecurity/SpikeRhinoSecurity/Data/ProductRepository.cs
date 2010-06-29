@@ -23,9 +23,20 @@ namespace SpikeRhinoSecurity.Data
 
 		}
 
-		public void Create(SpikeRhinoSecurity.Domain.Product v)
+		public void Create(SpikeRhinoSecurity.Domain.Product p)
 		{
-			_northwind.GetCurrentSession().Save(v);
+			_northwind.GetCurrentSession().Save(p);
+
+			// now, associate it with the correct security EntitiesGroup
+			if (p.Category != null)
+			{
+				var authorizationRepository = ServiceLocator.Current.GetInstance<IAuthorizationRepository>();
+				var eg = authorizationRepository.GetAssociatedEntitiesGroupsFor(p.Category).FirstOrDefault(); // TODO: fix this 
+				if (eg != null)
+				{
+					authorizationRepository.AssociateEntityWith(p, eg);
+				}
+			}
 		}
 
 		public SpikeRhinoSecurity.Domain.Product Read(int productId)
@@ -36,6 +47,28 @@ namespace SpikeRhinoSecurity.Data
 		public void Update(SpikeRhinoSecurity.Domain.Product v)
 		{
 			_northwind.GetCurrentSession().Update(v);
+
+			// now, make sure it is still associated with the correct security EntitiesGroup
+			if (v.Category != null)
+			{
+				var expectedNewEntitiesGroupName = string.Format("Category{0}", v.Category.CategoryId);
+
+				var authorizationRepository = ServiceLocator.Current.GetInstance<IAuthorizationRepository>();
+				var currentEntitiesGroupForProduct = authorizationRepository.GetAssociatedEntitiesGroupsFor(v);
+				
+				// this is incorrect but it'll do for now (the product might be associated to more than one eg and we need to remove only from the one on category here)
+				foreach (var eg in currentEntitiesGroupForProduct.Where(x => x.Name != expectedNewEntitiesGroupName))
+				{
+					authorizationRepository.DetachEntityFromGroup(v, eg.Name);
+				}
+
+				// associate to new entity group if existing
+				var newEntityGroup = authorizationRepository.GetEntitiesGroupByName(expectedNewEntitiesGroupName);
+				if (newEntityGroup != null)
+				{
+					authorizationRepository.AssociateEntityWith(v, newEntityGroup);
+				}
+			}
 		}
 
 		public void Delete(SpikeRhinoSecurity.Domain.Product v)
