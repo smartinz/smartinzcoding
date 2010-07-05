@@ -6,8 +6,8 @@ Ext.namespace('Rhino.Security');
 
 Rhino.Security.EntityReference = {
 	toString: function (o) {
-		if(o) {
-			return o.Description || o.StringId || 'Not a Rhino.Security.EntityReference';
+		if (o) {
+			return o.Description || o.StringId || '[some value]';
 		}
 		return '';
 	}

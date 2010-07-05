@@ -40,11 +40,11 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 						function _onEntitiesGroupEditItem (sender, item) {
 							var editTab, description;
 							description = Rhino.Security.EntitiesGroup.toString(item);
-							editTab = _openTab('EntitiesGroup ' + description, Rhino.Security.EntitiesGroupFormPanel);
+							editTab = _openTab('EntitiesGroup ' + description, Rhino.Security.EntitiesGroupEditPanel);
 							editTab.loadItem(item.StringId);
 						}
 						function _onEntitiesGroupNewItem (sender) {
-							_openTab('New EntitiesGroup', Rhino.Security.EntitiesGroupFormPanel);
+							_openTab('New EntitiesGroup', Rhino.Security.EntitiesGroupEditPanel);
 						}
 						function _onEntitiesGroupClick (sender, item) {
 							var searchTab = _openTab('Search EntitiesGroup', Rhino.Security.EntitiesGroupSearchPanel);
@@ -55,11 +55,11 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 						function _onEntityReferenceEditItem (sender, item) {
 							var editTab, description;
 							description = Rhino.Security.EntityReference.toString(item);
-							editTab = _openTab('EntityReference ' + description, Rhino.Security.EntityReferenceFormPanel);
+							editTab = _openTab('EntityReference ' + description, Rhino.Security.EntityReferenceEditPanel);
 							editTab.loadItem(item.StringId);
 						}
 						function _onEntityReferenceNewItem (sender) {
-							_openTab('New EntityReference', Rhino.Security.EntityReferenceFormPanel);
+							_openTab('New EntityReference', Rhino.Security.EntityReferenceEditPanel);
 						}
 						function _onEntityReferenceClick (sender, item) {
 							var searchTab = _openTab('Search EntityReference', Rhino.Security.EntityReferenceSearchPanel);
@@ -70,11 +70,11 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 						function _onEntityTypeEditItem (sender, item) {
 							var editTab, description;
 							description = Rhino.Security.EntityType.toString(item);
-							editTab = _openTab('EntityType ' + description, Rhino.Security.EntityTypeFormPanel);
+							editTab = _openTab('EntityType ' + description, Rhino.Security.EntityTypeEditPanel);
 							editTab.loadItem(item.StringId);
 						}
 						function _onEntityTypeNewItem (sender) {
-							_openTab('New EntityType', Rhino.Security.EntityTypeFormPanel);
+							_openTab('New EntityType', Rhino.Security.EntityTypeEditPanel);
 						}
 						function _onEntityTypeClick (sender, item) {
 							var searchTab = _openTab('Search EntityType', Rhino.Security.EntityTypeSearchPanel);
@@ -85,11 +85,11 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 						function _onOperationEditItem (sender, item) {
 							var editTab, description;
 							description = Rhino.Security.Operation.toString(item);
-							editTab = _openTab('Operation ' + description, Rhino.Security.OperationFormPanel);
+							editTab = _openTab('Operation ' + description, Rhino.Security.OperationEditPanel);
 							editTab.loadItem(item.StringId);
 						}
 						function _onOperationNewItem (sender) {
-							_openTab('New Operation', Rhino.Security.OperationFormPanel);
+							_openTab('New Operation', Rhino.Security.OperationEditPanel);
 						}
 						function _onOperationClick (sender, item) {
 							var searchTab = _openTab('Search Operation', Rhino.Security.OperationSearchPanel);
@@ -100,11 +100,11 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 						function _onPermissionEditItem (sender, item) {
 							var editTab, description;
 							description = Rhino.Security.Permission.toString(item);
-							editTab = _openTab('Permission ' + description, Rhino.Security.PermissionFormPanel);
+							editTab = _openTab('Permission ' + description, Rhino.Security.PermissionEditPanel);
 							editTab.loadItem(item.StringId);
 						}
 						function _onPermissionNewItem (sender) {
-							_openTab('New Permission', Rhino.Security.PermissionFormPanel);
+							_openTab('New Permission', Rhino.Security.PermissionEditPanel);
 						}
 						function _onPermissionClick (sender, item) {
 							var searchTab = _openTab('Search Permission', Rhino.Security.PermissionSearchPanel);
@@ -115,11 +115,11 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 						function _onUsersGroupEditItem (sender, item) {
 							var editTab, description;
 							description = Rhino.Security.UsersGroup.toString(item);
-							editTab = _openTab('UsersGroup ' + description, Rhino.Security.UsersGroupFormPanel);
+							editTab = _openTab('UsersGroup ' + description, Rhino.Security.UsersGroupEditPanel);
 							editTab.loadItem(item.StringId);
 						}
 						function _onUsersGroupNewItem (sender) {
-							_openTab('New UsersGroup', Rhino.Security.UsersGroupFormPanel);
+							_openTab('New UsersGroup', Rhino.Security.UsersGroupEditPanel);
 						}
 						function _onUsersGroupClick (sender, item) {
 							var searchTab = _openTab('Search UsersGroup', Rhino.Security.UsersGroupSearchPanel);
@@ -130,15 +130,29 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 						function _onUserEditItem (sender, item) {
 							var editTab, description;
 							description = Rhino.Security.User.toString(item);
-							editTab = _openTab('User ' + description, Rhino.Security.UserFormPanel);
+							editTab = _openTab('User ' + description, Rhino.Security.UserEditPanel);
 							editTab.loadItem(item.StringId);
 						}
 						function _onUserNewItem (sender) {
-							_openTab('New User', Rhino.Security.UserFormPanel);
+							_openTab('New User', Rhino.Security.UserEditPanel);
 						}
 						function _onUserClick (sender, item) {
 							var searchTab = _openTab('Search User', Rhino.Security.UserSearchPanel);
 							searchTab.on('edititem', _onUserEditItem);
+							searchTab.on('newitem', _onUserNewItem);
+						}
+								function _onUserSearchByGroupEditItem (sender, item) {
+							var editTab, description;
+							description = Rhino.Security.User.toString(item);
+							editTab = _openTab('User ' + description, Rhino.Security.UserEditPanel);
+							editTab.loadItem(item.StringId);
+						}
+						function _onUserNewItem (sender) {
+							_openTab('New User', Rhino.Security.UserEditPanel);
+						}
+						function _onUserSearchByGroupClick (sender, item) {
+							var searchTab = _openTab('Search User SearchByGroup', Rhino.Security.UserSearchByGroupSearchPanel);
+							searchTab.on('edititem', _onUserSearchByGroupEditItem);
 							searchTab.on('newitem', _onUserNewItem);
 						}
 						
@@ -249,6 +263,12 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 						leaf: true,
 						listeners: {
 							click: _onUserClick
+						}
+					}, {
+						text: 'Search User SearchByGroup',
+						leaf: true,
+						listeners: {
+							click: _onUserSearchByGroupClick
 						}
 					}, {
 						text: 'Create User',

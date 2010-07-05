@@ -4,7 +4,7 @@
 
 Ext.namespace('Rhino.Security');
 
-Rhino.Security.PermissionSearchPanel = Ext.extend(Ext.Panel, {
+Rhino.Security.UserSearchByGroupSearchPanel = Ext.extend(Ext.Panel, {
 	initComponent: function () {
 		var _this = this,
 		_fireEditItemEvent = function (item) {
@@ -17,7 +17,7 @@ Rhino.Security.PermissionSearchPanel = Ext.extend(Ext.Panel, {
 			var item = grid.getStore().getAt(rowIndex).data;
 			_fireEditItemEvent(item);
 		},
-		_searchFormPanel = new Rhino.Security.PermissionSearchFormPanel({
+		_searchFormPanel = new Rhino.Security.UserSearchByGroupSearchFormPanel({
 			title: 'Search Filters',
 			region: 'north',
 			autoHeight: true,
@@ -35,10 +35,10 @@ Rhino.Security.PermissionSearchPanel = Ext.extend(Ext.Panel, {
 		_store = new Ext.data.Store({
 			autoDestroy: true,
 			proxy: new Rpc.JsonPostHttpProxy({
-				url: 'Permission/Search'
+				url: 'User/SearchByGroup'
 			}),
 			remoteSort: true,
-			reader: new Rhino.Security.PermissionJsonReader(),
+			reader: new Rhino.Security.UserJsonReader(),
 			listeners: {
 				beforeload: _onStartLoad,
 				load: _onEndLoad,
@@ -51,7 +51,7 @@ Rhino.Security.PermissionSearchPanel = Ext.extend(Ext.Panel, {
 			pageSize: 25,
 			prependButtons: true
 		}),
-		_gridPanel = new Rhino.Security.PermissionGridPanel({
+		_gridPanel = new Rhino.Security.UserGridPanel({
 			region: 'center',
 			store: _store,
 			bbar: _pagingToolbar,
@@ -93,7 +93,7 @@ Rhino.Security.PermissionSearchPanel = Ext.extend(Ext.Panel, {
 					return;
 				}
 				Rpc.call({
-					url: 'Permission/Delete',
+					url: 'User/Delete',
 					params: { stringId: selectedItem.StringId },
 					success: function (result) {
 						_pagingToolbar.doRefresh();
@@ -114,7 +114,7 @@ Rhino.Security.PermissionSearchPanel = Ext.extend(Ext.Panel, {
 			]
 		});
 
-		Rhino.Security.PermissionSearchPanel.superclass.initComponent.apply(_this, arguments);
+		Rhino.Security.UserSearchByGroupSearchPanel.superclass.initComponent.apply(_this, arguments);
 
 		_this.addEvents('edititem', 'newitem');
 	}

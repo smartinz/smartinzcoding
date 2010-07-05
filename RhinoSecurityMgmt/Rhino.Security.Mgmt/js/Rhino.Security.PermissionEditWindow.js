@@ -3,17 +3,17 @@
 "use strict";
 Ext.namespace('Rhino.Security');
 
-Rhino.Security.EntitiesGroupPickerWindow = Ext.extend(Ext.Window, {
+Rhino.Security.PermissionEditWindow = Ext.extend(Ext.Window, {
 	initComponent: function () {
 		var _this = this,
-		_fireItemSelectedEvent = function (item) {
-			_this.fireEvent('itemselected', _this, item);
+		_fireEditEndedEvent = function (item) {
+			_this.fireEvent('editended', _this, item);
 		},
 		_onGridPanelRowDblClick = function (grid, rowIndex, event) {
 			var item = grid.getStore().getAt(rowIndex).data;
-			_fireItemSelectedEvent(item);
+			_fireEditEndedEvent(item);
 		},
-		_searchFormPanel = new Rhino.Security.EntitiesGroupSearchFormPanel({
+		_searchFormPanel = new Rhino.Security.PermissionSearchFormPanel({
 			title: 'Search Filters',
 			region: 'north',
 			autoHeight: true,
@@ -25,10 +25,10 @@ Rhino.Security.EntitiesGroupPickerWindow = Ext.extend(Ext.Window, {
 		_store = new Ext.data.Store({
 			autoDestroy: true,
 			proxy: new Rpc.JsonPostHttpProxy({
-				url: 'EntitiesGroup/Search'
+				url: 'Permission/Search'
 			}),
 			remoteSort: true,
-			reader: new Rhino.Security.EntitiesGroupJsonReader()
+			reader: new Rhino.Security.PermissionJsonReader()
 		}),
 		_pagingToolbar = new Ext.PagingToolbar({
 			store: _store,
@@ -36,7 +36,7 @@ Rhino.Security.EntitiesGroupPickerWindow = Ext.extend(Ext.Window, {
 			pageSize: 25,
 			prependButtons: true
 		}),
-		_gridPanel = new Rhino.Security.EntitiesGroupGridPanel({
+		_gridPanel = new Rhino.Security.PermissionGridPanel({
 			region: 'center',
 			store: _store,
 			bbar: _pagingToolbar,
@@ -55,21 +55,21 @@ Rhino.Security.EntitiesGroupPickerWindow = Ext.extend(Ext.Window, {
 			});
 		},
 		_onSelectNoneButtonClick = function (button, event) {
-			_fireItemSelectedEvent(null);
+			_fireEditEndedEvent(null);
 		},
 		_onSelectButtonClick = function (button, event) {
 			var sm = _gridPanel.getSelectionModel();
 			var selectedItem = sm.getCount() > 0 ? sm.getSelected().data : null;
-			_fireItemSelectedEvent(selectedItem);
+			_fireEditEndedEvent(selectedItem);
 		};
 
 		Ext.apply(_this, {
-			title: 'Pick a EntitiesGroup',
+			title: 'Pick a Permission',
 			width: 600,
 			height: 300,
 			layout: 'border',
 			maximizable: true,
-			closeAction: 'hide',
+			modal: true,
 			items: [_searchFormPanel, _gridPanel],
 			tbar: [
 				{ text: 'Search', handler: _onSearchButtonClick, icon: 'images/zoom.png', cls: 'x-btn-text-icon' }
@@ -77,11 +77,14 @@ Rhino.Security.EntitiesGroupPickerWindow = Ext.extend(Ext.Window, {
 			buttons: [
 				{ text: 'Select None', handler: _onSelectNoneButtonClick },
 				{ text: 'Select', handler: _onSelectButtonClick }
-			]
+			],
+			setItem: function (item) {
+				// TODO this method is here to match EditWindow API, can be used to set the selected row
+			}
 		});
 
-		Rhino.Security.EntitiesGroupPickerWindow.superclass.initComponent.apply(_this, arguments);
+		Rhino.Security.PermissionEditWindow.superclass.initComponent.apply(_this, arguments);
 
-		_this.addEvents('itemselected');
+		_this.addEvents('editended');
 	}
 });

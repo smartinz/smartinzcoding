@@ -1,5 +1,5 @@
 /*jslint white: true, browser: true, onevar: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true */
-/*global Ext, Rhino.Security */
+/*global Ext, Rpc, Rhino.Security */
 "use strict";
 
 Ext.namespace('Rhino.Security');
@@ -10,7 +10,11 @@ Rhino.Security.EntityReferenceJsonReader = Ext.extend(Rpc.JsonReader, {
 			root: 'items',
 			idProperty: 'StringId',
 			totalProperty: 'count',
-			fields: ['StringId', 'Id', 'EntitySecurityKey']
+			fields: [
+				'StringId', 
+				'Id',
+				'EntitySecurityKey'
+			]
 		};
 		Rhino.Security.EntityReferenceJsonReader.superclass.constructor.call(this, Ext.apply(meta || {}, cfg), recordType);
 	}

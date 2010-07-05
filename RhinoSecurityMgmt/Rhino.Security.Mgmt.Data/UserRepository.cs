@@ -52,5 +52,15 @@ namespace Rhino.Security.Mgmt.Data
 			return new Nexida.Infrastructure.QueryablePresentableSet<Rhino.Security.Model.User>(queryable);
 		}
 
+		public IPresentableSet<Rhino.Security.Model.User> SearchByGroup(Rhino.Security.Model.UsersGroup Group)
+		{
+			IQueryable<Rhino.Security.Model.User> queryable = _northwindWithSecurity.GetCurrentSession().Linq<Rhino.Security.Model.User>();
+			if (Group != default(Rhino.Security.Model.UsersGroup))
+			{
+				queryable = queryable.Where(x => x.Groups.Contains(Group));
+			}
+
+			return new Nexida.Infrastructure.QueryablePresentableSet<Rhino.Security.Model.User>(queryable);
+		}
 	}
 }

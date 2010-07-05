@@ -3,17 +3,17 @@
 "use strict";
 Ext.namespace('Rhino.Security');
 
-Rhino.Security.UserPickerWindow = Ext.extend(Ext.Window, {
+Rhino.Security.EntitiesGroupEditWindow = Ext.extend(Ext.Window, {
 	initComponent: function () {
 		var _this = this,
-		_fireItemSelectedEvent = function (item) {
-			_this.fireEvent('itemselected', _this, item);
+		_fireEditEndedEvent = function (item) {
+			_this.fireEvent('editended', _this, item);
 		},
 		_onGridPanelRowDblClick = function (grid, rowIndex, event) {
 			var item = grid.getStore().getAt(rowIndex).data;
-			_fireItemSelectedEvent(item);
+			_fireEditEndedEvent(item);
 		},
-		_searchFormPanel = new Rhino.Security.UserSearchFormPanel({
+		_searchFormPanel = new Rhino.Security.EntitiesGroupSearchFormPanel({
 			title: 'Search Filters',
 			region: 'north',
 			autoHeight: true,
@@ -25,10 +25,10 @@ Rhino.Security.UserPickerWindow = Ext.extend(Ext.Window, {
 		_store = new Ext.data.Store({
 			autoDestroy: true,
 			proxy: new Rpc.JsonPostHttpProxy({
-				url: 'User/Search'
+				url: 'EntitiesGroup/Search'
 			}),
 			remoteSort: true,
-			reader: new Rhino.Security.UserJsonReader()
+			reader: new Rhino.Security.EntitiesGroupJsonReader()
 		}),
 		_pagingToolbar = new Ext.PagingToolbar({
 			store: _store,
@@ -36,7 +36,7 @@ Rhino.Security.UserPickerWindow = Ext.extend(Ext.Window, {
 			pageSize: 25,
 			prependButtons: true
 		}),
-		_gridPanel = new Rhino.Security.UserGridPanel({
+		_gridPanel = new Rhino.Security.EntitiesGroupGridPanel({
 			region: 'center',
 			store: _store,
 			bbar: _pagingToolbar,
@@ -55,21 +55,21 @@ Rhino.Security.UserPickerWindow = Ext.extend(Ext.Window, {
 			});
 		},
 		_onSelectNoneButtonClick = function (button, event) {
-			_fireItemSelectedEvent(null);
+			_fireEditEndedEvent(null);
 		},
 		_onSelectButtonClick = function (button, event) {
 			var sm = _gridPanel.getSelectionModel();
 			var selectedItem = sm.getCount() > 0 ? sm.getSelected().data : null;
-			_fireItemSelectedEvent(selectedItem);
+			_fireEditEndedEvent(selectedItem);
 		};
 
 		Ext.apply(_this, {
-			title: 'Pick a User',
+			title: 'Pick a EntitiesGroup',
 			width: 600,
 			height: 300,
 			layout: 'border',
 			maximizable: true,
-			closeAction: 'hide',
+			modal: true,
 			items: [_searchFormPanel, _gridPanel],
 			tbar: [
 				{ text: 'Search', handler: _onSearchButtonClick, icon: 'images/zoom.png', cls: 'x-btn-text-icon' }
@@ -77,11 +77,14 @@ Rhino.Security.UserPickerWindow = Ext.extend(Ext.Window, {
 			buttons: [
 				{ text: 'Select None', handler: _onSelectNoneButtonClick },
 				{ text: 'Select', handler: _onSelectButtonClick }
-			]
+			],
+			setItem: function (item) {
+				// TODO this method is here to match EditWindow API, can be used to set the selected row
+			}
 		});
 
-		Rhino.Security.UserPickerWindow.superclass.initComponent.apply(_this, arguments);
+		Rhino.Security.EntitiesGroupEditWindow.superclass.initComponent.apply(_this, arguments);
 
-		_this.addEvents('itemselected');
+		_this.addEvents('editended');
 	}
 });

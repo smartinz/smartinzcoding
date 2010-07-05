@@ -924,6 +924,13 @@
             <operationId>NorthwindWithSecurity.dbo.Users.Search</operationId>
           </operationReference>
         </search>
+        <search id="c0b1352ffd7a4ff79deb5ba6c6a34495">
+          <specialization>ByGroup</specialization>
+          <operationReference>
+            <serviceId>NorthwindWithSecurity</serviceId>
+            <operationId>e1813cf13d64483aaa2c37326eafb496</operationId>
+          </operationReference>
+        </search>
       </repository>
       <relationalMapping>
         <tableName>Users</tableName>
@@ -1611,6 +1618,25 @@
               </fieldReference>
               <relationalMapping>
                 <compareOperator>StringStartWith</compareOperator>
+              </relationalMapping>
+            </parameter>
+          </parameters>
+        </operation>
+        <operation id="e1813cf13d64483aaa2c37326eafb496">
+          <name>SearchByGroupDboUser</name>
+          <return>
+            <typeId>NorthwindWithSecurity.dbo.Users</typeId>
+            <canBeEmpty>false</canBeEmpty>
+            <many>true</many>
+          </return>
+          <parameters>
+            <parameter id="020974ba7d2147a58c6874771b399b10">
+              <typeId>NorthwindWithSecurity.dbo.security_UsersGroups</typeId>
+              <canBeEmpty>false</canBeEmpty>
+              <many>false</many>
+              <name>Group</name>
+              <relationalMapping>
+                <compareOperator>Equal</compareOperator>
               </relationalMapping>
             </parameter>
           </parameters>

@@ -6,8 +6,8 @@ Ext.namespace('Rhino.Security');
 
 Rhino.Security.Operation = {
 	toString: function (o) {
-		if(o) {
-			return o.Description || o.StringId || 'Not a Rhino.Security.Operation';
+		if (o) {
+			return o.Description || o.StringId || '[some value]';
 		}
 		return '';
 	}

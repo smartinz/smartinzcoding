@@ -6,8 +6,8 @@ Ext.namespace('Rhino.Security');
 
 Rhino.Security.EntityType = {
 	toString: function (o) {
-		if(o) {
-			return o.Description || o.StringId || 'Not a Rhino.Security.EntityType';
+		if (o) {
+			return o.Description || o.StringId || '[some value]';
 		}
 		return '';
 	}

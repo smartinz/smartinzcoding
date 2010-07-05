@@ -81,5 +81,19 @@ namespace Rhino.Security.Mgmt.Controllers
 			}
 		}
 
+		public ActionResult SearchByGroup(Rhino.Security.Mgmt.Dtos.UsersGroupReferenceDto Group, int start, int limit, string sort, string dir)
+		{
+			Log.DebugFormat("SearchByGroup called");
+			using (_conversation.SetAsCurrent())
+			{
+				var GroupMapped = _mapper.Map<Rhino.Security.Mgmt.Dtos.UsersGroupReferenceDto, Rhino.Security.Model.UsersGroup>(Group);
+
+				var set = _repository.SearchByGroup(GroupMapped);
+				var items = set.Skip(start).Take(limit).Sort(sort, dir == "ASC").AsEnumerable();
+				var dtos = _mapper.Map<IEnumerable<Rhino.Security.Model.User>, Rhino.Security.Mgmt.Dtos.UserDto[]>(items);
+				return Json(new { items = dtos, count = set.Count() });
+			}
+		}
+
 	}
 }

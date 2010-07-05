@@ -6,8 +6,8 @@ Ext.namespace('Rhino.Security');
 
 Rhino.Security.UsersGroup = {
 	toString: function (o) {
-		if(o) {
-			return o.Description || o.StringId || 'Not a Rhino.Security.UsersGroup';
+		if (o) {
+			return o.Description || o.StringId || '[some value]';
 		}
 		return '';
 	}
