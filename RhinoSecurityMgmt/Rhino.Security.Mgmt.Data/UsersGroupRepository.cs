@@ -8,15 +8,17 @@ namespace Rhino.Security.Mgmt.Data
 	public class UsersGroupRepository : Nexida.Infrastructure.IRepository
 	{
 		private NHibernate.ISessionFactory _northwindWithSecurity;
+		AuthorizationRepositoryFactory _authorizationRepositoryFactory;
 
-		public UsersGroupRepository(NHibernate.ISessionFactory northwindWithSecurity)
+		public UsersGroupRepository(NHibernate.ISessionFactory northwindWithSecurity, AuthorizationRepositoryFactory authorizationRepositoryFactory)
 		{
+			_authorizationRepositoryFactory = authorizationRepositoryFactory;
 			_northwindWithSecurity = northwindWithSecurity;
 		}
 
 		public void Create(Rhino.Security.Model.UsersGroup v)
 		{
-			ServiceLocator.Current.GetInstance<Rhino.Security.Interfaces.IAuthorizationRepository>().CreateUsersGroup(v.Name);
+			_authorizationRepositoryFactory.Create().CreateUsersGroup(v.Name);
 		}
 
 		public Rhino.Security.Model.UsersGroup Read(System.Guid id)

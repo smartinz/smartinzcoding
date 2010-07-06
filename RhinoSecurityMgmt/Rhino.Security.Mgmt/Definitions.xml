@@ -721,7 +721,7 @@
           <typeId>NorthwindWithSecurity.dbo.security_UsersGroups</typeId>
           <canBeEmpty>false</canBeEmpty>
           <many>true</many>
-          <name>AllParent</name>
+          <name>AllParents</name>
           <associationIdentifier>Fkec3Af233D0Cb87D0</associationIdentifier>
           <isInverseAssociation>false</isInverseAssociation>
           <relationalMapping>

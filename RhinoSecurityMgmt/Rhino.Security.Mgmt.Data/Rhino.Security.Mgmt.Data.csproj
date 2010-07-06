@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorizationRepositoryFactory.cs" />
     <Compile Include="EntitiesGroupRepository.cs" />
     <Compile Include="EntitiesGroupStringConverter.cs" />
     <Compile Include="EntityReferenceRepository.cs" />

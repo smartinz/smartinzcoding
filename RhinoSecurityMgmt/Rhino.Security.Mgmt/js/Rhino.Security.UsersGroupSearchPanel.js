@@ -119,3 +119,5 @@ Rhino.Security.UsersGroupSearchPanel = Ext.extend(Ext.Panel, {
 		_this.addEvents('edititem', 'newitem');
 	}
 });
+
+Ext.reg('Rhino.Security.UsersGroupSearchPanel', Rhino.Security.UsersGroupSearchPanel);

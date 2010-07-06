@@ -265,12 +265,6 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 							click: _onUserClick
 						}
 					}, {
-						text: 'Search User SearchByGroup',
-						leaf: true,
-						listeners: {
-							click: _onUserSearchByGroupClick
-						}
-					}, {
 						text: 'Create User',
 						leaf: true,
 						listeners: {

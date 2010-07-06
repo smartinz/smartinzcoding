@@ -17,15 +17,6 @@ Rhino.Security.UserSearchByGroupSearchPanel = Ext.extend(Ext.Panel, {
 			var item = grid.getStore().getAt(rowIndex).data;
 			_fireEditItemEvent(item);
 		},
-		_searchFormPanel = new Rhino.Security.UserSearchByGroupSearchFormPanel({
-			title: 'Search Filters',
-			region: 'north',
-			autoHeight: true,
-			collapsible: true,
-			collapsed: true,
-			titleCollapse: true,
-			floatable: false
-		}),
 		_onStartLoad = function () {
 			_this.el.mask('Loading...', 'x-mask-loading');
 		},
@@ -63,16 +54,6 @@ Rhino.Security.UserSearchByGroupSearchPanel = Ext.extend(Ext.Panel, {
 			var sm = _gridPanel.getSelectionModel();
 			return sm.getCount() > 0 ? sm.getSelected().data : null;
 		},
-		_onSearchButtonClick = function (b, e) {
-			var params = _searchFormPanel.getForm().getFieldValues();
-			Ext.apply(_gridPanel.getStore().baseParams, params);
-			_gridPanel.getStore().load({
-				params: {
-					start: 0,
-					limit: _pagingToolbar.pageSize
-				}
-			});
-		},
 		_onNewButtonClick = function () {
 			_fireNewItemEvent();
 		},
@@ -105,9 +86,8 @@ Rhino.Security.UserSearchByGroupSearchPanel = Ext.extend(Ext.Panel, {
 		Ext.apply(_this, {
 			layout: 'border',
 			border: false,
-			items: [_searchFormPanel, _gridPanel],
+			items: [_gridPanel],
 			tbar: [
-				{ text: 'Search', handler: _onSearchButtonClick, icon: 'images/zoom.png', cls: 'x-btn-text-icon' },
 				{ text: 'New', handler: _onNewButtonClick, icon: 'images/add.png', cls: 'x-btn-text-icon' },
 				{ text: 'Edit', handler: _onEditButtonClick, icon: 'images/pencil.png', cls: 'x-btn-text-icon' },
 				{ text: 'Delete', handler: _onDeleteButtonClick, icon: 'images/delete.png', cls: 'x-btn-text-icon' }

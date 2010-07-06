@@ -14,7 +14,18 @@ Rhino.Security.UserFormPanel = Ext.extend(Ext.form.FormPanel, {
 			items: [
 				{ name: 'StringId', xtype: 'hidden' },
 				{ name: 'Id', fieldLabel: 'Id', xtype: 'numberfield' },
-				{ name: 'Name', fieldLabel: 'Name', xtype: 'textfield' }
+				{ name: 'Name', fieldLabel: 'Name', xtype: 'textfield' }, 
+				{
+					flex: 1,
+					xtype: 'tabpanel',
+					plain: true,
+					border: false,
+					activeTab: 0,
+					deferredRender: false, // IMPORTANT! See http://www.extjs.com/deploy/dev/examples/form/dynamic.js
+					items: [
+						{ name: 'Groups', title: 'Groups', xtype: 'Rhino.Security.UsersGroupListField' }
+					]
+				}
 			]
 		});
 

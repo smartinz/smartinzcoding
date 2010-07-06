@@ -1102,6 +1102,7 @@
     <Content Include="js\Rhino.Security.UsersGroupFormPanel.js" />
     <Content Include="js\Rhino.Security.UsersGroupGridPanel.js" />
     <Content Include="js\Rhino.Security.UsersGroupJsonReader.js" />
+    <Content Include="js\Rhino.Security.UsersGroupListField.js" />
     <Content Include="js\Rhino.Security.UsersGroupSearchFormPanel.js" />
     <Content Include="js\Rhino.Security.UsersGroupSearchPanel.js" />
     <Content Include="js\Rpc.js" />

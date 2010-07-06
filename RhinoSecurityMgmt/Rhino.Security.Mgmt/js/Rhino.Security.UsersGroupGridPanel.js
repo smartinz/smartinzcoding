@@ -16,3 +16,5 @@ Rhino.Security.UsersGroupGridPanel = Ext.extend(Ext.grid.GridPanel, {
 		Rhino.Security.UsersGroupGridPanel.superclass.initComponent.apply(this, arguments);
 	}
 });
+
+Ext.reg('Rhino.Security.UsersGroupGridPanel', Rhino.Security.UsersGroupGridPanel);
