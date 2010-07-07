@@ -1,5 +1,5 @@
 /*jslint white: true, browser: true, devel: true, onevar: true, undef: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true */
-/*global Ext, Rpc, Rhino.Security */
+/*global Ext, Rpc, Rhino */
 "use strict";
 
 Ext.namespace('Rhino.Security');
@@ -7,6 +7,9 @@ Ext.namespace('Rhino.Security');
 Rhino.Security.UsersGroupEditPanel = Ext.extend(Ext.Panel, {
 	initComponent: function () {
 		var _this = this,
+		_fireItemUpdated = function (item) {
+			_this.fireEvent('itemupdated', item);
+		},
 		_formPanel = new Rhino.Security.UsersGroupFormPanel(),
 		_saveItemButtonHandler = function () {
 			_this.el.mask('Saving...', 'x-mask-loading');
@@ -17,6 +20,7 @@ Rhino.Security.UsersGroupEditPanel = Ext.extend(Ext.Panel, {
 					_this.el.unmask();
 					if (result.success) {
 						Ext.MessageBox.show({ msg: 'Changes saved successfully.', icon: Ext.MessageBox.INFO, buttons: Ext.MessageBox.OK });
+						_fireItemUpdated(_formPanel.getForm().getFieldValues());
 					} else {
 						_formPanel.getForm().markInvalid(result.errors.item);
 						Ext.MessageBox.show({ msg: 'Error saving data. Correct errors and retry.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });
@@ -46,18 +50,29 @@ Rhino.Security.UsersGroupEditPanel = Ext.extend(Ext.Panel, {
 				{ text: 'Refresh', handler: _refreshItemButtonHandler, icon: 'images/arrow_refresh.png', cls: 'x-btn-text-icon' }
 			],
 			loadItem: function (stringId) {
-				_this.el.mask('Loading...', 'x-mask-loading');
-				Rpc.call({
-					url: 'UsersGroup/Load',
-					params: { stringId: stringId },
-					success: function (item) {
-						_this.el.unmask();
-						_formPanel.getForm().setValues(item);
+				if (stringId === null) {
+					var f = _formPanel.getForm().findField('Id');
+					if (f) {
+						f.setVisible(false);
+						f.setRawValue('00000000-0000-0000-0000-000000000000');
 					}
-				});
+				}
+				else {
+						_this.el.mask('Loading...', 'x-mask-loading');
+						 Rpc.call({
+						url: 'UsersGroup/Load',
+						params: { stringId: stringId },
+						success: function (item) {
+							_this.el.unmask();
+							_formPanel.getForm().setValues(item);
+						}
+					});
+				}
 			}
 		});
 
 		Rhino.Security.UsersGroupEditPanel.superclass.initComponent.apply(_this, arguments);
+
+		_this.addEvents('itemupdated');
 	}
 });

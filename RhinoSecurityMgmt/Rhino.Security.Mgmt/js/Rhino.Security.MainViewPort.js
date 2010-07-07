@@ -1,5 +1,5 @@
 /*jslint white: true, browser: true, onevar: true, undef: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true */
-/*global Ext, Rhino.Security */
+/*global Ext, Rhino */
 "use strict";
 
 Ext.namespace('Rhino.Security');
@@ -18,145 +18,117 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 			}]
 		});
 
-		function _openTab (title, Constructor) {
+		function _setTabTitle(tab, title) {
+			tab.setTitle(title);
+		}
+		function _setTabIdentifier(tab, id) {
+			tab.tabContentIdentifier = id;
+		}
+		function _getTabIdentifier(tab) {
+			return tab.tabContentIdentifier;
+		}
+
+		function _openTab(title, item, id) {
 			var tab;
 
 			Ext.each(_tabPanel.items.items, function (item) {
-				if (item.title === title) {
+				if (_getTabIdentifier(item) === id) {
 					tab = item;
 					return false;
 				}
 			});
 
-			tab = tab || _tabPanel.add(new Constructor({
+			tab = tab || _tabPanel.add(new Ext.Panel({
+				layout: 'fit',
+				items: item,
 				title: title,
 				closable: true
 			}));
+			_setTabIdentifier(tab, id);
 
 			tab.show();
 			return tab;
 		}
 
-						function _onEntitiesGroupEditItem (sender, item) {
-							var editTab, description;
-							description = Rhino.Security.EntitiesGroup.toString(item);
-							editTab = _openTab('EntitiesGroup ' + description, Rhino.Security.EntitiesGroupEditPanel);
-							editTab.loadItem(item.StringId);
-						}
-						function _onEntitiesGroupNewItem (sender) {
-							_openTab('New EntitiesGroup', Rhino.Security.EntitiesGroupEditPanel);
-						}
-						function _onEntitiesGroupClick (sender, item) {
-							var searchTab = _openTab('Search EntitiesGroup', Rhino.Security.EntitiesGroupSearchPanel);
-							searchTab.on('edititem', _onEntitiesGroupEditItem);
-							searchTab.on('newitem', _onEntitiesGroupNewItem);
-						}
-						
-						function _onEntityReferenceEditItem (sender, item) {
-							var editTab, description;
-							description = Rhino.Security.EntityReference.toString(item);
-							editTab = _openTab('EntityReference ' + description, Rhino.Security.EntityReferenceEditPanel);
-							editTab.loadItem(item.StringId);
-						}
-						function _onEntityReferenceNewItem (sender) {
-							_openTab('New EntityReference', Rhino.Security.EntityReferenceEditPanel);
-						}
-						function _onEntityReferenceClick (sender, item) {
-							var searchTab = _openTab('Search EntityReference', Rhino.Security.EntityReferenceSearchPanel);
-							searchTab.on('edititem', _onEntityReferenceEditItem);
-							searchTab.on('newitem', _onEntityReferenceNewItem);
-						}
-						
-						function _onEntityTypeEditItem (sender, item) {
-							var editTab, description;
-							description = Rhino.Security.EntityType.toString(item);
-							editTab = _openTab('EntityType ' + description, Rhino.Security.EntityTypeEditPanel);
-							editTab.loadItem(item.StringId);
-						}
-						function _onEntityTypeNewItem (sender) {
-							_openTab('New EntityType', Rhino.Security.EntityTypeEditPanel);
-						}
-						function _onEntityTypeClick (sender, item) {
-							var searchTab = _openTab('Search EntityType', Rhino.Security.EntityTypeSearchPanel);
-							searchTab.on('edititem', _onEntityTypeEditItem);
-							searchTab.on('newitem', _onEntityTypeNewItem);
-						}
-						
-						function _onOperationEditItem (sender, item) {
-							var editTab, description;
-							description = Rhino.Security.Operation.toString(item);
-							editTab = _openTab('Operation ' + description, Rhino.Security.OperationEditPanel);
-							editTab.loadItem(item.StringId);
-						}
-						function _onOperationNewItem (sender) {
-							_openTab('New Operation', Rhino.Security.OperationEditPanel);
-						}
-						function _onOperationClick (sender, item) {
-							var searchTab = _openTab('Search Operation', Rhino.Security.OperationSearchPanel);
-							searchTab.on('edititem', _onOperationEditItem);
-							searchTab.on('newitem', _onOperationNewItem);
-						}
-						
-						function _onPermissionEditItem (sender, item) {
-							var editTab, description;
-							description = Rhino.Security.Permission.toString(item);
-							editTab = _openTab('Permission ' + description, Rhino.Security.PermissionEditPanel);
-							editTab.loadItem(item.StringId);
-						}
-						function _onPermissionNewItem (sender) {
-							_openTab('New Permission', Rhino.Security.PermissionEditPanel);
-						}
-						function _onPermissionClick (sender, item) {
-							var searchTab = _openTab('Search Permission', Rhino.Security.PermissionSearchPanel);
-							searchTab.on('edititem', _onPermissionEditItem);
-							searchTab.on('newitem', _onPermissionNewItem);
-						}
-						
-						function _onUsersGroupEditItem (sender, item) {
-							var editTab, description;
-							description = Rhino.Security.UsersGroup.toString(item);
-							editTab = _openTab('UsersGroup ' + description, Rhino.Security.UsersGroupEditPanel);
-							editTab.loadItem(item.StringId);
-						}
-						function _onUsersGroupNewItem (sender) {
-							_openTab('New UsersGroup', Rhino.Security.UsersGroupEditPanel);
-						}
-						function _onUsersGroupClick (sender, item) {
-							var searchTab = _openTab('Search UsersGroup', Rhino.Security.UsersGroupSearchPanel);
-							searchTab.on('edititem', _onUsersGroupEditItem);
-							searchTab.on('newitem', _onUsersGroupNewItem);
-						}
-						
-						function _onUserEditItem (sender, item) {
-							var editTab, description;
-							description = Rhino.Security.User.toString(item);
-							editTab = _openTab('User ' + description, Rhino.Security.UserEditPanel);
-							editTab.loadItem(item.StringId);
-						}
-						function _onUserNewItem (sender) {
-							_openTab('New User', Rhino.Security.UserEditPanel);
-						}
-						function _onUserClick (sender, item) {
-							var searchTab = _openTab('Search User', Rhino.Security.UserSearchPanel);
-							searchTab.on('edititem', _onUserEditItem);
-							searchTab.on('newitem', _onUserNewItem);
-						}
-								function _onUserSearchByGroupEditItem (sender, item) {
-							var editTab, description;
-							description = Rhino.Security.User.toString(item);
-							editTab = _openTab('User ' + description, Rhino.Security.UserEditPanel);
-							editTab.loadItem(item.StringId);
-						}
-						function _onUserNewItem (sender) {
-							_openTab('New User', Rhino.Security.UserEditPanel);
-						}
-						function _onUserSearchByGroupClick (sender, item) {
-							var searchTab = _openTab('Search User SearchByGroup', Rhino.Security.UserSearchByGroupSearchPanel);
-							searchTab.on('edititem', _onUserSearchByGroupEditItem);
-							searchTab.on('newitem', _onUserNewItem);
-						}
-						
-				
+		function _onOperationEditItem(sender, item) {
+			var operationEditPanel = new Rhino.Security.OperationEditPanel();
+			_openTab('Operation ' + Rhino.Security.Operation.toString(item), operationEditPanel, 'Operation-' + item.StringId);
+			operationEditPanel.loadItem(item.StringId);
+		}
+		function _onOperationNewItem(sender) {
+			_openTab('New Operation', new Rhino.Security.OperationEditPanel(), 'Operation-new');
+		}
+		function _onOperationClick(sender, item) {
+			var operationSearchPanel = new Rhino.Security.OperationSearchPanel();
+			_openTab('Search Operation', operationSearchPanel, 'Operation-search');
+			operationSearchPanel.on('edititem', _onOperationEditItem);
+			operationSearchPanel.on('newitem', _onOperationNewItem);
+		}
+
+		function _onPermissionEditItem(sender, item) {
+			var permissionEditPanel = new Rhino.Security.PermissionEditPanel(),
+			editTab = _openTab('Permission ' + Rhino.Security.Permission.toString(item), permissionEditPanel, 'Permission-' + item.StringId);
+			permissionEditPanel.loadItem(item.StringId);
+		}
+		function _onPermissionNewItem(sender) {
+			_openTab('New Permission', new Rhino.Security.PermissionEditPanel(), 'Permission-new');
+		}
+		function _onPermissionClick(sender, item) {
+			var permissionSearchPanel = new Rhino.Security.PermissionSearchPanel(),
+			searchTab = _openTab('Search Permission', permissionSearchPanel, 'Permission-search');
+			permissionSearchPanel.on('edititem', _onPermissionEditItem);
+			permissionSearchPanel.on('newitem', _onPermissionNewItem);
+		}
+
+		function _onUsersGroupEditItem(sender, item) {
+			var userGroupEditPanel = new Rhino.Security.UsersGroupEditPanel(),
+			editTab = _openTab('UsersGroup ' + Rhino.Security.UsersGroup.toString(item), userGroupEditPanel, 'UsersGroup-' + item.StringId);
+			userGroupEditPanel.loadItem(item.StringId);
+			userGroupEditPanel.on('itemupdated', function (updatedItem) {
+				_setTabTitle(editTab, 'UsersGroup ' + Rhino.Security.UsersGroup.toString(updatedItem));
+			});
+		}
+		function _onUsersGroupNewItem(sender) {
+			var usersGroupEditPanel = new Rhino.Security.UsersGroupEditPanel(),
+			newTab = _openTab('New UsersGroup', usersGroupEditPanel, 'UsersGroup-new');
+			usersGroupEditPanel.loadItem(null);
+			usersGroupEditPanel.on('itemupdated', function (updatedItem) {
+				_setTabTitle(newTab, 'UsersGroup ' + Rhino.Security.User.toString(updatedItem));
+				_setTabIdentifier(newTab, 'UsersGroup-' + updatedItem.StringId);
+			});
+		}
+		function _onUsersGroupClick(sender, item) {
+			var userGroupSearchPanel = new Rhino.Security.UsersGroupSearchPanel(),
+			searchTab = _openTab('Search UsersGroup', userGroupSearchPanel, 'UsersGroup-search');
+			userGroupSearchPanel.on('edititem', _onUsersGroupEditItem);
+			userGroupSearchPanel.on('newitem', _onUsersGroupNewItem);
+		}
+
+		function _onUserEditItem(sender, item) {
+			var userEditPanel = new Rhino.Security.UserEditPanel(),
+			editTab = _openTab('User ' + Rhino.Security.User.toString(item), userEditPanel, 'User-' + item.StringId);
+			userEditPanel.loadItem(item.StringId);
+			userEditPanel.on('itemupdated', function (updatedItem) {
+				_setTabTitle(editTab, 'User ' + Rhino.Security.User.toString(updatedItem));
+			});
+		}
+		function _onUserNewItem(sender) {
+			var userEditPanel = new Rhino.Security.UserEditPanel(),
+			newTab = _openTab('New User', userEditPanel, 'User-new');
+			userEditPanel.loadItem(null);
+			userEditPanel.on('itemupdated', function (updatedItem) {
+				_setTabTitle(newTab, 'User ' + Rhino.Security.User.toString(updatedItem));
+				_setTabIdentifier(newTab, 'User-' + updatedItem.StringId);
+			});
+		}
+		function _onUserClick(sender, item) {
+			var userSearchPanel = new Rhino.Security.UserSearchPanel(),
+			searchTab = _openTab('Search User', userSearchPanel, 'User-search');
+			userSearchPanel.on('edititem', _onUserEditItem);
+			userSearchPanel.on('newitem', _onUserNewItem);
+		}
+
+
 		_treePanel = new Ext.tree.TreePanel({
 			title: 'Main Menu',
 			region: 'west',
@@ -166,118 +138,126 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 			rootVisible: false,
 			root: {
 				text: 'Root Node',
+				children: [
+				//				{
+				//					text: 'EntitiesGroup',
+				//					children: [{
+				//						text: 'Search EntitiesGroup',
+				//						leaf: true,
+				//						listeners: {
+				//							click: _onEntitiesGroupClick
+				//						}
+				//					}, {
+				//						text: 'Create EntitiesGroup',
+				//						leaf: true,
+				//						listeners: {
+				//							click: _onEntitiesGroupNewItem
+				//						}
+				//					}]
+				//				}, 
+				//				{
+				//					text: 'EntityReference',
+				//					children: [{
+				//						text: 'Search EntityReference',
+				//						leaf: true,
+				//						listeners: {
+				//							click: _onEntityReferenceClick
+				//						}
+				//					}, {
+				//						text: 'Create EntityReference',
+				//						leaf: true,
+				//						listeners: {
+				//							click: _onEntityReferenceNewItem
+				//						}
+				//					}]
+				//				}, 
+				//				{
+				//					text: 'EntityType',
+				//					children: [{
+				//						text: 'Search EntityType',
+				//						leaf: true,
+				//						listeners: {
+				//							click: _onEntityTypeClick
+				//						}
+				//					}, {
+				//						text: 'Create EntityType',
+				//						leaf: true,
+				//						listeners: {
+				//							click: _onEntityTypeNewItem
+				//						}
+				//					}]
+				//				}, 
+				{
+				text: 'Manage Operations',
 				children: [{
-					text: 'EntitiesGroup',
-					children: [{
-						text: 'Search EntitiesGroup',
-						leaf: true,
-						listeners: {
-							click: _onEntitiesGroupClick
-						}
-					}, {
-						text: 'Create EntitiesGroup',
-						leaf: true,
-						listeners: {
-							click: _onEntitiesGroupNewItem
-						}
-					}]
+					text: 'Search',
+					leaf: true,
+					listeners: {
+						click: _onOperationClick
+					}
+				},
+				//					{
+				//						text: 'Create',
+				//						leaf: true,
+				//						listeners: {
+				//							click: _onOperationNewItem
+				//						}
+				//					}
+					]
+			}, {
+				text: 'Manage Permissions',
+				children: [{
+					text: 'Search',
+					leaf: true,
+					listeners: {
+						click: _onPermissionClick
+					}
 				}, {
-					text: 'EntityReference',
-					children: [{
-						text: 'Search EntityReference',
-						leaf: true,
-						listeners: {
-							click: _onEntityReferenceClick
-						}
-					}, {
-						text: 'Create EntityReference',
-						leaf: true,
-						listeners: {
-							click: _onEntityReferenceNewItem
-						}
-					}]
-				}, {
-					text: 'EntityType',
-					children: [{
-						text: 'Search EntityType',
-						leaf: true,
-						listeners: {
-							click: _onEntityTypeClick
-						}
-					}, {
-						text: 'Create EntityType',
-						leaf: true,
-						listeners: {
-							click: _onEntityTypeNewItem
-						}
-					}]
-				}, {
-					text: 'Operation',
-					children: [{
-						text: 'Search Operation',
-						leaf: true,
-						listeners: {
-							click: _onOperationClick
-						}
-					}, {
-						text: 'Create Operation',
-						leaf: true,
-						listeners: {
-							click: _onOperationNewItem
-						}
-					}]
-				}, {
-					text: 'Permission',
-					children: [{
-						text: 'Search Permission',
-						leaf: true,
-						listeners: {
-							click: _onPermissionClick
-						}
-					}, {
-						text: 'Create Permission',
-						leaf: true,
-						listeners: {
-							click: _onPermissionNewItem
-						}
-					}]
-				}, {
-					text: 'UsersGroup',
-					children: [{
-						text: 'Search UsersGroup',
-						leaf: true,
-						listeners: {
-							click: _onUsersGroupClick
-						}
-					}, {
-						text: 'Create UsersGroup',
-						leaf: true,
-						listeners: {
-							click: _onUsersGroupNewItem
-						}
-					}]
-				}, {
-					text: 'User',
-					children: [{
-						text: 'Search User',
-						leaf: true,
-						listeners: {
-							click: _onUserClick
-						}
-					}, {
-						text: 'Create User',
-						leaf: true,
-						listeners: {
-							click: _onUserNewItem
-						}
-					}]
+					text: 'Create',
+					leaf: true,
+					listeners: {
+						click: _onPermissionNewItem
+					}
 				}]
-			},
-			loader: {}
-		});
+			}, {
+				text: 'Manage UsersGroups',
+				children: [{
+					text: 'Search',
+					leaf: true,
+					listeners: {
+						click: _onUsersGroupClick
+					}
+				}, {
+					text: 'Create',
+					leaf: true,
+					listeners: {
+						click: _onUsersGroupNewItem
+					}
+				}]
+			}, {
+				text: 'Manage Users',
+				children: [{
+					text: 'Search',
+					leaf: true,
+					listeners: {
+						click: _onUserClick
+					}
+				}, {
+					text: 'Create',
+					leaf: true,
+					listeners: {
+						click: _onUserNewItem
+					}
+				}]
+			}]
+		},
+		loader: {}
+	});
 
-		this.items = [_treePanel, _tabPanel];
+	this.items = [_treePanel, _tabPanel];
 
-		Rhino.Security.MainViewport.superclass.initComponent.apply(this, arguments);
-	}
-});
+	Rhino.Security.MainViewport.superclass.initComponent.apply(this, arguments);
+}
+
+
+});

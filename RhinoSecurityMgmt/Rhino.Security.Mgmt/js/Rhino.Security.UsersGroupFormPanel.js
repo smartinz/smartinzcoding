@@ -1,5 +1,5 @@
 /*jslint white: true, browser: true, devel: true, onevar: true, undef: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true */
-/*global Ext, Rpc, Rhino.Security */
+/*global Ext, Rpc, Rhino */
 "use strict";
 
 Ext.namespace('Rhino.Security');
@@ -13,7 +13,7 @@ Rhino.Security.UsersGroupFormPanel = Ext.extend(Ext.form.FormPanel, {
 			padding: 10,
 			items: [
 				{ name: 'StringId', xtype: 'hidden' },
-				//{ name: 'Id', fieldLabel: 'Id', xtype: 'textfield' },
+				{ name: 'Id', fieldLabel: 'Id', xtype: 'displayfield' },
 				{ name: 'Name', fieldLabel: 'Name', xtype: 'textfield' }
 			]
 		});

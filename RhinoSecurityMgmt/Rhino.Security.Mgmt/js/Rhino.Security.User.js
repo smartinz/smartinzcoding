@@ -7,7 +7,7 @@ Ext.namespace('Rhino.Security');
 Rhino.Security.User = {
 	toString: function (o) {
 		if (o) {
-			return o.Description || o.StringId || '[some value]';
+			return o.Name || o.Description || o.StringId || '[some value]';
 		}
 		return '';
 	}

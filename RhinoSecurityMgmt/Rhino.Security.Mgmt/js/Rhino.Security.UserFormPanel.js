@@ -21,7 +21,7 @@ Rhino.Security.UserFormPanel = Ext.extend(Ext.form.FormPanel, {
 				padding: 10,
 				items: [
 					{ name: 'StringId', xtype: 'hidden' },
-					{ name: 'Id', fieldLabel: 'Id', xtype: 'numberfield' },
+					{ name: 'Id', fieldLabel: 'Id', xtype: 'numberfield'  },
 					{ name: 'Name', fieldLabel: 'Name', xtype: 'textfield' }
 				]
 			}, {
