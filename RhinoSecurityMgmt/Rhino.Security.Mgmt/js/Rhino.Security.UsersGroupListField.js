@@ -1,22 +1,36 @@
 /*jslint white: true, browser: true, onevar: true, undef: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true */
-/*global Ext, Rhino.Security */
+/*global Ext, Rhino */
 "use strict";
 
 Ext.namespace('Rhino.Security');
-
 Rhino.Security.UsersGroupListField = Ext.extend(Ext.form.Field, {
 	initComponent: function () {
 		var _this = this,
 		_gridPanel,
+		_pagingToolbar,
+		_store,
 		_selectedItem = null,
 		_onEditEnded = function (window, item) {
 			if (_selectedItem) {
 				Ext.apply(_selectedItem, item);
 			} else {
-				_this.getValue()[_this.getValue().length] = item;
+				var currentItems = _this.getValue(),
+				found = false,
+				i,
+				count = currentItems.length;
+				for (i = 0; i < count; i += 1) {
+					if (currentItems[i] && currentItems[i].StringId && currentItems[i].StringId === item.StringId) {
+						found = true;
+						break;
+					}
+				}
+
+				if (!found) {
+					currentItems.push(item);
+				}
 			}
-			window.close();
 			_gridPanel.getStore().load();
+			window.close();
 		},
 		_buildWindow = function () {
 			return new Rhino.Security.UsersGroupEditWindow({
@@ -43,22 +57,33 @@ Rhino.Security.UsersGroupListField = Ext.extend(Ext.form.Field, {
 		_onDeleteButtonClick = function () {
 			var sm = _gridPanel.getSelectionModel();
 			if (sm.getCount() > 0) {
-				_gridPanel.getStore().proxy.data.items.remove(sm.getSelected().data.$ref);
+				_this.getValue().remove(sm.getSelected().data.$ref);
 				_gridPanel.getStore().load();
 			}
 		};
 
+		_store = new Ext.data.Store({
+			autoDestroy: true,
+			remoteSort: false,
+			proxy: new Ext.data.MemoryProxy({ items: [] }),
+			reader: new Rhino.Security.UsersGroupJsonReader()
+		});
+
+		_pagingToolbar = new Ext.PagingToolbar({
+			store: _store,
+			displayInfo: true,
+			pageSize: 25,
+			prependButtons: true
+		});
+
 		_gridPanel = new Rhino.Security.UsersGroupGridPanel(Ext.copyTo({
 			id: _this.id + '-gridpanel',
-			store: new Ext.data.Store({
-				autoDestroy: true,
-				proxy: new Ext.data.MemoryProxy({ items: [] }),
-				reader: new Rhino.Security.UsersGroupJsonReader()
-			}),
+			store: _store,
+			bbar: _pagingToolbar,
 			tbar: [
-				{ text: 'New', handler: _onNewButtonClick, icon: 'images/add.png', cls: 'x-btn-text-icon' },
-				{ text: 'Edit', handler: _onEditButtonClick, icon: 'images/pencil.png', cls: 'x-btn-text-icon' },
-				{ text: 'Delete', handler: _onDeleteButtonClick, icon: 'images/delete.png', cls: 'x-btn-text-icon' }
+				{ text: 'Add', handler: _onNewButtonClick, icon: 'images/add.png', cls: 'x-btn-text-icon' },
+			//{ text: 'Edit', handler: _onEditButtonClick, icon: 'images/pencil.png', cls: 'x-btn-text-icon' },
+				{text: 'Delete', handler: _onDeleteButtonClick, icon: 'images/delete.png', cls: 'x-btn-text-icon' }
 			]
 		}, _this.initialConfig, []));
 

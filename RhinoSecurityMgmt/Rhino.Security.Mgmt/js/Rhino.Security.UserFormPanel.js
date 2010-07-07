@@ -1,5 +1,5 @@
 /*jslint white: true, browser: true, devel: true, onevar: true, undef: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true */
-/*global Ext, Rpc, Rhino.Security */
+/*global Ext, Rpc, Rhino */
 "use strict";
 
 Ext.namespace('Rhino.Security');
@@ -10,23 +10,31 @@ Rhino.Security.UserFormPanel = Ext.extend(Ext.form.FormPanel, {
 
 		Ext.apply(_this, {
 			border: false,
-			padding: 10,
-			items: [
-				{ name: 'StringId', xtype: 'hidden' },
-				{ name: 'Id', fieldLabel: 'Id', xtype: 'numberfield' },
-				{ name: 'Name', fieldLabel: 'Name', xtype: 'textfield' }, 
-				{
-					flex: 1,
-					xtype: 'tabpanel',
-					plain: true,
-					border: false,
-					activeTab: 0,
-					deferredRender: false, // IMPORTANT! See http://www.extjs.com/deploy/dev/examples/form/dynamic.js
-					items: [
-						{ name: 'Groups', title: 'Groups', xtype: 'Rhino.Security.UsersGroupListField' }
-					]
-				}
-			]
+			layout: 'vbox',
+			layoutConfig: {
+				align: 'stretch',
+				pack: 'start'
+			},
+			items: [{
+				layout: 'form',
+				border: false,
+				padding: 10,
+				items: [
+					{ name: 'StringId', xtype: 'hidden' },
+					{ name: 'Id', fieldLabel: 'Id', xtype: 'numberfield' },
+					{ name: 'Name', fieldLabel: 'Name', xtype: 'textfield' }
+				]
+			}, {
+				flex: 1,
+				xtype: 'tabpanel',
+				plain: true,
+				border: false,
+				activeTab: 0,
+				deferredRender: false, // IMPORTANT! See http://www.extjs.com/deploy/dev/examples/form/dynamic.js
+				items: [
+					{ name: 'Groups', title: 'Groups', xtype: 'Rhino.Security.UsersGroupListField' }
+				]
+			}]
 		});
 
 		Rhino.Security.UserFormPanel.superclass.initComponent.apply(_this, arguments);
