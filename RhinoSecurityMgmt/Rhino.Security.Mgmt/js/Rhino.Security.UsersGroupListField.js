@@ -44,20 +44,15 @@ Rhino.Security.UsersGroupListField = Ext.extend(Ext.form.Field, {
 			var window = _buildWindow();
 			window.show(button.getEl());
 		},
-		_onEditButtonClick = function (button) {
-			var sm, window;
-			sm = _gridPanel.getSelectionModel();
-			if (sm.getCount() > 0) {
-				_selectedItem = sm.getSelected().data.$ref;
-				window = _buildWindow();
-				window.setItem(_selectedItem);
-				window.show(button.getEl());
-			}
-		},
 		_onDeleteButtonClick = function () {
-			var sm = _gridPanel.getSelectionModel();
-			if (sm.getCount() > 0) {
-				_this.getValue().remove(sm.getSelected().data.$ref);
+			var sm = _gridPanel.getSelectionModel(),
+			selectedItems = sm.getSelections(),
+			count = sm.getCount(),
+			i;
+			if (count > 0) {
+				for (i = 0; i < count; i += 1) {
+					_this.getValue().remove(selectedItems[i].data.$ref);
+				}
 				_gridPanel.getStore().load();
 			}
 		};
@@ -82,8 +77,7 @@ Rhino.Security.UsersGroupListField = Ext.extend(Ext.form.Field, {
 			bbar: _pagingToolbar,
 			tbar: [
 				{ text: 'Add', handler: _onNewButtonClick, icon: 'images/add.png', cls: 'x-btn-text-icon' },
-			//{ text: 'Edit', handler: _onEditButtonClick, icon: 'images/pencil.png', cls: 'x-btn-text-icon' },
-				{text: 'Delete', handler: _onDeleteButtonClick, icon: 'images/delete.png', cls: 'x-btn-text-icon' }
+				{ text: 'Delete', handler: _onDeleteButtonClick, icon: 'images/delete.png', cls: 'x-btn-text-icon' }
 			]
 		}, _this.initialConfig, []));
 
