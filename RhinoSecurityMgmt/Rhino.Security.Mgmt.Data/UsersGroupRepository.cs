@@ -2,6 +2,7 @@ using System.Linq;
 using NHibernate.Linq;
 using Nexida.Infrastructure;
 using Microsoft.Practices.ServiceLocation;
+using Rhino.Security.Mgmt.Infrastructure;
 
 namespace Rhino.Security.Mgmt.Data
 {
@@ -16,9 +17,9 @@ namespace Rhino.Security.Mgmt.Data
 			_northwindWithSecurity = northwindWithSecurity;
 		}
 
-		public void Create(Rhino.Security.Model.UsersGroup v)
+		public Rhino.Security.Model.UsersGroup Create(Rhino.Security.Model.UsersGroup v)
 		{
-			_authorizationRepositoryFactory.Create().CreateUsersGroup(v.Name);
+			return _authorizationRepositoryFactory.Create().CreateUsersGroup(v.Name);
 		}
 
 		public Rhino.Security.Model.UsersGroup Read(System.Guid id)
@@ -26,23 +27,21 @@ namespace Rhino.Security.Mgmt.Data
 			return _northwindWithSecurity.GetCurrentSession().Load<Rhino.Security.Model.UsersGroup>(id);
 		}
 
-		public void Update(Rhino.Security.Model.UsersGroup v)
+		public Rhino.Security.Model.UsersGroup Update(Rhino.Security.Model.UsersGroup v)
 		{
 			_northwindWithSecurity.GetCurrentSession().Update(v);
+			return v;
 		}
 
 		public void Delete(Rhino.Security.Model.UsersGroup v)
 		{
-			_northwindWithSecurity.GetCurrentSession().Delete(v);
+			_authorizationRepositoryFactory.Create().RemoveUsersGroup(v.Name);
 		}
 
-		public IPresentableSet<Rhino.Security.Model.UsersGroup> Search(System.Guid? id, string name)
+		public IPresentableSet<Rhino.Security.Model.UsersGroup> Search(string name)
 		{
+#warning we might need to use the AuthZRepo for this operation
 			IQueryable<Rhino.Security.Model.UsersGroup> queryable = _northwindWithSecurity.GetCurrentSession().Linq<Rhino.Security.Model.UsersGroup>();
-			if (id != default(System.Guid?))
-			{
-				queryable = queryable.Where(x => x.Id == id);
-			}
 			if (!string.IsNullOrEmpty(name))
 			{
 				queryable = queryable.Where(x => x.Name.StartsWith(name));

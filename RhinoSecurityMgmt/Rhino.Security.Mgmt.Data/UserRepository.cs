@@ -1,25 +1,28 @@
 using System.Linq;
 using NHibernate.Linq;
 using Nexida.Infrastructure;
+using Rhino.Security.Mgmt.Infrastructure;
 
 namespace Rhino.Security.Mgmt.Data
 {
 	public class UserRepository : Nexida.Infrastructure.IRepository
 	{
-
 		private NHibernate.ISessionFactory _northwindWithSecurity;
+		AuthorizationRepositoryFactory _authorizationRepositoryFactory;
 
-
-		public UserRepository(NHibernate.ISessionFactory northwindWithSecurity)
+		public UserRepository(NHibernate.ISessionFactory northwindWithSecurity, AuthorizationRepositoryFactory authorizationRepositoryFactory)
 		{
-
+			_authorizationRepositoryFactory = authorizationRepositoryFactory;
 			_northwindWithSecurity = northwindWithSecurity;
-
 		}
 
 		public Rhino.Security.Model.User Create(Rhino.Security.Model.User v)
 		{
 			_northwindWithSecurity.GetCurrentSession().Save(v);
+			foreach (var g in v.Groups)
+			{
+				_authorizationRepositoryFactory.Create().AssociateUserWith(v, g);
+			}
 			return v;
 		}
 
@@ -36,6 +39,8 @@ namespace Rhino.Security.Mgmt.Data
 
 		public void Delete(Rhino.Security.Model.User v)
 		{
+			// remove user from Rhino first
+			_authorizationRepositoryFactory.Create().RemoveUser(v);
 			_northwindWithSecurity.GetCurrentSession().Delete(v);
 		}
 

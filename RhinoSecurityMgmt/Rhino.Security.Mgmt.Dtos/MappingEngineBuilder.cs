@@ -3,6 +3,9 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
 using AutoMapper;
+using Rhino.Security.Interfaces;
+using Rhino.Security.Mgmt.Infrastructure;
+using Rhino.Security.Mgmt.Data;
 
 namespace Rhino.Security.Mgmt.Dtos
 {
@@ -143,9 +146,19 @@ namespace Rhino.Security.Mgmt.Dtos
 
 			Mapper.CreateMap<UserDto, Rhino.Security.Model.User>()
 				.ConstructUsing(s => string.IsNullOrEmpty(s.StringId) ? sl.GetInstance<Nexida.Infrastructure.IFactory<Rhino.Security.Model.User>>().Create() : sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.User>>().FromString(s.StringId))
-																.ForMember(d => d.Groups, o => o.UseDestinationValue())
-
-								;
+				.ForMember(d => d.Groups, o => o.Ignore())
+				.AfterMap((userDto, user) => {
+					var synchronizer = sl.GetInstance<SecurityUsersToUsersGroupsAssociationSynchronizer>();
+					foreach (var g in user.Groups.ToArray())
+					{
+						synchronizer.Disassociate(user, g);
+					}
+					var items = Mapper.Map<Rhino.Security.Mgmt.Dtos.UsersGroupDto[], Rhino.Security.Model.UsersGroup[]>(userDto.Groups);
+					foreach (var g in items)
+					{
+						synchronizer.Associate(user, g);
+					}
+				});
 			Mapper.CreateMap<UserReferenceDto, Rhino.Security.Model.User>()
 				.ConstructUsing(s => string.IsNullOrEmpty(s.StringId) ? sl.GetInstance<Nexida.Infrastructure.IFactory<Rhino.Security.Model.User>>().Create() : sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.User>>().FromString(s.StringId))
 				.ForAllMembers(o => o.Ignore());

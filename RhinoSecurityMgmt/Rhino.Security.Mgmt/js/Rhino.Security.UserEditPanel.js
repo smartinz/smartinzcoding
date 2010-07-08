@@ -54,7 +54,7 @@ Rhino.Security.UserEditPanel = Ext.extend(Ext.Panel, {
 				{ text: 'Refresh', handler: _refreshItemButtonHandler, icon: 'images/arrow_refresh.png', cls: 'x-btn-text-icon' }
 			],
 			loadItem: function (stringId) {
-				if (stringId === null) {
+				if (!stringId || stringId === null) {
 					_formPanel.setUpFormForNewItem();
 				}
 				else {

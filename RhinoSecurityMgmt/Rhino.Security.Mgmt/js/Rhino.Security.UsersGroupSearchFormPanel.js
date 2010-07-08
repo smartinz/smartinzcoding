@@ -10,7 +10,6 @@ Rhino.Security.UsersGroupSearchFormPanel = Ext.extend(Ext.form.FormPanel, {
 	padding: 10,
 	initComponent: function () {
 		this.items = [
-			{ name: 'id', xtype: 'textfield', fieldLabel: 'id' },
 			{ name: 'name', xtype: 'textfield', fieldLabel: 'name' }
 		];
 		Rhino.Security.UsersGroupSearchFormPanel.superclass.initComponent.apply(this, arguments);

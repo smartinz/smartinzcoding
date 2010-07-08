@@ -6,16 +6,30 @@ Ext.namespace('Rhino.Security');
 
 Rhino.Security.UsersGroupFormPanel = Ext.extend(Ext.form.FormPanel, {
 	initComponent: function () {
-		var _this = this;
+		var _this = this,
+		_entityIdFieldContainer = new Ext.Container({
+			xtype: 'container',
+			layout: 'form',
+			autoEl: 'div',
+			items: [{ name: 'Id', fieldLabel: 'Id', xtype: 'displayfield'}]
+		});
 
 		Ext.apply(_this, {
+			layout: 'form',
 			border: false,
 			padding: 10,
 			items: [
 				{ name: 'StringId', xtype: 'hidden' },
-				{ name: 'Id', fieldLabel: 'Id', xtype: 'displayfield' },
+				_entityIdFieldContainer,
 				{ name: 'Name', fieldLabel: 'Name', xtype: 'textfield' }
-			]
+			],
+			setUpFormForEditItem: function () {
+				_entityIdFieldContainer.show();
+			},
+			setUpFormForNewItem: function () {
+				_entityIdFieldContainer.hide();
+				_this.getForm().findField('Id').setRawValue('00000000-0000-0000-0000-000000000000');
+			}
 		});
 
 		Rhino.Security.UsersGroupFormPanel.superclass.initComponent.apply(_this, arguments);

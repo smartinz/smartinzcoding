@@ -27,6 +27,7 @@ using Rhino.Security.Mgmt.Model;
 using Rhino.Security.Interfaces;
 using Rhino.Security.Services;
 using System;
+using Rhino.Security.Mgmt.Infrastructure;
 
 namespace Rhino.Security.Mgmt
 {
@@ -70,6 +71,8 @@ namespace Rhino.Security.Mgmt
 			//ioc.Register(Component.For<IAuthorizationService>().UsingFactoryMethod(CreateAuthorizationService).LifeStyle.PerWebRequest);
 			//ioc.Register(Component.For<IPermissionsBuilderService>().UsingFactoryMethod(CreatePermissionsBuilderService).LifeStyle.PerWebRequest);
 			// end setup Rhino Security services
+
+			ioc.Register(Component.For<SecurityUsersToUsersGroupsAssociationSynchronizer>());
 
 			ioc.Register(Component.For<IConversationFactory>().UsingFactoryMethod(CreateConversationFactory));
 			ioc.Register(Component.For<IConversation>().UsingFactoryMethod(CreateConversation).LifeStyle.PerWebRequest);

@@ -67,6 +67,10 @@
     <Compile Include="UsersGroupReferenceDto.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Rhino.Security.Mgmt.Data\Rhino.Security.Mgmt.Data.csproj">
+      <Project>{37D30C9B-71A2-4364-A08F-9855066522FD}</Project>
+      <Name>Rhino.Security.Mgmt.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rhino.Security.Mgmt.Infrastructure\Rhino.Security.Mgmt.Infrastructure.csproj">
       <Project>{41C6AEF3-AD8E-4CD0-98F6-5313A64CC9BE}</Project>
       <Name>Rhino.Security.Mgmt.Infrastructure</Name>

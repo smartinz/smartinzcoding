@@ -12,7 +12,6 @@ namespace Rhino.Security.Mgmt.Controllers
 		private readonly Nexida.Infrastructure.IValidator _validator;
 		private readonly Conversation.IConversation _conversation;
 		private readonly Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.UsersGroup> _stringConverter;
-		private Rhino.Security.Services.AuthorizationRepository _authorizationRespository;
 
 		public UsersGroupController(Conversation.IConversation conversation, AutoMapper.IMappingEngine mapper, Rhino.Security.Mgmt.Data.UsersGroupRepository repository, Nexida.Infrastructure.IValidator validator, Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.UsersGroup> stringConverter)
 		{
@@ -27,6 +26,7 @@ namespace Rhino.Security.Mgmt.Controllers
 		{
 			using (_conversation.SetAsCurrent())
 			{
+				Rhino.Security.Model.UsersGroup itemToReturn = null;
 				var itemMapped = _mapper.Map<Rhino.Security.Mgmt.Dtos.UsersGroupDto, Rhino.Security.Model.UsersGroup>(item);
 				Nexida.Infrastructure.Mvc.ValidationHelpers.AddErrorsToModelState(ModelState, _validator.Validate(itemMapped), "item");
 				if (ModelState.IsValid)
@@ -34,16 +34,18 @@ namespace Rhino.Security.Mgmt.Controllers
 					var isNew = string.IsNullOrEmpty(item.StringId);
 					if (isNew)
 					{
-						_repository.Create(itemMapped);
+						itemToReturn = _repository.Create(itemMapped);
 					}
 					if (!isNew)
 					{
-						_repository.Update(itemMapped);
+						itemToReturn = _repository.Update(itemMapped);
 					}
 					_conversation.Flush();
 				}
+				var itemToReturnDto = itemToReturn != null ? _mapper.Map<Rhino.Security.Model.UsersGroup, Rhino.Security.Mgmt.Dtos.UsersGroupDto>(itemToReturn) : null;
 				return Json(new
 				{
+					item = itemToReturnDto,
 					success = ModelState.IsValid,
 					errors = Nexida.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
 				});
@@ -70,12 +72,12 @@ namespace Rhino.Security.Mgmt.Controllers
 			}
 		}
 
-		public ActionResult Search(System.Guid? id, string name, int start, int limit, string sort, string dir)
+		public ActionResult Search(string name, int start, int limit, string sort, string dir)
 		{
 			Log.DebugFormat("Search called");
 			using (_conversation.SetAsCurrent())
 			{
-				var set = _repository.Search(id, name);
+				var set = _repository.Search(name);
 				var items = set.Skip(start).Take(limit).Sort(sort, dir == "ASC").AsEnumerable();
 				var dtos = _mapper.Map<IEnumerable<Rhino.Security.Model.UsersGroup>, Rhino.Security.Mgmt.Dtos.UsersGroupDto[]>(items);
 				return Json(new { items = dtos, count = set.Count() });
