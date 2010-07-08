@@ -50,21 +50,25 @@ Rhino.Security.UsersGroupEditPanel = Ext.extend(Ext.Panel, {
 				{ text: 'Refresh', handler: _refreshItemButtonHandler, icon: 'images/arrow_refresh.png', cls: 'x-btn-text-icon' }
 			],
 			loadItem: function (stringId) {
+				var f = _formPanel.getForm().findField('Id');
 				if (stringId === null) {
-					var f = _formPanel.getForm().findField('Id');
 					if (f) {
-						f.setVisible(false);
 						f.setRawValue('00000000-0000-0000-0000-000000000000');
+						//f.setVisible(false);
+						f.hide();
 					}
 				}
 				else {
-						_this.el.mask('Loading...', 'x-mask-loading');
-						 Rpc.call({
+					_this.el.mask('Loading...', 'x-mask-loading');
+					Rpc.call({
 						url: 'UsersGroup/Load',
 						params: { stringId: stringId },
 						success: function (item) {
 							_this.el.unmask();
 							_formPanel.getForm().setValues(item);
+							if (f) {
+								f.show();
+							}
 						}
 					});
 				}

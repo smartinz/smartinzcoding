@@ -25,23 +25,27 @@ namespace Rhino.Security.Mgmt.Controllers
 		{
 			using (_conversation.SetAsCurrent())
 			{
+				Rhino.Security.Model.User itemToReturn = null;
 				var itemMapped = _mapper.Map<Rhino.Security.Mgmt.Dtos.UserDto, Rhino.Security.Model.User>(item);
 				Nexida.Infrastructure.Mvc.ValidationHelpers.AddErrorsToModelState(ModelState, _validator.Validate(itemMapped), "item");
 				if (ModelState.IsValid)
 				{
 					var isNew = string.IsNullOrEmpty(item.StringId);
+
 					if (isNew)
 					{
-						_repository.Create(itemMapped);
+						itemToReturn = _repository.Create(itemMapped);
 					}
 					if (!isNew)
 					{
-						_repository.Update(itemMapped);
+						itemToReturn = _repository.Update(itemMapped);
 					}
 					_conversation.Flush();
 				}
+				var itemToReturnDto = itemToReturn != null ? _mapper.Map<Rhino.Security.Model.User, Rhino.Security.Mgmt.Dtos.UserDto>(itemToReturn) : null;
 				return Json(new
 				{
+					item = itemToReturnDto,
 					success = ModelState.IsValid,
 					errors = Nexida.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
 				});
@@ -58,12 +62,15 @@ namespace Rhino.Security.Mgmt.Controllers
 			}
 		}
 
-		public void Delete(string stringId)
+		public void Delete(string[] stringIds)
 		{
 			using (_conversation.SetAsCurrent())
 			{
-				var item = _stringConverter.FromString(stringId);
-				_repository.Delete(item);
+				foreach (var s in stringIds)
+				{
+					var item = _stringConverter.FromString(s);
+					_repository.Delete(item);
+				}
 				_conversation.Flush();
 			}
 		}

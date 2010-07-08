@@ -59,9 +59,26 @@ Rhino.Security.UserSearchPanel = Ext.extend(Ext.Panel, {
 				rowdblclick: _onGridPanelRowDblClick
 			}
 		}),
-		_getSelectedItem = function () {
+		_getSelectedItems = function () {
 			var sm = _gridPanel.getSelectionModel();
-			return sm.getCount() > 0 ? sm.getSelected().data : null;
+			if (sm.getCount() > 0) {
+				var selectedItems = [];
+				Ext.each(sm.getSelections(), function (item) {
+					selectedItems.push(item.data);
+				});
+				return selectedItems;
+			}
+			return null;
+		},
+		_getSelectedStringIds = function (items) {
+			if (items && items.length > 0) {
+				var selectedStringIds = [];
+				Ext.each(items, function (item) {
+					selectedStringIds.push(item.StringId);
+				});
+				return selectedStringIds;
+			}
+			return null;
 		},
 		_onSearchButtonClick = function (b, e) {
 			var params = _searchFormPanel.getForm().getFieldValues();
@@ -77,15 +94,15 @@ Rhino.Security.UserSearchPanel = Ext.extend(Ext.Panel, {
 			_fireNewItemEvent();
 		},
 		_onEditButtonClick = function () {
-			var selectedItem = _getSelectedItem();
-			if (!selectedItem) {
+			var selectedItems = _getSelectedItems();
+			if (!selectedItems || selectedItems.length === 0) {
 				return;
 			}
-			_fireEditItemEvent(selectedItem);
+			_fireEditItemEvent(selectedItems[0]);
 		},
 		_onDeleteButtonClick = function () {
-			var selectedItem = _getSelectedItem();
-			if (!selectedItem) {
+			var selectedItems = _getSelectedItems();
+			if (!selectedItems) {
 				return;
 			}
 			Ext.MessageBox.confirm('Delete', 'Are you sure?', function (buttonId) {
@@ -94,7 +111,7 @@ Rhino.Security.UserSearchPanel = Ext.extend(Ext.Panel, {
 				}
 				Rpc.call({
 					url: 'User/Delete',
-					params: { stringId: selectedItem.StringId },
+					params: { stringIds: _getSelectedStringIds(selectedItems) },
 					success: function (result) {
 						_pagingToolbar.doRefresh();
 					}

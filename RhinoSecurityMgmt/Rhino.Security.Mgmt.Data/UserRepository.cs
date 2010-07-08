@@ -17,9 +17,10 @@ namespace Rhino.Security.Mgmt.Data
 
 		}
 
-		public void Create(Rhino.Security.Model.User v)
+		public Rhino.Security.Model.User Create(Rhino.Security.Model.User v)
 		{
 			_northwindWithSecurity.GetCurrentSession().Save(v);
+			return v;
 		}
 
 		public Rhino.Security.Model.User Read(System.Int64 id)
@@ -27,9 +28,10 @@ namespace Rhino.Security.Mgmt.Data
 			return _northwindWithSecurity.GetCurrentSession().Load<Rhino.Security.Model.User>(id);
 		}
 
-		public void Update(Rhino.Security.Model.User v)
+		public Rhino.Security.Model.User Update(Rhino.Security.Model.User v)
 		{
 			_northwindWithSecurity.GetCurrentSession().Update(v);
+			return v;
 		}
 
 		public void Delete(Rhino.Security.Model.User v)

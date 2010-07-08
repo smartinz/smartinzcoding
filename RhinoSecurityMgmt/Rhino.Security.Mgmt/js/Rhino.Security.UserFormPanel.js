@@ -6,7 +6,13 @@ Ext.namespace('Rhino.Security');
 
 Rhino.Security.UserFormPanel = Ext.extend(Ext.form.FormPanel, {
 	initComponent: function () {
-		var _this = this;
+		var _this = this,
+		_entityIdFieldContainer = new Ext.Container({
+			xtype: 'container',
+			layout: 'form',
+			autoEl: 'div',
+			items: [{ name: 'Id', fieldLabel: 'Id', xtype: 'displayfield' }]
+		});
 
 		Ext.apply(_this, {
 			border: false,
@@ -21,7 +27,7 @@ Rhino.Security.UserFormPanel = Ext.extend(Ext.form.FormPanel, {
 				padding: 10,
 				items: [
 					{ name: 'StringId', xtype: 'hidden' },
-					{ name: 'Id', fieldLabel: 'Id', xtype: 'numberfield'  },
+					_entityIdFieldContainer,
 					{ name: 'Name', fieldLabel: 'Name', xtype: 'textfield' }
 				]
 			}, {
@@ -34,7 +40,14 @@ Rhino.Security.UserFormPanel = Ext.extend(Ext.form.FormPanel, {
 				items: [
 					{ name: 'Groups', title: 'Groups', xtype: 'Rhino.Security.UsersGroupListField' }
 				]
-			}]
+			}],
+			setUpFormForEditItem: function () {
+				_entityIdFieldContainer.show();
+			},
+			setUpFormForNewItem: function () {
+				_entityIdFieldContainer.hide();
+				_this.getForm().findField('Id').setRawValue('0');
+			}
 		});
 
 		Rhino.Security.UserFormPanel.superclass.initComponent.apply(_this, arguments);

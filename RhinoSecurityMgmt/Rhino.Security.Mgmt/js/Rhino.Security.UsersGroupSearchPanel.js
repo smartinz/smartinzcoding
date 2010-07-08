@@ -7,8 +7,10 @@ Ext.namespace('Rhino.Security');
 Rhino.Security.UsersGroupSearchPanel = Ext.extend(Ext.Panel, {
 	initComponent: function () {
 		var _this = this,
-		_fireEditItemEvent = function (item) {
-			_this.fireEvent('edititem', _this, item);
+		_fireEditItemEvent = function (items) {
+			Ext.each(items, function(item) {
+				_this.fireEvent('edititem', _this, item);
+			})
 		},
 		_fireNewItemEvent = function () {
 			_this.fireEvent('newitem', _this);
@@ -59,7 +61,7 @@ Rhino.Security.UsersGroupSearchPanel = Ext.extend(Ext.Panel, {
 				rowdblclick: _onGridPanelRowDblClick
 			}
 		}),
-		_getSelectedItem = function () {
+		_getSelectedItems = function () {
 			var sm = _gridPanel.getSelectionModel();
 			return sm.getCount() > 0 ? sm.getSelected().data : null;
 		},
@@ -77,14 +79,14 @@ Rhino.Security.UsersGroupSearchPanel = Ext.extend(Ext.Panel, {
 			_fireNewItemEvent();
 		},
 		_onEditButtonClick = function () {
-			var selectedItem = _getSelectedItem();
-			if (!selectedItem) {
+			var selectedItems = _getSelectedItems();
+			if (!selectedItems) {
 				return;
 			}
-			_fireEditItemEvent(selectedItem);
+			_fireEditItemEvent(selectedItems);
 		},
 		_onDeleteButtonClick = function () {
-			var selectedItem = _getSelectedItem();
+			var selectedItem = _getSelectedItems();
 			if (!selectedItem) {
 				return;
 			}

@@ -20,7 +20,11 @@ Rhino.Security.UserEditPanel = Ext.extend(Ext.Panel, {
 					_this.el.unmask();
 					if (result.success) {
 						Ext.MessageBox.show({ msg: 'Changes saved successfully.', icon: Ext.MessageBox.INFO, buttons: Ext.MessageBox.OK });
+						_formPanel.setUpFormForEditItem();
 						_fireItemUpdated(_formPanel.getForm().getFieldValues());
+						if (result.item) {
+							_formPanel.getForm().setValues(result.item);
+						}
 					} else {
 						_formPanel.getForm().markInvalid(result.errors.item);
 						Ext.MessageBox.show({ msg: 'Error saving data. Correct errors and retry.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });
@@ -51,14 +55,11 @@ Rhino.Security.UserEditPanel = Ext.extend(Ext.Panel, {
 			],
 			loadItem: function (stringId) {
 				if (stringId === null) {
-					var f = _formPanel.getForm().findField('Id');
-					if (f) {
-						f.setVisible(false);
-						f.setRawValue('0');
-					}
+					_formPanel.setUpFormForNewItem();
 				}
 				else {
 					_this.el.mask('Loading...', 'x-mask-loading');
+					_formPanel.setUpFormForEditItem();
 					Rpc.call({
 						url: 'User/Load',
 						params: { stringId: stringId },
