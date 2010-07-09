@@ -19,10 +19,6 @@ namespace Rhino.Security.Mgmt.Data
 		public Rhino.Security.Model.User Create(Rhino.Security.Model.User v)
 		{
 			_northwindWithSecurity.GetCurrentSession().Save(v);
-			foreach (var g in v.Groups)
-			{
-				_authorizationRepositoryFactory.Create().AssociateUserWith(v, g);
-			}
 			return v;
 		}
 

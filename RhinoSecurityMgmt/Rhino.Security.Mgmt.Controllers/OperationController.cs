@@ -27,20 +27,23 @@ namespace Rhino.Security.Mgmt.Controllers
 			{
 				var itemMapped = _mapper.Map<Rhino.Security.Mgmt.Dtos.OperationDto, Rhino.Security.Model.Operation>(item);
 				Nexida.Infrastructure.Mvc.ValidationHelpers.AddErrorsToModelState(ModelState, _validator.Validate(itemMapped), "item");
+				Rhino.Security.Model.Operation itemToReturn = null;
 				if (ModelState.IsValid)
 				{
 					var isNew = string.IsNullOrEmpty(item.StringId);
 					if(isNew)
 					{
-						_repository.Create(itemMapped);
+						itemToReturn = _repository.Create(itemMapped);
 					}
 					if(!isNew)
 					{
-						_repository.Update(itemMapped);
+						itemToReturn = _repository.Update(itemMapped);
 					}
 					_conversation.Flush();
 				}
+				var itemToReturnDto = itemToReturn != null ? _mapper.Map<Rhino.Security.Model.Operation, Rhino.Security.Mgmt.Dtos.OperationDto>(itemToReturn) : null;
 				return Json(new{
+					item = itemToReturnDto,
 					success = ModelState.IsValid,
 					errors = Nexida.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
 				});

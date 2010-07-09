@@ -20,11 +20,11 @@ Rhino.Security.UsersGroupEditPanel = Ext.extend(Ext.Panel, {
 					_this.el.unmask();
 					if (result.success) {
 						Ext.MessageBox.show({ msg: 'Changes saved successfully.', icon: Ext.MessageBox.INFO, buttons: Ext.MessageBox.OK });
-						_formPanel.setUpFormForEditItem();
-						_fireItemUpdated(_formPanel.getForm().getFieldValues());
 						if (result.item) {
 							_formPanel.getForm().setValues(result.item);
 						}
+						_formPanel.setUpFormForEditItem();
+						_fireItemUpdated(_formPanel.getForm().getFieldValues());
 					} else {
 						_formPanel.getForm().markInvalid(result.errors.item);
 						Ext.MessageBox.show({ msg: 'Error saving data. Correct errors and retry.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });

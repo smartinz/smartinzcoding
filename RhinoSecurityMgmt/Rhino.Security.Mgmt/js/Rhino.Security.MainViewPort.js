@@ -28,97 +28,163 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 			return tab.tabContentIdentifier;
 		}
 
-		function _openTab(title, item, id) {
+		function _openTab(title, factory, id) {
 			var tab;
 
-			Ext.each(_tabPanel.items.items, function (item) {
-				if (_getTabIdentifier(item) === id) {
-					tab = item;
+			Ext.each(_tabPanel.items.items, function (currentTab) {
+				if (_getTabIdentifier(currentTab) === id) {
+					tab = currentTab;
 					return false;
 				}
 			});
 
-			tab = tab || _tabPanel.add(new Ext.Panel({
-				layout: 'fit',
-				items: item,
-				title: title,
-				closable: true,
-				getWrappedElement: function () {
-					return item;
-				}
-			}));
-			_setTabIdentifier(tab, id);
+			if (!tab) {
+				tab = (function () {
+					var wrappedElement = factory();
+
+					return _tabPanel.add(new Ext.Panel({
+						layout: 'fit',
+						items: wrappedElement,
+						title: title,
+						closable: true,
+						getWrappedElement: function () {
+							return wrappedElement;
+						}
+					}));
+				}());
+				_setTabIdentifier(tab, id);
+			}
 
 			tab.show();
 			return tab;
 		}
 
-		function _onOperationEditItem(sender, item) {
-			var editTab = _openTab('Operation ' + Rhino.Security.Operation.toString(item), new Rhino.Security.OperationEditPanel(), 'Operation-' + item.StringId);
-			editTab.getWrappedElement().loadItem(item.StringId);
-		}
+		// Operation
 		function _onOperationNewItem(sender) {
-			_openTab('New Operation', new Rhino.Security.OperationEditPanel(), 'Operation-new');
+			var editPanelFactory = function () {
+				return new Rhino.Security.OperationEditPanel();
+			};
+			_openTab('New Operation', editPanelFactory, 'Operation-new');
+		}
+		function _onOperationEditItem(sender, item) {
+			var editPanelFactory = function () {
+				return new Rhino.Security.OperationEditPanel();
+			},
+			editTab = _openTab('Operation ' + Rhino.Security.Operation.toString(item), editPanelFactory, 'Operation-' + item.StringId);
+			editTab.getWrappedElement().loadItem(item.StringId);
 		}
 		function _onOperationClick(sender, item) {
-			var searchTab = _openTab('Search Operation', new Rhino.Security.OperationSearchPanel(), 'Operation-search');
-			searchTab.getWrappedElement().on('edititem', _onOperationEditItem);
-			searchTab.getWrappedElement().on('newitem', _onOperationNewItem);
+			var newSearchPanelFactory = function () {
+				return new Rhino.Security.OperationSearchPanel({
+					listeners: {
+						edititem: _onOperationEditItem,
+						newitem: _onOperationNewItem
+					}
+				});
+			};
+			_openTab('Search Operation', newSearchPanelFactory, 'Operation-search');
 		}
 
-		function _onPermissionEditItem(sender, item) {
-			var editTab = _openTab('Permission ' + Rhino.Security.Permission.toString(item), new Rhino.Security.PermissionEditPanel(), 'Permission-' + item.StringId);
-			editTab.getWrappedElement().loadItem(item.StringId);
-		}
+		// Permission
 		function _onPermissionNewItem(sender) {
-			_openTab('New Permission', new Rhino.Security.PermissionEditPanel(), 'Permission-new');
+			var editPanelFactory = function () {
+				return new Rhino.Security.PermissionEditPanel();
+			};
+			_openTab('New Permission', editPanelFactory, 'Permission-new');
+		}
+		function _onPermissionEditItem(sender, item) {
+			var editPanelFactory = function () {
+				return new Rhino.Security.PermissionEditPanel();
+			},
+			editTab = _openTab('Permission ' + Rhino.Security.Permission.toString(item), editPanelFactory, 'Permission-' + item.StringId);
+			editTab.getWrappedElement().loadItem(item.StringId);
 		}
 		function _onPermissionClick(sender, item) {
-			var searchTab = _openTab('Search Permission', new Rhino.Security.PermissionSearchPanel(), 'Permission-search');
-			searchTab.getWrappedElement().on('edititem', _onPermissionEditItem);
-			searchTab.getWrappedElement().on('newitem', _onPermissionNewItem);
+			var searchPanelFactory = function () {
+				return new Rhino.Security.PermissionSearchPanel({
+					listeners: {
+						edititem: _onPermissionEditItem,
+						newitem: _onPermissionNewItem
+					}
+				});
+			};
+			_openTab('Search Permission', searchPanelFactory, 'Permission-search');
 		}
 
-		function _onUsersGroupEditItem(sender, item) {
-			var editTab = _openTab('UsersGroup ' + Rhino.Security.UsersGroup.toString(item), new Rhino.Security.UsersGroupEditPanel(), 'UsersGroup-' + item.StringId);
-			editTab.getWrappedElement().loadItem(item.StringId);
-			editTab.getWrappedElement().on('itemupdated', function (updatedItem) {
-				_setTabTitle(editTab, 'UsersGroup ' + Rhino.Security.UsersGroup.toString(updatedItem));
-			});
-		}
+		// UsersGroup
 		function _onUsersGroupNewItem(sender) {
-			var newTab = _openTab('New UsersGroup', new Rhino.Security.UsersGroupEditPanel(), 'UsersGroup-new');
+			var newTab = _openTab('New UsersGroup', function () {
+				return new Rhino.Security.UsersGroupEditPanel({
+					listeners: {
+						itemupdated: function (updatedItem) {
+							_setTabTitle(newTab, 'UsersGroup ' + Rhino.Security.UsersGroup.toString(updatedItem));
+							_setTabIdentifier(newTab, 'UsersGroup-' + updatedItem.StringId);
+						}
+					}
+				});
+			}, 'UsersGroup-new');
 			newTab.getWrappedElement().loadItem(null);
-			newTab.getWrappedElement().on('itemupdated', function (updatedItem) {
-				_setTabTitle(newTab, 'UsersGroup ' + Rhino.Security.User.toString(updatedItem));
-				_setTabIdentifier(newTab, 'UsersGroup-' + updatedItem.StringId);
-			});
+		}
+		function _onUsersGroupEditItem(sender, item) {
+			var editTab = _openTab('UsersGroup ' + Rhino.Security.UsersGroup.toString(item), function () {
+				return new Rhino.Security.UsersGroupEditPanel({
+					listeners: {
+						itemupdated: function (updatedItem) {
+							_setTabTitle(editTab, 'UsersGroup ' + Rhino.Security.UsersGroup.toString(updatedItem));
+						}
+					}
+				});
+			}, 'UsersGroup-' + item.StringId);
+			editTab.getWrappedElement().loadItem(item.StringId);
 		}
 		function _onUsersGroupClick(sender, item) {
-			var searchTab = _openTab('Search UsersGroup', new Rhino.Security.UsersGroupSearchPanel(), 'UsersGroup-search');
-			searchTab.getWrappedElement().on('edititem', _onUsersGroupEditItem);
-			searchTab.getWrappedElement().on('newitem', _onUsersGroupNewItem);
+			var searchPanelFactory = function () {
+				return new Rhino.Security.UsersGroupSearchPanel({
+					listeners: {
+						edititem: _onUsersGroupEditItem,
+						newitem: _onUsersGroupNewItem
+					}
+				});
+			};
+			_openTab('Search UsersGroup', searchPanelFactory, 'UsersGroup-search');
 		}
 
-		function _onUserEditItem(sender, item) {
-			var editTab = _openTab('User ' + Rhino.Security.User.toString(item), new Rhino.Security.UserEditPanel(), 'User-' + item.StringId);
-			editTab.getWrappedElement().loadItem(item.StringId);
-			editTab.getWrappedElement().on('itemupdated', function (updatedItem) {
-				_setTabTitle(editTab, 'User ' + Rhino.Security.User.toString(updatedItem));
-			});
-		}
+		// User
 		function _onUserNewItem(sender) {
-			var newTab = _openTab('New User', new Rhino.Security.UserEditPanel(), 'User-new');
+			var newTab = _openTab('New User', function () {
+				return new Rhino.Security.UserEditPanel({
+					listeners: {
+						itemupdated: function (updatedItem) {
+							_setTabTitle(newTab, 'User ' + Rhino.Security.User.toString(updatedItem));
+							_setTabIdentifier(newTab, 'User-' + updatedItem.StringId);
+						}
+					}
+				});
+			}, 'User-new');
 			newTab.getWrappedElement().loadItem(null);
-			newTab.getWrappedElement().on('itemupdated', function (updatedItem) {
-				_setTabTitle(newTab, 'User ' + Rhino.Security.User.toString(updatedItem));
-				_setTabIdentifier(newTab, 'User-' + updatedItem.StringId);
-			});
+		}
+		function _onUserEditItem(sender, item) {
+			var editTab = _openTab('User ' + Rhino.Security.User.toString(item), function () {
+				return new Rhino.Security.UserEditPanel({
+					listeners: {
+						itemupdated: function (updatedItem) {
+							_setTabTitle(editTab, 'User ' + Rhino.Security.User.toString(updatedItem));
+						}
+					}
+				});
+			}, 'User-' + item.StringId);
+			editTab.getWrappedElement().loadItem(item.StringId);
 		}
 		function _onUserClick(sender, item) {
-			var searchTab = _openTab('Search User', new Rhino.Security.UserSearchPanel(), 'User-search');
-			searchTab.getWrappedElement().on('edititem', _onUserEditItem);
-			searchTab.getWrappedElement().on('newitem', _onUserNewItem);
+			var searchPanelFactory = function () {
+				return new Rhino.Security.UserSearchPanel({
+					listeners: {
+						edititem: _onUserEditItem,
+						newitem: _onUserNewItem
+					}
+				});
+			};
+			_openTab('Search User', searchPanelFactory, 'User-search');
 		}
 
 
