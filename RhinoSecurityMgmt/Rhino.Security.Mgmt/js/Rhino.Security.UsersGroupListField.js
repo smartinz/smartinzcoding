@@ -7,7 +7,6 @@ Rhino.Security.UsersGroupListField = Ext.extend(Ext.form.Field, {
 	initComponent: function () {
 		var _this = this,
 		_gridPanel,
-		_pagingToolbar,
 		_store,
 		_selectedItem = null,
 		_onEditEnded = function (window, item) {
@@ -64,17 +63,9 @@ Rhino.Security.UsersGroupListField = Ext.extend(Ext.form.Field, {
 			reader: new Rhino.Security.UsersGroupJsonReader()
 		});
 
-		_pagingToolbar = new Ext.PagingToolbar({
-			store: _store,
-			displayInfo: true,
-			pageSize: 25,
-			prependButtons: true
-		});
-
 		_gridPanel = new Rhino.Security.UsersGroupGridPanel(Ext.copyTo({
 			id: _this.id + '-gridpanel',
 			store: _store,
-			bbar: _pagingToolbar,
 			tbar: [
 				{ text: 'Add', handler: _onNewButtonClick, icon: 'images/add.png', cls: 'x-btn-text-icon' },
 				{ text: 'Delete', handler: _onDeleteButtonClick, icon: 'images/delete.png', cls: 'x-btn-text-icon' }
