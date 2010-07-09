@@ -60,6 +60,12 @@ namespace Rhino.Security.Mgmt.Dtos
 				.ForMember(d => d.StringId, o => o.MapFrom(s => sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.UsersGroup>>().ToString(s)))
 				.ForMember(d => d.Description, o => o.MapFrom(s => s.ToString()));
 
+			Mapper.CreateMap<IUser, UserDto>()
+				.ForMember(d => d.StringId, o => o.MapFrom(s => sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.User>>().ToString((Rhino.Security.Model.User)s)))
+				.ForMember(d => d.Groups, o => o.Ignore())
+				.ForMember(d => d.Id, o => o.MapFrom(s => ((Rhino.Security.Model.User)s).Id))
+				.ForMember(d => d.Name, o => o.MapFrom(s => ((Rhino.Security.Model.User)s).Name));
+
 			Mapper.CreateMap<Rhino.Security.Model.User, UserDto>()
 				.ForMember(d => d.StringId, o => o.MapFrom(s => sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.User>>().ToString(s)));
 			Mapper.CreateMap<Rhino.Security.Model.User, UserReferenceDto>()
@@ -129,17 +135,24 @@ namespace Rhino.Security.Mgmt.Dtos
 
 			Mapper.CreateMap<UsersGroupDto, Rhino.Security.Model.UsersGroup>()
 				.ConstructUsing(s => string.IsNullOrEmpty(s.StringId) ? sl.GetInstance<Nexida.Infrastructure.IFactory<Rhino.Security.Model.UsersGroup>>().Create() : sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.UsersGroup>>().FromString(s.StringId))
-																.ForMember(d => d.Parent, o => o.Ignore())
+				.ForMember(d => d.Parent, o => o.Ignore())
+				.ForMember(d => d.AllParents, o => o.Ignore())
+				.ForMember(d => d.Users, o => o.Ignore())
+				.ForMember(d => d.AllChildren, o => o.Ignore())
+				.ForMember(d => d.DirectChildren, o => o.Ignore())
+				.AfterMap((usersGroupDto, usersGroup) => {
+					var synchronizer = sl.GetInstance<SecurityUsersToUsersGroupsAssociationSynchronizer>();
+					foreach (var u in usersGroup.Users.ToArray())
+					{
+						synchronizer.Disassociate((Rhino.Security.Model.User)u, usersGroup);
+					}
+					var items = Mapper.Map<Rhino.Security.Mgmt.Dtos.UserDto[], Rhino.Security.Model.User[]>(usersGroupDto.Users);
+					foreach (var u in items)
+					{
+						synchronizer.Associate((Rhino.Security.Model.User)u, usersGroup);
+					}
+				});
 
-												.ForMember(d => d.AllParents, o => o.Ignore())
-
-												.ForMember(d => d.Users, o => o.Ignore())
-
-												.ForMember(d => d.AllChildren, o => o.Ignore())
-
-												.ForMember(d => d.DirectChildren, o => o.Ignore())
-
-								;
 			Mapper.CreateMap<UsersGroupReferenceDto, Rhino.Security.Model.UsersGroup>()
 				.ConstructUsing(s => string.IsNullOrEmpty(s.StringId) ? sl.GetInstance<Nexida.Infrastructure.IFactory<Rhino.Security.Model.UsersGroup>>().Create() : sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.UsersGroup>>().FromString(s.StringId))
 				.ForAllMembers(o => o.Ignore());

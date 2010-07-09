@@ -45,6 +45,7 @@
 	<script type="text/javascript" src="js/Rhino.Security.PermissionField.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.UsersGroupField.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.UserField.js"></script>
+	<script type="text/javascript" src="js/Rhino.Security.UserListField.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.EntitiesGroupFormPanel.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.EntityReferenceFormPanel.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.EntityTypeFormPanel.js"></script>

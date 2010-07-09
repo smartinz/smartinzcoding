@@ -1031,6 +1031,7 @@
     <Content Include="images\pencil.png" />
     <Content Include="images\refresh.png" />
     <Content Include="images\zoom.png" />
+    <Content Include="js\Rhino.Security.UserListField.js" />
     <Content Include="js\Rhino.Security.EntitiesGroup.js" />
     <Content Include="js\Rhino.Security.EntitiesGroupColumn.js" />
     <Content Include="js\Rhino.Security.EntitiesGroupEditPanel.js" />
@@ -1090,8 +1091,6 @@
     <Content Include="js\Rhino.Security.UserFormPanel.js" />
     <Content Include="js\Rhino.Security.UserGridPanel.js" />
     <Content Include="js\Rhino.Security.UserJsonReader.js" />
-    <Content Include="js\Rhino.Security.UserSearchByGroupSearchFormPanel.js" />
-    <Content Include="js\Rhino.Security.UserSearchByGroupSearchPanel.js" />
     <Content Include="js\Rhino.Security.UserSearchFormPanel.js" />
     <Content Include="js\Rhino.Security.UserSearchPanel.js" />
     <Content Include="js\Rhino.Security.UsersGroup.js" />

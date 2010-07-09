@@ -15,13 +15,33 @@ Rhino.Security.UsersGroupFormPanel = Ext.extend(Ext.form.FormPanel, {
 		});
 
 		Ext.apply(_this, {
-			layout: 'form',
 			border: false,
-			padding: 10,
-			items: [
-				{ name: 'StringId', xtype: 'hidden' },
-				_entityIdFieldContainer,
-				{ name: 'Name', fieldLabel: 'Name', xtype: 'textfield' }
+			layout: 'vbox',
+			layoutConfig: {
+				align: 'stretch',
+				pack: 'start'
+			},
+			items: [{
+				layout: 'form',
+				border: false,
+				padding: 10,
+				items: [
+					{ name: 'StringId', xtype: 'hidden' },
+					_entityIdFieldContainer,
+					{ name: 'Name', fieldLabel: 'Name', xtype: 'textfield' }
+				]
+			}, 
+			{
+				flex: 1,
+				xtype: 'tabpanel',
+				plain: true,
+				border: false,
+				activeTab: 0,
+				deferredRender: false, // IMPORTANT! See http://www.extjs.com/deploy/dev/examples/form/dynamic.js
+				items: [
+					{ name: 'Users', title: 'Users', xtype: 'Rhino.Security.UserListField' }
+				]
+			}
 			],
 			setUpFormForEditItem: function () {
 				_entityIdFieldContainer.show();
