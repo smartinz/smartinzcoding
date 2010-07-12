@@ -1031,6 +1031,9 @@
     <Content Include="images\pencil.png" />
     <Content Include="images\refresh.png" />
     <Content Include="images\zoom.png" />
+    <Content Include="js\Rhino.Security.PermissionEditControl.js" />
+    <Content Include="js\Rhino.Security.PermissionsBuilderPanel.js" />
+    <Content Include="js\Rhino.Security.PermissionsFormPanel.js" />
     <Content Include="js\Rhino.Security.UserListField.js" />
     <Content Include="js\Rhino.Security.EntitiesGroup.js" />
     <Content Include="js\Rhino.Security.EntitiesGroupColumn.js" />
@@ -1074,15 +1077,7 @@
     <Content Include="js\Rhino.Security.OperationSearchFormPanel.js" />
     <Content Include="js\Rhino.Security.OperationSearchPanel.js" />
     <Content Include="js\Rhino.Security.Permission.js" />
-    <Content Include="js\Rhino.Security.PermissionColumn.js" />
-    <Content Include="js\Rhino.Security.PermissionEditPanel.js" />
-    <Content Include="js\Rhino.Security.PermissionEditWindow.js" />
-    <Content Include="js\Rhino.Security.PermissionField.js" />
-    <Content Include="js\Rhino.Security.PermissionFormPanel.js" />
-    <Content Include="js\Rhino.Security.PermissionGridPanel.js" />
     <Content Include="js\Rhino.Security.PermissionJsonReader.js" />
-    <Content Include="js\Rhino.Security.PermissionSearchFormPanel.js" />
-    <Content Include="js\Rhino.Security.PermissionSearchPanel.js" />
     <Content Include="js\Rhino.Security.User.js" />
     <Content Include="js\Rhino.Security.UserColumn.js" />
     <Content Include="js\Rhino.Security.UserEditPanel.js" />
@@ -1147,6 +1142,7 @@
     <Content Include="References\NHibernateValidator-1.2.0.CR1\pl\NHibernate.Validator.resources.dll" />
     <Content Include="References\System.Linq.Dynamic\Readme.txt" />
     <Content Include="References\System.Linq.Dynamic\System.Linq.Dynamic.dll" />
+    <Content Include="TODO.txt" />
     <Content Include="Views\Home\Index.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

@@ -57,6 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PermissionsServiceFactory.cs" />
+    <Compile Include="PermissionsBuilderServiceFactory.cs" />
     <Compile Include="AuthorizationRepositoryFactory.cs" />
     <Compile Include="IFactory.cs" />
     <Compile Include="IPresentableSet.cs" />

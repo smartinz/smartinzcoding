@@ -1,0 +1,2 @@
+﻿- centralized mgmt of errors
+- add functionality to tabcontrol to be able to move to tabs that are not visible because of the page size

@@ -86,29 +86,10 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 		}
 
 		// Permission
-		function _onPermissionNewItem(sender) {
-			var editPanelFactory = function () {
-				return new Rhino.Security.PermissionEditPanel();
-			};
-			_openTab('New Permission', editPanelFactory, 'Permission-new');
-		}
-		function _onPermissionEditItem(sender, item) {
-			var editPanelFactory = function () {
-				return new Rhino.Security.PermissionEditPanel();
-			},
-			editTab = _openTab('Permission ' + Rhino.Security.Permission.toString(item), editPanelFactory, 'Permission-' + item.StringId);
-			editTab.getWrappedElement().loadItem(item.StringId);
-		}
 		function _onPermissionClick(sender, item) {
-			var searchPanelFactory = function () {
-				return new Rhino.Security.PermissionSearchPanel({
-					listeners: {
-						edititem: _onPermissionEditItem,
-						newitem: _onPermissionNewItem
-					}
-				});
-			};
-			_openTab('Search Permission', searchPanelFactory, 'Permission-search');
+			_openTab('Manage Permissions', function () {
+				return new Rhino.Security.PermissionsFormPanel();
+			}, 'Permissions manager');
 		}
 
 		// UsersGroup
@@ -209,20 +190,9 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 				]
 				}, {
 					text: 'Manage Permissions',
-					children: [{
-						text: 'Search',
-						leaf: true,
-						listeners: {
-							click: _onPermissionClick
-						}
-					}, {
-						text: 'Create',
-						leaf: true,
-						listeners: {
-							click: _onPermissionNewItem
-						}
+					listeners: {
+						click: _onPermissionClick
 					}
-				]
 				}, {
 					text: 'Manage UsersGroups',
 					children: [{

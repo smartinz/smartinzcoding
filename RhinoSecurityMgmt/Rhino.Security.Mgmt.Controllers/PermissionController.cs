@@ -1,5 +1,7 @@
 using System.Web.Mvc;
 using System.Collections.Generic;
+using Rhino.Security.Model;
+using Rhino.Security.Mgmt.Dtos;
 
 namespace Rhino.Security.Mgmt.Controllers
 {
@@ -23,62 +25,33 @@ namespace Rhino.Security.Mgmt.Controllers
 
 		public ActionResult Save(Rhino.Security.Mgmt.Dtos.PermissionDto item)
 		{
-			using(_conversation.SetAsCurrent())
+			using (_conversation.SetAsCurrent())
 			{
+				Permission permissionToReturn = null;
 				var itemMapped = _mapper.Map<Rhino.Security.Mgmt.Dtos.PermissionDto, Rhino.Security.Model.Permission>(item);
 				Nexida.Infrastructure.Mvc.ValidationHelpers.AddErrorsToModelState(ModelState, _validator.Validate(itemMapped), "item");
 				if (ModelState.IsValid)
 				{
-					var isNew = string.IsNullOrEmpty(item.StringId);
-					if(isNew)
-					{
-						_repository.Create(itemMapped);
-					}
-					if(!isNew)
-					{
-						_repository.Update(itemMapped);
-					}
-					_conversation.Flush();
+					permissionToReturn = _repository.Create(itemMapped);
 				}
-				return Json(new{
+				PermissionDto permissionToReturnDto = permissionToReturn != null ? _mapper.Map<Permission, PermissionDto>(permissionToReturn) : null;
+				return Json(new
+				{
+					item = permissionToReturnDto,
 					success = ModelState.IsValid,
 					errors = Nexida.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
 				});
 			}
 		}
 
-		public ActionResult Load(string stringId)
+		public ActionResult Load(string operationName)
 		{
-			using(_conversation.SetAsCurrent())
+			using (_conversation.SetAsCurrent())
 			{
-				var item = _stringConverter.FromString(stringId);
-				var itemDto = _mapper.Map<Rhino.Security.Model.Permission, Rhino.Security.Mgmt.Dtos.PermissionDto>(item);
-				return Json(itemDto);
+				var items = _repository.ReadByOperation(operationName);
+				var dtos = _mapper.Map<Rhino.Security.Model.Permission[], Rhino.Security.Mgmt.Dtos.PermissionDto[]>(items);
+				return Json(new { items = dtos, count = dtos.Length });
 			}
 		}
-
-		public void Delete(string stringId)
-		{
-			using(_conversation.SetAsCurrent())
-			{
-				var item = _stringConverter.FromString(stringId);
-				_repository.Delete(item);
-				_conversation.Flush();
-			}
-		}
-
-				public ActionResult Search(System.Guid? id, System.Guid? entitySecurityKey, bool? allow, int? level, string entityTypeName, int start, int limit, string sort, string dir)
-				{
-					Log.DebugFormat("Search called");
-					using(_conversation.SetAsCurrent())
-					{
-																										
-						var set = _repository.Search(id, entitySecurityKey, allow, level, entityTypeName);
-						var items = set.Skip(start).Take(limit).Sort(sort, dir == "ASC").AsEnumerable();
-						var dtos = _mapper.Map<IEnumerable<Rhino.Security.Model.Permission>, Rhino.Security.Mgmt.Dtos.PermissionDto[]>(items);
-						return Json(new{ items = dtos, count = set.Count() });
-					}
-				}
-				
 	}
 }

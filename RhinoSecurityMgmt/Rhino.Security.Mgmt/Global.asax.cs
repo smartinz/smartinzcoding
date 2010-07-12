@@ -48,11 +48,6 @@ namespace Rhino.Security.Mgmt
 				);
 		}
 
-		//protected void Application_BeginRequest(object sender, EventArgs e)
-		//{
-		//    ;
-		//}
-
 		protected void Application_Start()
 		{
 			XmlConfigurator.Configure();
@@ -67,9 +62,8 @@ namespace Rhino.Security.Mgmt
 
 			// start setup Rhino Security services
 			ioc.Register(Component.For<AuthorizationRepositoryFactory>());
-			//ioc.Register(Component.For<IPermissionsService>().UsingFactoryMethod(CreatePermissionService).LifeStyle.PerWebRequest);
-			//ioc.Register(Component.For<IAuthorizationService>().UsingFactoryMethod(CreateAuthorizationService).LifeStyle.PerWebRequest);
-			//ioc.Register(Component.For<IPermissionsBuilderService>().UsingFactoryMethod(CreatePermissionsBuilderService).LifeStyle.PerWebRequest);
+			ioc.Register(Component.For<PermissionsServiceFactory>());
+			ioc.Register(Component.For<PermissionsBuilderServiceFactory>());
 			// end setup Rhino Security services
 
 			ioc.Register(Component.For<SecurityUsersToUsersGroupsAssociationSynchronizer>());
@@ -93,21 +87,6 @@ namespace Rhino.Security.Mgmt
 			ServiceLocator.SetLocatorProvider(() => new WindsorServiceLocator(ioc));
 		}
 
-		//private static IPermissionsBuilderService CreatePermissionsBuilderService(IKernel kernel)
-		//{
-		//    return new PermissionsBuilderService(kernel.Resolve<ISession>(), kernel.Resolve<IAuthorizationRepository>());
-		//}
-
-		//private static IAuthorizationService CreateAuthorizationService(IKernel kernel)
-		//{
-		//    return new AuthorizationService(kernel.Resolve<IPermissionsService>(), kernel.Resolve<IAuthorizationRepository>());
-		//}
-
-		//private static IPermissionsService CreatePermissionService(IKernel kernel)
-		//{
-		//    return new PermissionsService(kernel.Resolve<IAuthorizationRepository>(), kernel.Resolve<ISession>());
-		//}
-
 		private static ValidatorEngine CreateValidatorEngine()
 		{
 			var cfg = new XmlConfiguration();
@@ -125,10 +104,6 @@ namespace Rhino.Security.Mgmt
 				.SetProperty(NHibernate.Cfg.Environment.CurrentSessionContextClass, typeof(ConversationSessionContext).AssemblyQualifiedName)
 				.AddAssembly(typeof(User).Assembly);
 			Security.Configure<User>(nhConfig, SecurityTableStructure.Prefix);
-
-			//NHibernate.Cfg.Configuration nhCfg = new NHibernate.Cfg.Configuration().Configure()
-			//    .SetProperty(NHibernate.Cfg.Environment.CurrentSessionContextClass, typeof(ConversationSessionContext).AssemblyQualifiedName)
-			//    .AddAssembly(typeof(User).Assembly);
 
 			nhConfig.Initialize(validatorEngine);
 			return nhConfig.BuildSessionFactory();
