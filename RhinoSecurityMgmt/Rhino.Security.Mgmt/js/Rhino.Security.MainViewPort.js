@@ -61,17 +61,16 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 
 		// Operation
 		function _onOperationNewItem(sender) {
-			var editPanelFactory = function () {
-				return new Rhino.Security.OperationEditPanel();
-			};
-			_openTab('New Operation', editPanelFactory, 'Operation-new');
-		}
-		function _onOperationEditItem(sender, item) {
-			var editPanelFactory = function () {
-				return new Rhino.Security.OperationEditPanel();
-			},
-			editTab = _openTab('Operation ' + Rhino.Security.Operation.toString(item), editPanelFactory, 'Operation-' + item.StringId);
-			editTab.getWrappedElement().loadItem(item.StringId);
+			_openTab('New Operation', function () {
+				return new Rhino.Security.OperationEditPanel({
+					listeners: {
+						itemupdated: function (updatedItem) {
+							_setTabTitle(newTab, 'Operation ' + Rhino.Security.Operation.toString(updatedItem));
+							_setTabIdentifier(newTab, 'Operation-' + updatedItem.StringId);
+						}
+					}
+				});
+			}, 'Operation-new');
 		}
 		function _onOperationClick(sender, item) {
 			var newSearchPanelFactory = function () {
@@ -144,6 +143,7 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 			}, 'User-new');
 			newTab.getWrappedElement().loadItem(null);
 		}
+
 		function _onUserEditItem(sender, item) {
 			var editTab = _openTab('User ' + Rhino.Security.User.toString(item), function () {
 				return new Rhino.Security.UserEditPanel({
