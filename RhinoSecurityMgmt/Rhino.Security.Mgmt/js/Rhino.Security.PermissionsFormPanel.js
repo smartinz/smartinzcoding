@@ -8,6 +8,7 @@ Rhino.Security.PermissionsFormPanel = Ext.extend(Ext.Panel, {
 	layout: 'border',
 	initComponent: function () {
 		var _this = this,
+		_onNodeAppended,
 		_onOperationClick,
 		_operationsTreePanel,
 		_permissionsBuilderPanel = new Rhino.Security.PermissionsBuilderPanel({
@@ -15,6 +16,7 @@ Rhino.Security.PermissionsFormPanel = Ext.extend(Ext.Panel, {
 		});
 
 		_onOperationClick = function (sender, item) {
+			_permissionsBuilderPanel.show();
 			_permissionsBuilderPanel.loadPermissions(sender.id);
 		};
 
@@ -40,6 +42,7 @@ Rhino.Security.PermissionsFormPanel = Ext.extend(Ext.Panel, {
 		});
 
 		_operationsTreePanel.getRootNode().expand();
+		_permissionsBuilderPanel.hide();
 
 		_this.items = [_operationsTreePanel, _permissionsBuilderPanel];
 

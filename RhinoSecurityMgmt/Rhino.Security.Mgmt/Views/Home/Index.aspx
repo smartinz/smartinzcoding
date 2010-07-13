@@ -77,7 +77,9 @@
 	<script type="text/javascript" src="js/Rhino.Security.PermissionsFormPanel.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.PermissionsBuilderPanel.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.PermissionEditControl.js"></script>
-	
+	<script type="text/javascript" src="js/Rhino.Security.PermissionReadJsonReader.js"></script>
+	<script type="text/javascript" src="js/Rhino.Security.PermissionJsonReader.js"></script>
+		
 	<script type="text/javascript">
 		"use strict";
 

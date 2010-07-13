@@ -8,9 +8,11 @@ Rhino.Security.PermissionsBuilderPanel = Ext.extend(Ext.Panel, {
 	initComponent: function () {
 		var _this = this,
 		_allowPermissionEditControl = new Rhino.Security.PermissionEditControl({
+			name: 'allowed',
 			title: 'Allowed'
 		}),
 		_denyPermissionEditControl = new Rhino.Security.PermissionEditControl({
+			name: 'forbidden',
 			title: 'Forbidden'
 		}),
 		_titleLabel = new Ext.form.Label({
@@ -18,6 +20,7 @@ Rhino.Security.PermissionsBuilderPanel = Ext.extend(Ext.Panel, {
 		});
 
 		Ext.apply(_this, {
+			
 			layout: 'vbox',
 			layoutConfig: {
 				align: 'stretch',
@@ -31,15 +34,27 @@ Rhino.Security.PermissionsBuilderPanel = Ext.extend(Ext.Panel, {
 				xtype: 'panel',
 				layout: 'hbox',
 				border: false,
-				//				layoutConfig: {
-				//					align: 'stretch',
-				//					pack: 'start'
-				//				},
+				layoutConfig: {
+					align: 'stretch',
+					pack: 'start'
+				},
 				items: [_allowPermissionEditControl, _denyPermissionEditControl]
 			}
 			],
-			loadPermissions: function (operationId) {
-				_titleLabel.setText('Permissions for operation \'' + operationId + '\'');
+			loadPermissions: function (operationName) {
+				_this.el.mask('Loading...', 'x-mask-loading');
+
+				_titleLabel.setText('Permissions for operation \'' + operationName + '\'');
+
+				Rpc.call({
+					url: 'Permission/LoadByOperationName',
+					params: { operationName: operationName },
+					success: function (item) {
+						_this.el.unmask();
+						_allowPermissionEditControl.setValue(item.allowed);
+						_denyPermissionEditControl.setValue(item.forbidden);
+					}
+				});
 			}
 		});
 

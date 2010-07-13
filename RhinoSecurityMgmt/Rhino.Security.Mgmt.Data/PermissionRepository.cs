@@ -23,6 +23,7 @@ namespace Rhino.Security.Mgmt.Data
 		public Permission Create(Permission permission)
 		{
 			var builder = _permissionBuilderServiceFactory.Create();
+
 			var forPermissionBuilder = ((permission.Allow) ? builder.Allow(permission.Operation) : builder.Deny(permission.Operation));
 			if (permission.User != null)
 			{

@@ -190,6 +190,7 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 				]
 				}, {
 					text: 'Manage Permissions',
+					leaf: true,
 					listeners: {
 						click: _onPermissionClick
 					}

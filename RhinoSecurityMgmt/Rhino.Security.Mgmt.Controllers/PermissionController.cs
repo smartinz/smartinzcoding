@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Web.Mvc;
 using System.Collections.Generic;
 using Rhino.Security.Model;
@@ -33,7 +34,9 @@ namespace Rhino.Security.Mgmt.Controllers
 				if (ModelState.IsValid)
 				{
 					permissionToReturn = _repository.Create(itemMapped);
+					_conversation.Flush();
 				}
+
 				PermissionDto permissionToReturnDto = permissionToReturn != null ? _mapper.Map<Permission, PermissionDto>(permissionToReturn) : null;
 				return Json(new
 				{
@@ -44,14 +47,25 @@ namespace Rhino.Security.Mgmt.Controllers
 			}
 		}
 
-		public ActionResult Load(string operationName)
+		public ActionResult LoadByOperationName(string operationName)
 		{
 			using (_conversation.SetAsCurrent())
 			{
 				var items = _repository.ReadByOperation(operationName);
-				var dtos = _mapper.Map<Rhino.Security.Model.Permission[], Rhino.Security.Mgmt.Dtos.PermissionDto[]>(items);
-				return Json(new { items = dtos, count = dtos.Length });
+
+				return Json(new
+				{
+					allowed = items.Where(x => x.Allow).Select(x => new { id = x.Id, description = GetDescription(x) }),
+					forbidden = items.Where(x => !x.Allow).Select(x => new { id = x.Id, description = GetDescription(x) }),
+				});
 			}
 		}
+
+		private string GetDescription(Permission p)
+		{
+			return p.User != null ? ((User)p.User).Name : p.UsersGroup.Name;
+		}
 	}
+
+
 }

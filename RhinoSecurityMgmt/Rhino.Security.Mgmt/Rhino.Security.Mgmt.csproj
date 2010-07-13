@@ -1032,6 +1032,7 @@
     <Content Include="images\refresh.png" />
     <Content Include="images\zoom.png" />
     <Content Include="js\Rhino.Security.PermissionEditControl.js" />
+    <Content Include="js\Rhino.Security.PermissionReadJsonReader.js" />
     <Content Include="js\Rhino.Security.PermissionsBuilderPanel.js" />
     <Content Include="js\Rhino.Security.PermissionsFormPanel.js" />
     <Content Include="js\Rhino.Security.UserListField.js" />
