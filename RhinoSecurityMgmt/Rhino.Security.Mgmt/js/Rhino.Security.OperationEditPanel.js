@@ -7,6 +7,9 @@ Ext.namespace('Rhino.Security');
 Rhino.Security.OperationEditPanel = Ext.extend(Ext.Panel, {
 	initComponent: function () {
 		var _this = this,
+		_fireItemUpdated = function (item) {
+			_this.fireEvent('itemupdated', item);
+		},
 		_formPanel = new Rhino.Security.OperationFormPanel(),
 		_saveItemButtonHandler = function () {
 			_this.el.mask('Saving...', 'x-mask-loading');
@@ -17,6 +20,11 @@ Rhino.Security.OperationEditPanel = Ext.extend(Ext.Panel, {
 					_this.el.unmask();
 					if (result.success) {
 						Ext.MessageBox.show({ msg: 'Changes saved successfully.', icon: Ext.MessageBox.INFO, buttons: Ext.MessageBox.OK });
+						if (result.item) {
+							_formPanel.getForm().setValues(result.item);
+						}
+						_formPanel.setUpFormForEditItem();
+						_fireItemUpdated(_formPanel.getForm().getFieldValues());
 					} else {
 						_formPanel.getForm().markInvalid(result.errors.item);
 						Ext.MessageBox.show({ msg: 'Error saving data. Correct errors and retry.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });
@@ -46,18 +54,26 @@ Rhino.Security.OperationEditPanel = Ext.extend(Ext.Panel, {
 				{ text: 'Refresh', handler: _refreshItemButtonHandler, icon: 'images/arrow_refresh.png', cls: 'x-btn-text-icon' }
 			],
 			loadItem: function (stringId) {
-				_this.el.mask('Loading...', 'x-mask-loading');
-				Rpc.call({
-					url: 'Operation/Load',
-					params: { stringId: stringId },
-					success: function (item) {
-						_this.el.unmask();
-						_formPanel.getForm().setValues(item);
-					}
-				});
+				if (!stringId || stringId === null) {
+					_formPanel.setUpFormForNewItem();
+				}
+				else {
+					_this.el.mask('Loading...', 'x-mask-loading');
+					_formPanel.setUpFormForEditItem();
+					Rpc.call({
+						url: 'Operation/Load',
+						params: { stringId: stringId },
+						success: function (item) {
+							_this.el.unmask();
+							_formPanel.getForm().setValues(item);
+						}
+					});
+				}
 			}
 		});
 
 		Rhino.Security.OperationEditPanel.superclass.initComponent.apply(_this, arguments);
+
+		_this.addEvents('itemupdated');
 	}
 });

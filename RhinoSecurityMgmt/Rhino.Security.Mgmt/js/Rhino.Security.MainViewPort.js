@@ -61,7 +61,7 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 
 		// Operation
 		function _onOperationNewItem(sender) {
-			_openTab('New Operation', function () {
+			var newTab = _openTab('New Operation', function () {
 				return new Rhino.Security.OperationEditPanel({
 					listeners: {
 						itemupdated: function (updatedItem) {
@@ -71,12 +71,12 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 					}
 				});
 			}, 'Operation-new');
+			newTab.getWrappedElement().loadItem(null);
 		}
 		function _onOperationClick(sender, item) {
 			var newSearchPanelFactory = function () {
 				return new Rhino.Security.OperationSearchPanel({
 					listeners: {
-						edititem: _onOperationEditItem,
 						newitem: _onOperationNewItem
 					}
 				});
