@@ -9,10 +9,5 @@ namespace Rhino.Security.Mgmt.Dtos
 		public string Name { get; set; }
 				
 		public string Comment { get; set; }
-				
-		// public Rhino.Security.Mgmt.Dtos.OperationReferenceDto Parent { get; set; }
-				
-		// public Rhino.Security.Mgmt.Dtos.OperationReferenceDto[] Children { get; set; }
-				
 	}
 }

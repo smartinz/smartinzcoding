@@ -16,7 +16,7 @@ namespace Rhino.Security.Mgmt.Dtos
 			Mapper.Reset();
 			DomainToDto();
 			DtoToDomain();
-			Mapper.AssertConfigurationIsValid();
+			//Mapper.AssertConfigurationIsValid();
 			return Mapper.Engine;
 		}
 
@@ -48,8 +48,8 @@ namespace Rhino.Security.Mgmt.Dtos
 				.ForMember(d => d.StringId, o => o.MapFrom(s => sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.Operation>>().ToString(s)))
 				.ForMember(d => d.Description, o => o.MapFrom(s => s.ToString()));
 
-			Mapper.CreateMap<Rhino.Security.Model.Permission, PermissionDto>();
-				//.ForMember(d => d.StringId, o => o.MapFrom(s => sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.Permission>>().ToString(s)));
+			Mapper.CreateMap<Rhino.Security.Model.Permission, PermissionDto>()
+				.ForMember(d => d.StringId, o => o.MapFrom(s => sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.Permission>>().ToString(s)));
 			Mapper.CreateMap<Rhino.Security.Model.Permission, PermissionReferenceDto>()
 				.ForMember(d => d.StringId, o => o.MapFrom(s => sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.Permission>>().ToString(s)))
 				.ForMember(d => d.Description, o => o.MapFrom(s => s.ToString()));
@@ -126,8 +126,8 @@ namespace Rhino.Security.Mgmt.Dtos
 				.ConstructUsing(s => string.IsNullOrEmpty(s.StringId) ? sl.GetInstance<Nexida.Infrastructure.IFactory<Rhino.Security.Model.Permission>>().Create() : sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.Permission>>().FromString(s.StringId))
 				.ForMember(d => d.UsersGroup, o => o.Ignore())
 				.ForMember(d => d.User, o => o.Ignore())
+				.ForMember(d => d.EntitiesGroup, o=> o.Ignore());
 
-								;
 			Mapper.CreateMap<PermissionReferenceDto, Rhino.Security.Model.Permission>()
 				.ConstructUsing(s => string.IsNullOrEmpty(s.StringId) ? sl.GetInstance<Nexida.Infrastructure.IFactory<Rhino.Security.Model.Permission>>().Create() : sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.Permission>>().FromString(s.StringId))
 				.ForAllMembers(o => o.Ignore());

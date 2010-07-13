@@ -8,45 +8,40 @@ Rhino.Security.PermissionsFormPanel = Ext.extend(Ext.Panel, {
 	layout: 'border',
 	initComponent: function () {
 		var _this = this,
-		_treePanel,
-		_mainPanel = new Rhino.Security.PermissionsBuilderPanel({
+		_onOperationClick,
+		_operationsTreePanel,
+		_permissionsBuilderPanel = new Rhino.Security.PermissionsBuilderPanel({
 			region: 'center'
 		});
 
-		_treePanel = new Ext.tree.TreePanel({
-			title: 'Permissions',
+		_onOperationClick = function (sender, item) {
+			_permissionsBuilderPanel.loadPermissions(sender.id);
+		};
+
+		_onNodeAppended = function (tree, parent, node, index) {
+			node.on('click', _onOperationClick);
+		};
+
+		_operationsTreePanel = new Ext.tree.TreePanel({
+			title: 'Operations',
+			border: false,
 			region: 'west',
 			split: true,
 			collapsible: true,
 			width: 200,
-			rootVisible: false,
-			root: {
-				text: 'Root Node',
-				children: [{
-					text: 'Manage Operations',
-					children: [{
-						text: 'Search',
-						leaf: true,
-						listeners: { 
-							//click: _onOperationClick
-						}
-					}]
-				},
-				{
-					text: 'Manage Permissions',
-					children: [{
-						text: 'Search',
-						leaf: true
-					}, {
-						text: 'Create',
-						leaf: true
-					}]
-				}]
+			listeners: {
+				append: _onNodeAppended
 			},
-			loader: {}
+			dataUrl: 'Operation/GetAllAsTree',
+			root: {
+				text: 'All',
+				id: 'id'
+			}
 		});
 
-		_this.items = [_treePanel, _mainPanel];
+		_operationsTreePanel.getRootNode().expand();
+
+		_this.items = [_operationsTreePanel, _permissionsBuilderPanel];
 
 		Rhino.Security.PermissionsFormPanel.superclass.initComponent.apply(_this, arguments);
 	}

@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Web.Mvc;
 using System.Collections.Generic;
 
@@ -23,7 +25,7 @@ namespace Rhino.Security.Mgmt.Controllers
 
 		public ActionResult Save(Rhino.Security.Mgmt.Dtos.OperationDto item)
 		{
-			using(_conversation.SetAsCurrent())
+			using (_conversation.SetAsCurrent())
 			{
 				var itemMapped = _mapper.Map<Rhino.Security.Mgmt.Dtos.OperationDto, Rhino.Security.Model.Operation>(item);
 				Nexida.Infrastructure.Mvc.ValidationHelpers.AddErrorsToModelState(ModelState, _validator.Validate(itemMapped), "item");
@@ -31,18 +33,19 @@ namespace Rhino.Security.Mgmt.Controllers
 				if (ModelState.IsValid)
 				{
 					var isNew = string.IsNullOrEmpty(item.StringId);
-					if(isNew)
+					if (isNew)
 					{
 						itemToReturn = _repository.Create(itemMapped);
 					}
-					if(!isNew)
+					if (!isNew)
 					{
 						itemToReturn = _repository.Update(itemMapped);
 					}
 					_conversation.Flush();
 				}
 				var itemToReturnDto = itemToReturn != null ? _mapper.Map<Rhino.Security.Model.Operation, Rhino.Security.Mgmt.Dtos.OperationDto>(itemToReturn) : null;
-				return Json(new{
+				return Json(new
+				{
 					item = itemToReturnDto,
 					success = ModelState.IsValid,
 					errors = Nexida.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
@@ -52,7 +55,7 @@ namespace Rhino.Security.Mgmt.Controllers
 
 		public ActionResult Load(string stringId)
 		{
-			using(_conversation.SetAsCurrent())
+			using (_conversation.SetAsCurrent())
 			{
 				var item = _stringConverter.FromString(stringId);
 				var itemDto = _mapper.Map<Rhino.Security.Model.Operation, Rhino.Security.Mgmt.Dtos.OperationDto>(item);
@@ -62,7 +65,7 @@ namespace Rhino.Security.Mgmt.Controllers
 
 		public void Delete(string stringId)
 		{
-			using(_conversation.SetAsCurrent())
+			using (_conversation.SetAsCurrent())
 			{
 				var item = _stringConverter.FromString(stringId);
 				_repository.Delete(item);
@@ -70,18 +73,42 @@ namespace Rhino.Security.Mgmt.Controllers
 			}
 		}
 
-				public ActionResult Search(System.Guid? id, string name, string comment, int start, int limit, string sort, string dir)
+		public ActionResult Search(System.Guid? id, string name, string comment, int start, int limit, string sort, string dir)
+		{
+			Log.DebugFormat("Search called");
+			using (_conversation.SetAsCurrent())
+			{
+
+				var set = _repository.Search(id, name, comment);
+				var items = set.Skip(start).Take(limit).Sort(sort, dir == "ASC").AsEnumerable();
+				var dtos = _mapper.Map<IEnumerable<Rhino.Security.Model.Operation>, Rhino.Security.Mgmt.Dtos.OperationDto[]>(items);
+				return Json(new { items = dtos, count = set.Count() });
+			}
+		}
+
+		public ActionResult GetAllAsTree()
+		{
+			using (_conversation.SetAsCurrent())
+			{
+				return Json(BuildTree(_repository.GetAll().AsEnumerable().Where(x => x.Parent == null)));
+			}
+		}
+
+		private List<object> BuildTree(IEnumerable<Rhino.Security.Model.Operation> operations)
+		{
+			var tree = new List<object>();
+			foreach (var operation in operations)
+			{
+				if (operation.Children != null && operation.Children.Count > 0)
 				{
-					Log.DebugFormat("Search called");
-					using(_conversation.SetAsCurrent())
-					{
-																		
-						var set = _repository.Search(id, name, comment);
-						var items = set.Skip(start).Take(limit).Sort(sort, dir == "ASC").AsEnumerable();
-						var dtos = _mapper.Map<IEnumerable<Rhino.Security.Model.Operation>, Rhino.Security.Mgmt.Dtos.OperationDto[]>(items);
-						return Json(new{ items = dtos, count = set.Count() });
-					}
+					tree.Add(new { id = operation.Name, text = operation.Name, children = BuildTree(operation.Children) });
 				}
-				
+				else
+				{
+					tree.Add(new { id = operation.Name, text = operation.Name, leaf = true });
+				}
+			}
+			return tree;
+		}
 	}
 }

@@ -37,6 +37,11 @@ namespace Rhino.Security.Mgmt.Data
 			_authorizationRepositoryFactory.Create().RemoveOperation(v.Name);
 		}
 
+		public IPresentableSet<Rhino.Security.Model.Operation> GetAll()
+		{
+			return new Nexida.Infrastructure.QueryablePresentableSet<Rhino.Security.Model.Operation>(_northwindWithSecurity.GetCurrentSession().Linq<Rhino.Security.Model.Operation>());
+		}
+
 		public IPresentableSet<Rhino.Security.Model.Operation> Search(System.Guid? id, string name, string comment)
 		{
 			IQueryable<Rhino.Security.Model.Operation> queryable = _northwindWithSecurity.GetCurrentSession().Linq<Rhino.Security.Model.Operation>();

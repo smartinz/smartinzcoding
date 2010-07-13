@@ -7,13 +7,40 @@ Ext.namespace('Rhino.Security');
 Rhino.Security.PermissionsBuilderPanel = Ext.extend(Ext.Panel, {
 	initComponent: function () {
 		var _this = this,
-		_allowPermissionEditControl = new Rhino.Security.PermissionEditControl(),
-		_denyPermissionEditControl = new Rhino.Security.PermissionEditControl();
+		_allowPermissionEditControl = new Rhino.Security.PermissionEditControl({
+			title: 'Allowed'
+		}),
+		_denyPermissionEditControl = new Rhino.Security.PermissionEditControl({
+			title: 'Forbidden'
+		}),
+		_titleLabel = new Ext.form.Label({
+			text: 'Permissions'
+		});
 
 		Ext.apply(_this, {
-			layout: 'hbox',
+			layout: 'vbox',
+			layoutConfig: {
+				align: 'stretch',
+				pack: 'start'
+			},
 			border: false,
-			items: [ _allowPermissionEditControl ] //, _denyPermissionEditControl ]
+			padding: 20,
+			items: [_titleLabel,
+			{
+				flex: 1,
+				xtype: 'panel',
+				layout: 'hbox',
+				border: false,
+				//				layoutConfig: {
+				//					align: 'stretch',
+				//					pack: 'start'
+				//				},
+				items: [_allowPermissionEditControl, _denyPermissionEditControl]
+			}
+			],
+			loadPermissions: function (operationId) {
+				_titleLabel.setText('Permissions for operation \'' + operationId + '\'');
+			}
 		});
 
 		Rhino.Security.PermissionsBuilderPanel.superclass.initComponent.apply(_this, arguments);
