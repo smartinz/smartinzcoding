@@ -28,8 +28,7 @@ Rhino.Security.OperationFormPanel = Ext.extend(Ext.form.FormPanel, {
 				items: [
 					{ name: 'StringId', xtype: 'hidden' },
 					_entityIdFieldContainer,
-					{ name: 'Name', fieldLabel: 'Name', xtype: 'textfield' },
-					{ name: 'Comment', fieldLabel: 'Comment', xtype: 'textfield' }
+					{ name: 'Name', fieldLabel: 'Name', xtype: 'textfield' }
 				]
 			}],
 			setUpFormForEditItem: function () {

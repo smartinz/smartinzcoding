@@ -10,7 +10,8 @@ Rhino.Security.OperationGridPanel = Ext.extend(Ext.grid.GridPanel, {
 		this.colModel = new Ext.grid.ColumnModel({
 			defaults: { width: 60, sortable: true },
 			columns: [
-				{ dataIndex: 'Id', header: 'Id', xtype: 'gridcolumn' }, { dataIndex: 'Name', header: 'Name', xtype: 'gridcolumn' }, { dataIndex: 'Comment', header: 'Comment', xtype: 'gridcolumn' }
+				{ dataIndex: 'Id', header: 'Id', xtype: 'gridcolumn' },
+				{ dataIndex: 'Name', header: 'Name', xtype: 'gridcolumn' }
 			]
 		});
 		Rhino.Security.OperationGridPanel.superclass.initComponent.apply(this, arguments);
