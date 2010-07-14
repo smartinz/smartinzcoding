@@ -11,6 +11,7 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 		_treePanel,
 		_tabPanel = new Ext.TabPanel({
 			activeTab: 0,
+			enableTabScroll: true,
 			region: 'center',
 			items: [{
 				xtype: 'panel',
@@ -176,6 +177,7 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 			collapsible: true,
 			width: 200,
 			rootVisible: false,
+			lines: false,
 			root: {
 				text: 'Root Node',
 				children: [{

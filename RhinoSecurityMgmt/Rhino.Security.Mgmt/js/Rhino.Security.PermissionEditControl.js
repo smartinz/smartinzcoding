@@ -64,8 +64,10 @@ Rhino.Security.PermissionEditControl = Ext.extend(Ext.Panel, {
 								Type: actionResult.item.Type
 							});
 							_listView.getStore().load();
-							_this.el.unmask();
 						}
+					},
+					callback: function () {
+						_this.el.unmask();
 					}
 				});
 
@@ -101,11 +103,19 @@ Rhino.Security.PermissionEditControl = Ext.extend(Ext.Panel, {
 		},
 
 		_onAddUserButtonClick = function (button) {
+			if (!_selectedOperation) {
+				alert('Please select an operation on the left first.');
+				return;
+			}
 			var window = _buildWindow('user');
 			window.show(button.getEl());
 		},
 
 		_onAddUsersGroupButtonClick = function (button) {
+			if (!_selectedOperation) {
+				alert('Please select an operation on the left first.');
+				return;
+			}
 			var window = _buildWindow('group');
 			window.show(button.getEl());
 		},
@@ -154,7 +164,8 @@ Rhino.Security.PermissionEditControl = Ext.extend(Ext.Panel, {
 							_this.getValue().remove(selectedItems[i].$ref);
 						}
 						_listView.getStore().load();
-
+					},
+					callback: function () {
 						_this.el.unmask();
 					}
 				});

@@ -1031,6 +1031,7 @@
     <Content Include="images\pencil.png" />
     <Content Include="images\refresh.png" />
     <Content Include="images\zoom.png" />
+    <Content Include="js\json2.js" />
     <Content Include="js\Rhino.Security.PermissionEditControl.js" />
     <Content Include="js\Rhino.Security.PermissionJsonReader.js" />
     <Content Include="js\Rhino.Security.PermissionsBuilderPanel.js" />
