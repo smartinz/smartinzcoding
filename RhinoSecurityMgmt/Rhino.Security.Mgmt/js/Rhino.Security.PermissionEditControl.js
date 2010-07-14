@@ -7,12 +7,13 @@ Ext.namespace('Rhino.Security');
 Rhino.Security.PermissionEditControl = Ext.extend(Ext.Panel, {
 	initComponent: function () {
 		var _this = this,
+		_selectedOperation,
 
 		_store = new Ext.data.Store({
 			autoDestroy: true,
 			remoteSort: false,
 			proxy: new Ext.data.MemoryProxy({ items: [] }),
-			reader: new Rhino.Security.PermissionReadJsonReader()
+			reader: new Rhino.Security.PermissionJsonReader()
 		}),
 
 		_listView = new Ext.list.ListView({
@@ -23,62 +24,148 @@ Rhino.Security.PermissionEditControl = Ext.extend(Ext.Panel, {
 			columns: [
 				{
 					width: 0.5,
-					dataIndex: 'description'
+					dataIndex: 'Description'
 				}
 			]
 		}),
 
-		_onEditEnded = function (window, item) {
+		_editEnded = function (window, item, itemType) {
 			var currentItems = _this.getValue(),
 			found = false,
 			i,
-			count = currentItems.length;
+			count = currentItems.length,
+			newPermission;
 			for (i = 0; i < count; i += 1) {
-				if (currentItems[i] && currentItems[i].id && currentItems[i].id === item.id) {
+				if (currentItems[i] && currentItems[i].Description === item.Name) {
 					found = true;
 					break;
 				}
 			}
 
 			if (!found) {
-				currentItems.push({ id: item.Id, description: item.Name });
+				newPermission = {
+					Allow: _this.name === 'allowed' ? true : false,
+					UserStringId: itemType === 'user' ? item.StringId : null,
+					UsersGroupStringId: itemType === 'group' ? item.StringId : null,
+					OperationName: _selectedOperation
+				};
+
+				_this.el.mask('Saving...', 'x-mask-loading');
+
+				Rpc.call({
+					url: 'Permission/Create',
+					params: { item: newPermission },
+					success: function (actionResult) {
+						if (actionResult && actionResult.item) {
+							currentItems.push({
+								StringId: actionResult.item.Id,
+								Id: actionResult.item.Id,
+								Description: actionResult.item.Description,
+								Type: actionResult.item.Type
+							});
+							_listView.getStore().load();
+							_this.el.unmask();
+						}
+					}
+				});
+
+
 			}
 
-			_listView.getStore().load();
 			window.close();
 		},
 
+		_onUserEditEnded = function (window, item) {
+			_editEnded(window, item, 'user');
+		},
+
+		_onGroupEditEnded = function (window, item) {
+			_editEnded(window, item, 'group');
+		},
+
 		_buildWindow = function (action) {
-			if (action === 'addUser') {
+			if (action === 'user') {
 				return new Rhino.Security.UserEditWindow({
 					listeners: {
-						editended: _onEditEnded
+						editended: _onUserEditEnded
 					}
 				});
 			}
-			else {
+			if (action === 'group') {
 				return new Rhino.Security.UsersGroupEditWindow({
 					listeners: {
-						editended: _onEditEnded
+						editended: _onGroupEditEnded
 					}
 				});
 			}
 		},
 
 		_onAddUserButtonClick = function (button) {
-			var window = _buildWindow('addUser');
+			var window = _buildWindow('user');
 			window.show(button.getEl());
 		},
 
 		_onAddUsersGroupButtonClick = function (button) {
-			var window = _buildWindow('addUsersGroup');
+			var window = _buildWindow('group');
 			window.show(button.getEl());
+		},
+
+		_getSelectedItems = function () {
+			var selectedRecords = _listView.getSelectedRecords(),
+			selectedItems = [];
+			if (selectedRecords && selectedRecords.length > 0) {
+				Ext.each(selectedRecords, function (item) {
+					selectedItems.push(item.data);
+				});
+				return selectedItems;
+			}
+			return null;
+		},
+
+		_getSelectedStringIds = function (items) {
+			if (items && items.length > 0) {
+				var selectedStringIds = [];
+				Ext.each(items, function (item) {
+					selectedStringIds.push(item.StringId);
+				});
+				return selectedStringIds;
+			}
+			return null;
+		},
+
+		_onDeleteButtonClick = function () {
+			var selectedItems = _getSelectedItems();
+			if (!selectedItems || selectedItems.length === 0) {
+				return;
+			}
+			Ext.MessageBox.confirm('Delete', 'Are you sure?', function (buttonId) {
+				if (buttonId !== 'yes') {
+					return;
+				}
+
+				_this.el.mask('Saving...', 'x-mask-loading');
+
+				Rpc.call({
+					url: 'Permission/Delete',
+					params: { stringIds: _getSelectedStringIds(selectedItems) },
+					success: function () {
+						var i;
+						for (i = 0; i < selectedItems.length; i += 1) {
+							_this.getValue().remove(selectedItems[i].$ref);
+						}
+						_listView.getStore().load();
+
+						_this.el.unmask();
+					}
+				});
+			});
 		};
 
 		Ext.apply(_this, {
 			layout: 'fit',
 			layoutConfig: {
-				align: 'stretch'
+				align: 'stretch',
+				pack: 'start'
 			},
 			border: true,
 			margins: {
@@ -105,10 +192,18 @@ Rhino.Security.PermissionEditControl = Ext.extend(Ext.Panel, {
 						listeners: {
 							click: _onAddUsersGroupButtonClick
 						}
+					},
+					{
+						xtype: 'button',
+						text: 'Delete',
+						listeners: {
+							click: _onDeleteButtonClick
+						}
 					}
 				]
 			},
-			setValue: function (v) {
+			setValue: function (v, operation) {
+				_selectedOperation = operation;
 				_listView.getStore().proxy.data.items = v;
 				_listView.getStore().load();
 			},

@@ -29,10 +29,12 @@ namespace Rhino.Security.Mgmt.Data
 			{
  				return forPermissionBuilder.For(permission.User).OnEverything().DefaultLevel().Save();
 			}
-			else
+			else if (permission.UsersGroup != null)
 			{
 				return forPermissionBuilder.For(permission.UsersGroup).OnEverything().DefaultLevel().Save();
 			}
+
+			return null;
 		}
 
 		public Rhino.Security.Model.Permission[] ReadByOperation(string operationName)
@@ -44,6 +46,11 @@ namespace Rhino.Security.Mgmt.Data
 		public Rhino.Security.Model.Permission Read(System.Guid id)
 		{
 			return _northwindWithSecurity.GetCurrentSession().Load<Permission>(id);
+		}
+
+		public void Delete(Permission p)
+		{
+			_northwindWithSecurity.GetCurrentSession().Delete(p);
 		}
 	}
 }

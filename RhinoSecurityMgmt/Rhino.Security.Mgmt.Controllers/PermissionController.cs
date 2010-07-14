@@ -24,7 +24,7 @@ namespace Rhino.Security.Mgmt.Controllers
 			_stringConverter = stringConverter;
 		}
 
-		public ActionResult Save(Rhino.Security.Mgmt.Dtos.PermissionDto item)
+		public ActionResult Create(Rhino.Security.Mgmt.Dtos.PermissionDto item)
 		{
 			using (_conversation.SetAsCurrent())
 			{
@@ -37,13 +37,25 @@ namespace Rhino.Security.Mgmt.Controllers
 					_conversation.Flush();
 				}
 
-				PermissionDto permissionToReturnDto = permissionToReturn != null ? _mapper.Map<Permission, PermissionDto>(permissionToReturn) : null;
 				return Json(new
 				{
-					item = permissionToReturnDto,
+					item = GetPermissionViewModel(permissionToReturn),
 					success = ModelState.IsValid,
 					errors = Nexida.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
 				});
+			}
+		}
+
+		public void Delete(string[] stringIds)
+		{
+			using (_conversation.SetAsCurrent())
+			{
+				foreach (var s in stringIds)
+				{
+					var item = _stringConverter.FromString(s);
+					_repository.Delete(item);
+				}
+				_conversation.Flush();
 			}
 		}
 
@@ -55,17 +67,28 @@ namespace Rhino.Security.Mgmt.Controllers
 
 				return Json(new
 				{
-					allowed = items.Where(x => x.Allow).Select(x => new { id = x.Id, description = GetDescription(x) }),
-					forbidden = items.Where(x => !x.Allow).Select(x => new { id = x.Id, description = GetDescription(x) }),
+					allowed = items.Where(x => x.Allow).Select(x => GetPermissionViewModel(x)),
+					forbidden = items.Where(x => !x.Allow).Select(x => GetPermissionViewModel(x)),
 				});
 			}
 		}
 
-		private string GetDescription(Permission p)
+		private object GetPermissionViewModel(Permission p)
 		{
-			return p.User != null ? ((User)p.User).Name : p.UsersGroup.Name;
+			if (p == null)
+			{
+				return null;
+			}
+			if (p.User != null)
+			{
+				return new { StringId = p.Id, Id = p.Id, Description = ((User)p.User).Name, Type = "user" };
+			}
+			if (p.UsersGroup != null)
+			{
+				return new { StringId = p.Id, Id = p.Id, Description = p.UsersGroup.Name, Type = "group" };
+			}
+
+			return null;
 		}
 	}
-
-
 }

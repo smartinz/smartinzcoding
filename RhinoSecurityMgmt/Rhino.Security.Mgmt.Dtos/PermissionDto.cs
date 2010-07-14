@@ -14,12 +14,10 @@ namespace Rhino.Security.Mgmt.Dtos
 				
 		public string EntityTypeName { get; set; }
 				
-		//public Rhino.Security.Mgmt.Dtos.EntitiesGroupReferenceDto EntitiesGroup { get; set; }
+		public string OperationName { get; set; }
 				
-		public Rhino.Security.Mgmt.Dtos.OperationReferenceDto Operation { get; set; }
-				
-		public Rhino.Security.Mgmt.Dtos.UsersGroupReferenceDto UsersGroup { get; set; }
-				
-		public Rhino.Security.Mgmt.Dtos.UserReferenceDto User { get; set; }
+		public string UsersGroupStringId { get; set; }
+
+		public string UserStringId { get; set; }
 	}
 }

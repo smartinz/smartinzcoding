@@ -124,9 +124,22 @@ namespace Rhino.Security.Mgmt.Dtos
 
 			Mapper.CreateMap<PermissionDto, Rhino.Security.Model.Permission>()
 				.ConstructUsing(s => string.IsNullOrEmpty(s.StringId) ? sl.GetInstance<Nexida.Infrastructure.IFactory<Rhino.Security.Model.Permission>>().Create() : sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.Permission>>().FromString(s.StringId))
+				.ForMember(d => d.Operation, o => o.Ignore())
 				.ForMember(d => d.UsersGroup, o => o.Ignore())
 				.ForMember(d => d.User, o => o.Ignore())
-				.ForMember(d => d.EntitiesGroup, o=> o.Ignore());
+				.ForMember(d => d.EntitiesGroup, o=> o.Ignore())
+				.AfterMap((permissionDto, permission) => {
+					var authorizationRepository = sl.GetInstance<AuthorizationRepositoryFactory>().Create();
+					permission.Operation = authorizationRepository.GetOperationByName(permissionDto.OperationName);
+					if (!string.IsNullOrEmpty(permissionDto.UserStringId))
+					{
+						permission.User = sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.User>>().FromString(permissionDto.UserStringId);
+					}
+					if (!string.IsNullOrEmpty(permissionDto.UsersGroupStringId))
+					{
+						permission.UsersGroup = sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.UsersGroup>>().FromString(permissionDto.UsersGroupStringId);
+					}
+				});
 
 			Mapper.CreateMap<PermissionReferenceDto, Rhino.Security.Model.Permission>()
 				.ConstructUsing(s => string.IsNullOrEmpty(s.StringId) ? sl.GetInstance<Nexida.Infrastructure.IFactory<Rhino.Security.Model.Permission>>().Create() : sl.GetInstance<Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.Permission>>().FromString(s.StringId))

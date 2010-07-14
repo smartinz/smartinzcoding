@@ -13,7 +13,13 @@ Rhino.Security.UserJsonReader = Ext.extend(Rpc.JsonReader, {
 			fields: [
 				'StringId', 
 				'Id',
-				'Name'
+				'Name',
+				{
+					name: '$ref',
+					convert: function (v, r) {
+						return r;
+					}
+				}
 			]
 		};
 		Rhino.Security.UserJsonReader.superclass.constructor.call(this, Ext.apply(meta || {}, cfg), recordType);
