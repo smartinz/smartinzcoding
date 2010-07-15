@@ -29,14 +29,12 @@
 	<script type="text/javascript" src="js/Rhino.Security.OperationSearchPanel.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.UsersGroupSearchPanel.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.UserSearchPanel.js"></script>
-	<script type="text/javascript" src="js/Rhino.Security.UserSearchByGroupSearchPanel.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.EntitiesGroupSearchFormPanel.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.EntityReferenceSearchFormPanel.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.EntityTypeSearchFormPanel.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.OperationSearchFormPanel.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.UsersGroupSearchFormPanel.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.UserSearchFormPanel.js"></script>
-	<script type="text/javascript" src="js/Rhino.Security.UserSearchByGroupSearchFormPanel.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.EntitiesGroupField.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.EntityReferenceField.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.EntityTypeField.js"></script>
@@ -97,7 +95,6 @@
 </head>
 <body>
   <div id="header">
-	<a style="float:right;margin-right:10px;" target="_blank" href="http://www.nexida.com"> Provided by NEXiDA srl</a>
 	<div class="title">Rhino Security Administration</div>
   </div>
 </body>

@@ -90,22 +90,22 @@ namespace Rhino.Security.Mgmt.Controllers
 		{
 			using (_conversation.SetAsCurrent())
 			{
-				return Json(BuildTree(_repository.GetAll().AsEnumerable().Where(x => x.Parent == null)));
+				return Json(BuildTreeViewModel(_repository.GetAll().AsEnumerable().Where(x => x.Parent == null)));
 			}
 		}
 
-		private List<object> BuildTree(IEnumerable<Rhino.Security.Model.Operation> operations)
+		private List<object> BuildTreeViewModel(IEnumerable<Rhino.Security.Model.Operation> operations)
 		{
 			var tree = new List<object>();
 			foreach (var operation in operations)
 			{
 				if (operation.Children != null && operation.Children.Count > 0)
 				{
-					tree.Add(new { id = operation.Name, text = operation.Name, children = BuildTree(operation.Children) });
+					tree.Add(new { id = operation.Name, text = operation.Name, icon = @"images/cog_go.png", children = BuildTreeViewModel(operation.Children) });
 				}
 				else
 				{
-					tree.Add(new { id = operation.Name, text = operation.Name, leaf = true });
+					tree.Add(new { id = operation.Name, text = operation.Name, leaf = true, icon = @"images/cog.png" });
 				}
 			}
 			return tree;
