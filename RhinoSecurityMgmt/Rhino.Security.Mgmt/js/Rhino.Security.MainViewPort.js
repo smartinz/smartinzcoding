@@ -8,16 +8,7 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 	layout: 'border',
 	initComponent: function () {
 		var _this = this,
-		_treePanel,
-		_tabPanel = new Ext.TabPanel({
-			activeTab: 0,
-			enableTabScroll: true,
-			region: 'center',
-			items: [{
-				xtype: 'panel',
-				title: 'Welcome Page'
-			}]
-		});
+		_tabPanel;
 
 		function _setTabTitle(tab, title) {
 			tab.setTitle(title);
@@ -169,74 +160,82 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 			_openTab('Search User', searchPanelFactory, 'User-search');
 		}
 
-
-		_treePanel = new Ext.tree.TreePanel({
-			title: 'Main Menu',
-			region: 'west',
-			split: true,
-			collapsible: true,
-			width: 200,
-			rootVisible: false,
-			lines: false,
-			root: {
-				text: 'Root Node',
-				children: [{
-					text: 'Manage Operations',
-					children: [{
-						text: 'Search',
-						leaf: true,
-						listeners: {
-							click: _onOperationClick
-						}
-					}
-				]
-				}, {
-					text: 'Manage Permissions',
-					leaf: true,
-					listeners: {
-						click: _onPermissionClick
-					}
-				}, {
-					text: 'Manage UsersGroups',
-					children: [{
-						text: 'Search',
-						leaf: true,
-						listeners: {
-							click: _onUsersGroupClick
-						}
-					}, {
-						text: 'Create',
-						leaf: true,
-						listeners: {
-							click: _onUsersGroupNewItem
-						}
-					}
-				]
-				}, {
-					text: 'Manage Users',
-					children: [{
-						text: 'Search',
-						leaf: true,
-						listeners: {
-							click: _onUserClick
-						}
-					}, {
-						text: 'Create',
-						leaf: true,
-						listeners: {
-							click: _onUserNewItem
-						}
-					}]
-				}]
-			},
-			loader: {}
+		_tabPanel = new Ext.TabPanel({
+			activeTab: 0,
+			enableTabScroll: true,
+			border: false,
+			plugins: new Ext.ux.TabCloseMenu(),
+			items: [{
+				xtype: 'panel',
+				title: 'Welcome'
+			}]
 		});
 
-		this.items = [_treePanel, _tabPanel];
+		this.items = [{
+			cls: 'header',
+			height: 30,
+			region: 'north',
+			xtype: 'box',
+			el: 'header',
+			border: false,
+			margins: '0 0 5 0'
+		}, {
+			xtype: 'panel',
+			region: 'center',
+			layout: 'fit',
+			layoutConfig: {
+				align: 'stretch'
+			},
+			items: [_tabPanel],
+			tbar: {
+				xtype: 'toolbar',
+				items: [
+					{
+						text: 'Manage Users',
+						icon: 'images/user_suit.png',
+						cls: 'x-btn-text-icon',
+						menu: {
+							xtype: 'menu',
+							items: [
+								{ text: 'Create', handler: _onUserNewItem, icon: 'images/add.png', cls: 'x-btn-text-icon' },
+								{ text: 'Search', handler: _onUserClick, icon: 'images/zoom.png', cls: 'x-btn-text-icon' }
+							]
+						}
+					},
+					{
+						text: 'Manage Groups',
+						icon: 'images/group.png',
+						cls: 'x-btn-text-icon',
+						menu: {
+							xtype: 'menu',
+							items: [
+								{ text: 'Create', handler: _onUsersGroupNewItem, icon: 'images/add.png', cls: 'x-btn-text-icon' },
+								{ text: 'Search', handler: _onUsersGroupClick, icon: 'images/zoom.png', cls: 'x-btn-text-icon' }
+							]
+						}
+					},
+					{
+						text: 'Manage Operations',
+						icon: 'images/cog.png',
+						cls: 'x-btn-text-icon',
+						menu: {
+							xtype: 'menu',
+							items: [
+								{ text: 'Create', handler: _onOperationNewItem, icon: 'images/add.png', cls: 'x-btn-text-icon' },
+								{ text: 'Search', handler: _onOperationClick, icon: 'images/zoom.png', cls: 'x-btn-text-icon' }
+							]
+						}
+					},
+					{
+						text: 'Manage Permissions',
+						icon: 'images/lock.png',
+						handler: _onPermissionClick,
+						cls: 'x-btn-text-icon'
+					}
+				]
+			}
+		}];
 
 		Rhino.Security.MainViewport.superclass.initComponent.apply(this, arguments);
 	}
-
-
-
 });

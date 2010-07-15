@@ -9,18 +9,19 @@ Rhino.Security.PermissionsBuilderPanel = Ext.extend(Ext.Panel, {
 		var _this = this,
 		_allowPermissionEditControl = new Rhino.Security.PermissionEditControl({
 			name: 'allowed',
-			title: 'Allowed'
+			title: 'Allowed',
+			icon: 'images/lock_go.png'
 		}),
 		_denyPermissionEditControl = new Rhino.Security.PermissionEditControl({
 			name: 'forbidden',
 			title: 'Forbidden'
 		}),
 		_titleLabel = new Ext.form.Label({
-			text: 'Permissions'
+			text: 'Permissions',
+			hidden: true
 		});
 
 		Ext.apply(_this, {
-
 			layout: 'vbox',
 			layoutConfig: {
 				align: 'stretch',

@@ -5,9 +5,11 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" type="text/css" href="ext/resources/css/ext-all.css" />
+	<link rel="stylesheet" type="text/css" href="styles/Styles.css" />
 	<script type="text/javascript" src="js/json2.js"></script>
 	<script type="text/javascript" src="ext/adapter/ext/ext-base-debug-w-comments.js"></script>
 	<script type="text/javascript" src="ext/ext-all-debug-w-comments.js"></script>
+	<script type="text/javascript" src="ext/TabCloseMenu.js"></script>
 	<script type="text/javascript" src="js/Rpc.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.EntitiesGroupGridPanel.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.EntityReferenceGridPanel.js"></script>
@@ -94,5 +96,9 @@
 	<title></title>
 </head>
 <body>
+  <div id="header">
+	<a style="float:right;margin-right:10px;" target="_blank" href="http://www.nexida.com"> Provided by NEXiDA srl</a>
+	<div class="title">Rhino Security Administration</div>
+  </div>
 </body>
 </html>
