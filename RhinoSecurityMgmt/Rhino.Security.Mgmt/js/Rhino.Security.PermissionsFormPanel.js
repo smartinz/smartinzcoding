@@ -8,10 +8,10 @@ Rhino.Security.PermissionsFormPanel = Ext.extend(Ext.Panel, {
 	layout: 'border',
 	initComponent: function () {
 		var _this = this,
-		_rootNode,
 		_onNodeAppended,
 		_onOperationClick,
 		_operationsTreePanel,
+		_onOperationRefresh,
 		_permissionsBuilderPanel = new Rhino.Security.PermissionsBuilderPanel({
 			region: 'center'
 		});
@@ -24,8 +24,11 @@ Rhino.Security.PermissionsFormPanel = Ext.extend(Ext.Panel, {
 			node.on('click', _onOperationClick);
 		};
 
+		_onOperationRefresh = function () {
+			_operationsTreePanel.getLoader().load(_operationsTreePanel.getRootNode());
+		};
+
 		_operationsTreePanel = new Ext.tree.TreePanel({
-			title: 'Operations',
 			border: false,
 			region: 'west',
 			split: true,
@@ -44,14 +47,15 @@ Rhino.Security.PermissionsFormPanel = Ext.extend(Ext.Panel, {
 			root: {
 				text: 'All',
 				id: 'id'
+			},
+			tbar: {
+				xtype: 'toolbar',
+				items: [
+					{ xtype: 'tbtext', text: 'Operations', cls: 'x-btn-text-icon' },
+					{ handler: _onOperationRefresh, icon: 'images/arrow_refresh.png' }
+				]
 			}
 		});
-
-		_rootNode = _operationsTreePanel.getRootNode();
-		_rootNode.expand();
-		if (_rootNode.firstChild) {
-			_onOperationClick(_rootNode.firstChild, null);
-		}
 
 		_this.items = [_operationsTreePanel, _permissionsBuilderPanel];
 

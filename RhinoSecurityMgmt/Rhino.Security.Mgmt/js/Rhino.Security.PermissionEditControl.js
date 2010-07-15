@@ -104,7 +104,7 @@ Rhino.Security.PermissionEditControl = Ext.extend(Ext.Panel, {
 
 		_onAddUserButtonClick = function (button) {
 			if (!_selectedOperation) {
-				alert('Please select an operation on the left first.');
+				Ext.MessageBox.alert('Warning','Please select an operation on the left first.');
 				return;
 			}
 			var window = _buildWindow('user');
@@ -113,7 +113,7 @@ Rhino.Security.PermissionEditControl = Ext.extend(Ext.Panel, {
 
 		_onAddUsersGroupButtonClick = function (button) {
 			if (!_selectedOperation) {
-				alert('Please select an operation on the left first.');
+				Ext.MessageBox.alert('Warning','Please select an operation on the left first.');
 				return;
 			}
 			var window = _buildWindow('group');
@@ -174,17 +174,6 @@ Rhino.Security.PermissionEditControl = Ext.extend(Ext.Panel, {
 
 		Ext.apply(_this, {
 			layout: 'fit',
-			layoutConfig: {
-				align: 'stretch',
-				pack: 'start'
-			},
-			border: true,
-			margins: {
-				top: 10,
-				right: 20,
-				bottom: 10,
-				left: 10
-			},
 			items: [_listView],
 			fbar: {
 				xtype: 'toolbar',
@@ -196,7 +185,7 @@ Rhino.Security.PermissionEditControl = Ext.extend(Ext.Panel, {
 						listeners: {
 							click: _onAddUserButtonClick
 						}
-					},
+					}, 
 					{
 						xtype: 'button',
 						text: 'Add Group',

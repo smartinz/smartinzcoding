@@ -95,7 +95,7 @@
 </head>
 <body>
   <div id="header">
-	<div class="title">Rhino Security Administration</div>
+	<div class="title">Rhino Security Administration (beta)</div>
   </div>
 </body>
 </html>

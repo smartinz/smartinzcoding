@@ -9,42 +9,32 @@ Rhino.Security.PermissionsBuilderPanel = Ext.extend(Ext.Panel, {
 		var _this = this,
 		_allowPermissionEditControl = new Rhino.Security.PermissionEditControl({
 			name: 'allowed',
-			title: 'Allowed'
+			title: 'Allowed',
+			border: true,
+			width: 300,
+			margins: { 
+				top: 0,
+				left: 0,
+				right: 10,
+				bottom: 0
+			}
 		}),
 		_denyPermissionEditControl = new Rhino.Security.PermissionEditControl({
 			name: 'forbidden',
-			title: 'Forbidden'
-		}),
-		_titleLabel = new Ext.form.Label({
-			text: 'Permissions',
-			hidden: true
+			title: 'Forbidden',
+			width: 300
 		});
 
 		Ext.apply(_this, {
-			layout: 'vbox',
+			layout: 'hbox',
 			layoutConfig: {
-				align: 'stretch',
-				pack: 'start'
+				padding: 10,
+				align: 'stretch'
 			},
-			border: false,
-			padding: 20,
-			items: [_titleLabel,
-			{
-				flex: 1,
-				xtype: 'panel',
-				layout: 'hbox',
-				border: false,
-				layoutConfig: {
-					align: 'stretch',
-					pack: 'start'
-				},
-				items: [_allowPermissionEditControl, _denyPermissionEditControl]
-			}
-			],
+			border: true,
+			items: [_allowPermissionEditControl, _denyPermissionEditControl ],
 			loadPermissions: function (operationName) {
 				_this.el.mask('Loading...', 'x-mask-loading');
-
-				_titleLabel.setText('Permissions for operation \'' + operationName + '\'');
 
 				Rpc.call({
 					url: 'Permission/LoadByOperationName',
