@@ -46,9 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EntitiesGroupFactory.cs" />
-    <Compile Include="EntityReferenceFactory.cs" />
-    <Compile Include="EntityTypeFactory.cs" />
     <Compile Include="OperationFactory.cs" />
     <Compile Include="PermissionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

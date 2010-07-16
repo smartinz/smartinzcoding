@@ -50,9 +50,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EntitiesGroupController.cs" />
-    <Compile Include="EntityReferenceController.cs" />
-    <Compile Include="EntityTypeController.cs" />
     <Compile Include="HomeController.cs" />
     <Compile Include="OperationController.cs" />
     <Compile Include="PermissionController.cs" />

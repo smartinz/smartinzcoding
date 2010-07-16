@@ -49,12 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EntitiesGroupDto.cs" />
-    <Compile Include="EntitiesGroupReferenceDto.cs" />
-    <Compile Include="EntityReferenceDto.cs" />
-    <Compile Include="EntityReferenceReferenceDto.cs" />
-    <Compile Include="EntityTypeDto.cs" />
-    <Compile Include="EntityTypeReferenceDto.cs" />
     <Compile Include="MappingEngineBuilder.cs" />
     <Compile Include="OperationDto.cs" />
     <Compile Include="OperationReferenceDto.cs" />
