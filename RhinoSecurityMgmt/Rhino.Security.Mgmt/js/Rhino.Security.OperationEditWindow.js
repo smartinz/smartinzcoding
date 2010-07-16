@@ -1,5 +1,5 @@
 /*jslint white: true, browser: true, onevar: true, undef: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true */
-/*global Ext, Rpc, Rhino.Security */
+/*global Ext, Rpc, Rhino */
 "use strict";
 Ext.namespace('Rhino.Security');
 
@@ -58,8 +58,8 @@ Rhino.Security.OperationEditWindow = Ext.extend(Ext.Window, {
 			_fireEditEndedEvent(null);
 		},
 		_onSelectButtonClick = function (button, event) {
-			var sm = _gridPanel.getSelectionModel();
-			var selectedItem = sm.getCount() > 0 ? sm.getSelected().data : null;
+			var sm = _gridPanel.getSelectionModel(),
+			selectedItem = sm.getCount() > 0 ? sm.getSelected().data : null;
 			_fireEditEndedEvent(selectedItem);
 		};
 

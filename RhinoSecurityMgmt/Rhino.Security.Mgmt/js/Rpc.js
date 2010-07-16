@@ -3,12 +3,18 @@
 "use strict";
 
 Rpc = {
+	init: function () {
+		Ext.data.DataProxy.on('exception', function (proxy, type, action) {
+			Ext.MessageBox.show({ msg: 'An error has occured while trying to communicate with the server.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });
+		});
+	},
+
 	call: function (opts) {
 		opts = Ext.apply({
 			params: {},
 			success: Ext.emptyFn,
 			failure: function () {
-				alert('Error occured while trying to interact with the server.');
+				Ext.MessageBox.show({ msg: 'An error has occured while trying to communicate with the server.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });
 			},
 			callback: Ext.emptyFn,
 			scope: this
@@ -49,6 +55,39 @@ Rpc = {
 			return this.readRecords(o);
 		}
 	}),
+
+	LoadableValue: function (config) {
+		var _this = this,
+		_valueWhileLoading = null,
+		_setValueOnLoadComplete = false,
+		_loaded = false,
+		_getValue = config.getValue,
+		_setValue = config.setValue;
+
+		Ext.apply(_this, {
+			getValue: function () {
+				if (_loaded) {
+					return _getValue();
+				} else {
+					return _valueWhileLoading;
+				}
+			},
+			setValue: function (v) {
+				if (_loaded) {
+					_setValue(v);
+				} else {
+					_valueWhileLoading = v;
+					_setValueOnLoadComplete = true;
+				}
+			},
+			notifyLoadComplete: function () {
+				_loaded = true;
+				if (_setValueOnLoadComplete) {
+					_setValue(_valueWhileLoading);
+				}
+			}
+		});
+	},
 
 	parseResponse: function (response) {
 		var reviver, isJson;

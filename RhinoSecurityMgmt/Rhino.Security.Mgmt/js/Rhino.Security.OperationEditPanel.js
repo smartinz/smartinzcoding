@@ -1,5 +1,5 @@
 /*jslint white: true, browser: true, devel: true, onevar: true, undef: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, strict: true, newcap: true, immed: true */
-/*global Ext, Rpc, Rhino.Security */
+/*global Ext, Rpc, Rhino */
 "use strict";
 
 Ext.namespace('Rhino.Security');
@@ -17,7 +17,6 @@ Rhino.Security.OperationEditPanel = Ext.extend(Ext.Panel, {
 				url: 'Operation/Save',
 				params: { item: _formPanel.getForm().getFieldValues() },
 				success: function (result) {
-					_this.el.unmask();
 					if (result.success) {
 						Ext.MessageBox.show({ msg: 'Changes saved successfully.', icon: Ext.MessageBox.INFO, buttons: Ext.MessageBox.OK });
 						if (result.item) {
@@ -29,6 +28,9 @@ Rhino.Security.OperationEditPanel = Ext.extend(Ext.Panel, {
 						_formPanel.getForm().markInvalid(result.errors.item);
 						Ext.MessageBox.show({ msg: 'Error saving data. Correct errors and retry.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });
 					}
+				},
+				callback: function () {
+					_this.el.unmask();
 				}
 			});
 		},
