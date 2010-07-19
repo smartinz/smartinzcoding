@@ -164,7 +164,7 @@ Rhino.Security.MainViewport = Ext.extend(Ext.Viewport, {
 			activeTab: 0,
 			enableTabScroll: true,
 			border: false,
-			plugins: new Ext.ux.TabCloseMenu(),
+			//plugins: new Ext.ux.TabCloseMenu(),
 			items: [{
 				xtype: 'panel',
 				title: 'Welcome'

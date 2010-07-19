@@ -9,7 +9,6 @@
 	<script type="text/javascript" src="js/json2.js"></script>
 	<script type="text/javascript" src="ext/adapter/ext/ext-base-debug-w-comments.js"></script>
 	<script type="text/javascript" src="ext/ext-all-debug-w-comments.js"></script>
-	<script type="text/javascript" src="ext/TabCloseMenu.js"></script>
 	<script type="text/javascript" src="js/Rpc.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.OperationGridPanel.js"></script>
 	<script type="text/javascript" src="js/Rhino.Security.UsersGroupGridPanel.js"></script>

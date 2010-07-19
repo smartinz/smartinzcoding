@@ -46,7 +46,7 @@ namespace Rhino.Security.Mgmt.Controllers
 						}
 						catch (ArgumentException ex)
 						{
-							// this is hack to re-use the validation in Rhino Security which are returned as ArgumentExceptions
+							// this is hack to re-use the validations in Rhino Security which are returned as ArgumentExceptions
 							Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.AddErrorToModelState(ModelState, ex.Message, "item", "Name");
 						}
 					}

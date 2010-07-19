@@ -12,7 +12,12 @@ Rhino.Security.UsersGroupFormPanel = Ext.extend(Ext.form.FormPanel, {
 			layout: 'form',
 			autoEl: 'div',
 			items: [{ name: 'Id', fieldLabel: 'Id', xtype: 'displayfield'}]
-		});
+		}),
+		_entityNameField = new Ext.form.Field({
+			xtype: 'textfield',
+			fieldLabel: 'Name',
+			name: 'Name'
+		}); ;
 
 		Ext.apply(_this, {
 			border: false,
@@ -28,9 +33,9 @@ Rhino.Security.UsersGroupFormPanel = Ext.extend(Ext.form.FormPanel, {
 				items: [
 					{ name: 'StringId', xtype: 'hidden' },
 					_entityIdFieldContainer,
-					{ name: 'Name', fieldLabel: 'Name', xtype: 'textfield' }
+					_entityNameField
 				]
-			}, 
+			},
 			{
 				flex: 1,
 				xtype: 'tabpanel',
@@ -45,6 +50,7 @@ Rhino.Security.UsersGroupFormPanel = Ext.extend(Ext.form.FormPanel, {
 			],
 			setUpFormForEditItem: function () {
 				_entityIdFieldContainer.show();
+				_entityNameField.setReadOnly(true);
 			},
 			setUpFormForNewItem: function () {
 				_entityIdFieldContainer.hide();
