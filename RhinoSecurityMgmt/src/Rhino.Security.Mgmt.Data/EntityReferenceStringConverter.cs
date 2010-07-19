@@ -2,7 +2,7 @@ using System;
 
 namespace Rhino.Security.Mgmt.Data
 {
-	public class EntityReferenceStringConverter : Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.EntityReference>
+	public class EntityReferenceStringConverter : Rhino.Security.Mgmt.Infrastructure.IStringConverter<Rhino.Security.Model.EntityReference>
 	{
 		const char KeySeparator = '\\';
 		private readonly Rhino.Security.Mgmt.Data.EntityReferenceRepository _repository;

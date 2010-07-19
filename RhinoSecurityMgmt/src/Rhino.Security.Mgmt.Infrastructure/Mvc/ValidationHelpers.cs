@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 
-namespace Nexida.Infrastructure.Mvc
+namespace Rhino.Security.Mgmt.Infrastructure.Mvc
 {
 	public class ValidationHelpers
 	{

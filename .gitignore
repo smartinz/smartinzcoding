@@ -8,3 +8,6 @@ _ReSharper*
 *.suo
 *.cache
 * Thumbs.db
+
+RhinoSecurityMgmt/src/Rhino.Security.Mgmt/Logs/Log.txt
+RhinoSecurityMgmt/src/Rhino.Security.Mgmt/Rhino.Security.Mgmt.Publish.xml

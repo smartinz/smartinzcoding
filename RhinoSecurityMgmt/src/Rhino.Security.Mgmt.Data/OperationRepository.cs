@@ -1,11 +1,11 @@
 using System.Linq;
 using NHibernate.Linq;
-using Nexida.Infrastructure;
+using Rhino.Security.Mgmt.Infrastructure;
 using Rhino.Security.Mgmt.Infrastructure;
 
 namespace Rhino.Security.Mgmt.Data
 {
-	public class OperationRepository : Nexida.Infrastructure.IRepository
+	public class OperationRepository : Rhino.Security.Mgmt.Infrastructure.IRepository
 	{
 		private NHibernate.ISessionFactory _northwindWithSecurity;
 		AuthorizationRepositoryFactory _authorizationRepositoryFactory;
@@ -39,7 +39,7 @@ namespace Rhino.Security.Mgmt.Data
 
 		public IPresentableSet<Rhino.Security.Model.Operation> GetAll()
 		{
-			return new Nexida.Infrastructure.QueryablePresentableSet<Rhino.Security.Model.Operation>(_northwindWithSecurity.GetCurrentSession().Linq<Rhino.Security.Model.Operation>());
+			return new Rhino.Security.Mgmt.Infrastructure.QueryablePresentableSet<Rhino.Security.Model.Operation>(_northwindWithSecurity.GetCurrentSession().Linq<Rhino.Security.Model.Operation>());
 		}
 
 		public IPresentableSet<Rhino.Security.Model.Operation> Search(System.Guid? id, string name, string comment)
@@ -58,7 +58,7 @@ namespace Rhino.Security.Mgmt.Data
 				queryable = queryable.Where(x => x.Comment.StartsWith(comment));
 			}
 
-			return new Nexida.Infrastructure.QueryablePresentableSet<Rhino.Security.Model.Operation>(queryable);
+			return new Rhino.Security.Mgmt.Infrastructure.QueryablePresentableSet<Rhino.Security.Model.Operation>(queryable);
 		}
 
 	}

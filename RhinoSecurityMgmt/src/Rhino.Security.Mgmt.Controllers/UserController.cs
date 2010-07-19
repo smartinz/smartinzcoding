@@ -9,11 +9,11 @@ namespace Rhino.Security.Mgmt.Controllers
 		private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(typeof(Rhino.Security.Mgmt.Controllers.UserController));
 		private readonly Rhino.Security.Mgmt.Data.UserRepository _repository;
 		private readonly AutoMapper.IMappingEngine _mapper;
-		private readonly Nexida.Infrastructure.IValidator _validator;
+		private readonly Rhino.Security.Mgmt.Infrastructure.IValidator _validator;
 		private readonly Conversation.IConversation _conversation;
-		private readonly Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.User> _stringConverter;
+		private readonly Rhino.Security.Mgmt.Infrastructure.IStringConverter<Rhino.Security.Model.User> _stringConverter;
 
-		public UserController(Conversation.IConversation conversation, AutoMapper.IMappingEngine mapper, Rhino.Security.Mgmt.Data.UserRepository repository, Nexida.Infrastructure.IValidator validator, Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.User> stringConverter)
+		public UserController(Conversation.IConversation conversation, AutoMapper.IMappingEngine mapper, Rhino.Security.Mgmt.Data.UserRepository repository, Rhino.Security.Mgmt.Infrastructure.IValidator validator, Rhino.Security.Mgmt.Infrastructure.IStringConverter<Rhino.Security.Model.User> stringConverter)
 		{
 			_conversation = conversation;
 			_mapper = mapper;
@@ -33,7 +33,7 @@ namespace Rhino.Security.Mgmt.Controllers
 			{
 				Rhino.Security.Model.User itemToReturn = null;
 				var itemMapped = _mapper.Map<Rhino.Security.Mgmt.Dtos.UserDto, Rhino.Security.Model.User>(item);
-				Nexida.Infrastructure.Mvc.ValidationHelpers.AddErrorsToModelState(ModelState, _validator.Validate(itemMapped), "item");
+				Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.AddErrorsToModelState(ModelState, _validator.Validate(itemMapped), "item");
 				if (ModelState.IsValid)
 				{
 					var isNew = string.IsNullOrEmpty(item.StringId);
@@ -53,7 +53,7 @@ namespace Rhino.Security.Mgmt.Controllers
 				{
 					item = itemToReturnDto,
 					success = ModelState.IsValid,
-					errors = Nexida.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
+					errors = Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
 				});
 			}
 		}

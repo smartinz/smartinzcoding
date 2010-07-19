@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Nexida.Infrastructure
+namespace Rhino.Security.Mgmt.Infrastructure
 {
 	/// <summary>
 	/// Interface implemented to return collections of objects (collections, sets, lists, etc.) to the user interface tier.  

@@ -2,7 +2,7 @@ using System;
 
 namespace Rhino.Security.Mgmt.Data
 {
-	public class PermissionStringConverter : Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.Permission>
+	public class PermissionStringConverter : Rhino.Security.Mgmt.Infrastructure.IStringConverter<Rhino.Security.Model.Permission>
 	{
 		const char KeySeparator = '\\';
 		private readonly Rhino.Security.Mgmt.Data.PermissionRepository _repository;

@@ -10,11 +10,11 @@ namespace Rhino.Security.Mgmt.Controllers
 		private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(typeof(Rhino.Security.Mgmt.Controllers.OperationController));
 		private readonly Rhino.Security.Mgmt.Data.OperationRepository _repository;
 		private readonly AutoMapper.IMappingEngine _mapper;
-		private readonly Nexida.Infrastructure.IValidator _validator;
+		private readonly Rhino.Security.Mgmt.Infrastructure.IValidator _validator;
 		private readonly Conversation.IConversation _conversation;
-		private readonly Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.Operation> _stringConverter;
+		private readonly Rhino.Security.Mgmt.Infrastructure.IStringConverter<Rhino.Security.Model.Operation> _stringConverter;
 
-		public OperationController(Conversation.IConversation conversation, AutoMapper.IMappingEngine mapper, Rhino.Security.Mgmt.Data.OperationRepository repository, Nexida.Infrastructure.IValidator validator, Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.Operation> stringConverter)
+		public OperationController(Conversation.IConversation conversation, AutoMapper.IMappingEngine mapper, Rhino.Security.Mgmt.Data.OperationRepository repository, Rhino.Security.Mgmt.Infrastructure.IValidator validator, Rhino.Security.Mgmt.Infrastructure.IStringConverter<Rhino.Security.Model.Operation> stringConverter)
 		{
 			_conversation = conversation;
 			_mapper = mapper;
@@ -33,7 +33,7 @@ namespace Rhino.Security.Mgmt.Controllers
 			using (_conversation.SetAsCurrent())
 			{
 				var itemMapped = _mapper.Map<Rhino.Security.Mgmt.Dtos.OperationDto, Rhino.Security.Model.Operation>(item);
-				Nexida.Infrastructure.Mvc.ValidationHelpers.AddErrorsToModelState(ModelState, _validator.Validate(itemMapped), "item");
+				Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.AddErrorsToModelState(ModelState, _validator.Validate(itemMapped), "item");
 				Rhino.Security.Model.Operation itemToReturn = null;
 				if (ModelState.IsValid)
 				{
@@ -47,7 +47,7 @@ namespace Rhino.Security.Mgmt.Controllers
 						catch (ArgumentException ex)
 						{
 							// this is hack to re-use the validation in Rhino Security which are returned as ArgumentExceptions
-							Nexida.Infrastructure.Mvc.ValidationHelpers.AddErrorToModelState(ModelState, ex.Message, "item", "Name");
+							Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.AddErrorToModelState(ModelState, ex.Message, "item", "Name");
 						}
 					}
 					if (!isNew)
@@ -64,7 +64,7 @@ namespace Rhino.Security.Mgmt.Controllers
 				{
 					item = itemToReturnDto,
 					success = ModelState.IsValid,
-					errors = Nexida.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
+					errors = Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
 				});
 			}
 		}
@@ -97,7 +97,7 @@ namespace Rhino.Security.Mgmt.Controllers
 				return Json(new
 				{
 					success = ModelState.IsValid,
-					errors = Nexida.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
+					errors = Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
 				});
 			}
 		}

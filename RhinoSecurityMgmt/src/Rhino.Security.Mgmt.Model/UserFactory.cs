@@ -2,7 +2,7 @@ using Rhino.Security.Model;
 namespace Rhino.Security.Mgmt.Model
 
 {
-	public class UserFactory : Nexida.Infrastructure.IFactory<User>
+	public class UserFactory : Rhino.Security.Mgmt.Infrastructure.IFactory<User>
 	{
 		public User Create()
 		{

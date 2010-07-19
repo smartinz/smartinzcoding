@@ -5,7 +5,7 @@ using System.Text;
 using Rhino.Security.Interfaces;
 using NHibernate;
 using Rhino.Security.Services;
-using Nexida.Infrastructure;
+using Rhino.Security.Mgmt.Infrastructure;
 
 namespace Rhino.Security.Mgmt.Infrastructure
 {

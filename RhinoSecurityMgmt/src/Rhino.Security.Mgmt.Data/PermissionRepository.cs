@@ -1,13 +1,13 @@
 using System.Linq;
 using NHibernate.Linq;
-using Nexida.Infrastructure;
+using Rhino.Security.Mgmt.Infrastructure;
 using Rhino.Security.Mgmt.Infrastructure;
 using Rhino.Security.Interfaces;
 using Rhino.Security.Model;
 
 namespace Rhino.Security.Mgmt.Data
 {
-	public class PermissionRepository : Nexida.Infrastructure.IRepository
+	public class PermissionRepository : Rhino.Security.Mgmt.Infrastructure.IRepository
 	{
 		private NHibernate.ISessionFactory _northwindWithSecurity;
 		PermissionsBuilderServiceFactory _permissionBuilderServiceFactory;

@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace Nexida.Infrastructure
+namespace Rhino.Security.Mgmt.Infrastructure
 {
 	public class DefaultToNullModelBinder : IModelBinder
 	{

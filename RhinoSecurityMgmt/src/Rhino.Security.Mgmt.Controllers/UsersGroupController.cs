@@ -10,11 +10,11 @@ namespace Rhino.Security.Mgmt.Controllers
 		private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(typeof(Rhino.Security.Mgmt.Controllers.UsersGroupController));
 		private readonly Rhino.Security.Mgmt.Data.UsersGroupRepository _repository;
 		private readonly AutoMapper.IMappingEngine _mapper;
-		private readonly Nexida.Infrastructure.IValidator _validator;
+		private readonly Rhino.Security.Mgmt.Infrastructure.IValidator _validator;
 		private readonly Conversation.IConversation _conversation;
-		private readonly Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.UsersGroup> _stringConverter;
+		private readonly Rhino.Security.Mgmt.Infrastructure.IStringConverter<Rhino.Security.Model.UsersGroup> _stringConverter;
 
-		public UsersGroupController(Conversation.IConversation conversation, AutoMapper.IMappingEngine mapper, Rhino.Security.Mgmt.Data.UsersGroupRepository repository, Nexida.Infrastructure.IValidator validator, Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.UsersGroup> stringConverter)
+		public UsersGroupController(Conversation.IConversation conversation, AutoMapper.IMappingEngine mapper, Rhino.Security.Mgmt.Data.UsersGroupRepository repository, Rhino.Security.Mgmt.Infrastructure.IValidator validator, Rhino.Security.Mgmt.Infrastructure.IStringConverter<Rhino.Security.Model.UsersGroup> stringConverter)
 		{
 			_conversation = conversation;
 			_mapper = mapper;
@@ -34,12 +34,12 @@ namespace Rhino.Security.Mgmt.Controllers
 			{
 				if (string.IsNullOrEmpty(item.Name))
 				{
-					Nexida.Infrastructure.Mvc.ValidationHelpers.AddErrorToModelState(ModelState, "may not be null or empty", "item", "Name");
+					Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.AddErrorToModelState(ModelState, "may not be null or empty", "item", "Name");
 				}
 
 				Rhino.Security.Model.UsersGroup itemToReturn = null;
 				var itemMapped = _mapper.Map<Rhino.Security.Mgmt.Dtos.UsersGroupDto, Rhino.Security.Model.UsersGroup>(item);
-				Nexida.Infrastructure.Mvc.ValidationHelpers.AddErrorsToModelState(ModelState, _validator.Validate(itemMapped), "item");
+				Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.AddErrorsToModelState(ModelState, _validator.Validate(itemMapped), "item");
 				if (ModelState.IsValid)
 				{
 					var isNew = string.IsNullOrEmpty(item.StringId);
@@ -58,7 +58,7 @@ namespace Rhino.Security.Mgmt.Controllers
 				{
 					item = itemToReturnDto,
 					success = ModelState.IsValid,
-					errors = Nexida.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
+					errors = Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
 				});
 			}
 		}

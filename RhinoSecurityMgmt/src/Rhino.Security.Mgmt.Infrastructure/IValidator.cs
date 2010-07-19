@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Nexida.Infrastructure
+namespace Rhino.Security.Mgmt.Infrastructure
 {
     public interface IValidator
     {

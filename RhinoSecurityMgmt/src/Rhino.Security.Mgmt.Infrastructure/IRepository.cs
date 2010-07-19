@@ -1,4 +1,4 @@
-﻿namespace Nexida.Infrastructure
+﻿namespace Rhino.Security.Mgmt.Infrastructure
 {
     /// <summary>
     /// A marker interface to identify repositories

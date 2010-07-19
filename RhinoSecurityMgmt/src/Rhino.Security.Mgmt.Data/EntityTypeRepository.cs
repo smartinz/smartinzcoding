@@ -1,10 +1,10 @@
 using System.Linq;
 using NHibernate.Linq;
-using Nexida.Infrastructure;
+using Rhino.Security.Mgmt.Infrastructure;
 
 namespace Rhino.Security.Mgmt.Data
 {
-	public class EntityTypeRepository : Nexida.Infrastructure.IRepository
+	public class EntityTypeRepository : Rhino.Security.Mgmt.Infrastructure.IRepository
 	{
 
 				private NHibernate.ISessionFactory _northwindWithSecurity;
@@ -49,7 +49,7 @@ namespace Rhino.Security.Mgmt.Data
 									queryable = queryable.Where(x => x.Name.StartsWith(name));
 								}
 								
-					return new Nexida.Infrastructure.QueryablePresentableSet<Rhino.Security.Model.EntityType>(queryable);
+					return new Rhino.Security.Mgmt.Infrastructure.QueryablePresentableSet<Rhino.Security.Model.EntityType>(queryable);
 				}
 				
 	}

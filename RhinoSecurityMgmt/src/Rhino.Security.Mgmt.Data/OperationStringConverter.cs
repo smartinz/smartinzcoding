@@ -2,7 +2,7 @@ using System;
 
 namespace Rhino.Security.Mgmt.Data
 {
-	public class OperationStringConverter : Nexida.Infrastructure.IStringConverter<Rhino.Security.Model.Operation>
+	public class OperationStringConverter : Rhino.Security.Mgmt.Infrastructure.IStringConverter<Rhino.Security.Model.Operation>
 	{
 		const char KeySeparator = '\\';
 		private readonly Rhino.Security.Mgmt.Data.OperationRepository _repository;

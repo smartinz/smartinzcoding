@@ -61,8 +61,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\libs\CastleWindsor-2.1.1\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="CommonServiceLocator.WindsorAdapter">
-      <HintPath>..\..\References\CommonServiceLocator-1.0_CastleWindsor-2.1.1_Adapter\CommonServiceLocator.WindsorAdapter.dll</HintPath>
+    <Reference Include="CommonServiceLocator.WindsorAdapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\CommonServiceLocator-1.0_CastleWindsor-2.1.1_Adapter\CommonServiceLocator.WindsorAdapter.dll</HintPath>
     </Reference>
     <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -1071,48 +1072,6 @@
     <Content Include="js\Rhino.Security.UsersGroupSearchFormPanel.js" />
     <Content Include="js\Rhino.Security.UsersGroupSearchPanel.js" />
     <Content Include="js\Rpc.js" />
-    <Content Include="References\AutoMapper-1.1\AutoMapper.dll" />
-    <Content Include="References\CastleWindsor-2.1.1\Castle.Core.dll" />
-    <Content Include="References\CastleWindsor-2.1.1\Castle.Core.xml" />
-    <Content Include="References\CastleWindsor-2.1.1\Castle.DynamicProxy2.dll" />
-    <Content Include="References\CastleWindsor-2.1.1\Castle.DynamicProxy2.xml" />
-    <Content Include="References\CastleWindsor-2.1.1\Castle.Facilities.Logging.dll" />
-    <Content Include="References\CastleWindsor-2.1.1\Castle.Facilities.Logging.xml" />
-    <Content Include="References\CastleWindsor-2.1.1\Castle.MicroKernel.dll" />
-    <Content Include="References\CastleWindsor-2.1.1\Castle.MicroKernel.xml" />
-    <Content Include="References\CastleWindsor-2.1.1\Castle.Services.Logging.log4netIntegration.dll" />
-    <Content Include="References\CastleWindsor-2.1.1\Castle.Services.Logging.log4netIntegration.xml" />
-    <Content Include="References\CastleWindsor-2.1.1\Castle.Windsor.dll" />
-    <Content Include="References\CastleWindsor-2.1.1\Castle.Windsor.xml" />
-    <Content Include="References\CommonServiceLocator\Microsoft.Practices.ServiceLocation.dll" />
-    <Content Include="References\CommonServiceLocator\Microsoft.Practices.ServiceLocation.pdb" />
-    <Content Include="References\CommonServiceLocator\Microsoft.Practices.ServiceLocation.XML" />
-    <Content Include="References\Log4Net-1.2.10\log4net.dll" />
-    <Content Include="References\Log4Net-1.2.10\log4net.xml" />
-    <Content Include="References\NHibernate-2.1.2.4000_DynamicProxy-2.2.0.0_Integration\NHibernate.ByteCode.Castle.dll" />
-    <Content Include="References\NHibernate-2.1.2.4000_DynamicProxy-2.2.0.0_Integration\Readme.txt" />
-    <Content Include="References\NHibernate-2.1.2.GA\Antlr3.Runtime.dll" />
-    <Content Include="References\NHibernate-2.1.2.GA\Iesi.Collections.dll" />
-    <Content Include="References\NHibernate-2.1.2.GA\Iesi.Collections.xml" />
-    <Content Include="References\NHibernate-2.1.2.GA\NHibernate.dll" />
-    <Content Include="References\NHibernate-2.1.2.GA\NHibernate.xml" />
-    <Content Include="References\NHibernate.Linq-2.1.2.GA\NHibernate.Linq.dll" />
-    <Content Include="References\NHibernate.Linq-2.1.2.GA\NHibernate.Linq.pdb" />
-    <Content Include="References\NHibernate.Linq-2.1.2.GA\NHibernate.Linq.xml" />
-    <Content Include="References\NHibernateValidator-1.2.0.CR1\de\NHibernate.Validator.resources.dll" />
-    <Content Include="References\NHibernateValidator-1.2.0.CR1\en\NHibernate.Validator.Tests.resources.dll" />
-    <Content Include="References\NHibernateValidator-1.2.0.CR1\es\NHibernate.Validator.resources.dll" />
-    <Content Include="References\NHibernateValidator-1.2.0.CR1\fr\NHibernate.Validator.resources.dll" />
-    <Content Include="References\NHibernateValidator-1.2.0.CR1\it\NHibernate.Validator.resources.dll" />
-    <Content Include="References\NHibernateValidator-1.2.0.CR1\lv\NHibernate.Validator.resources.dll" />
-    <Content Include="References\NHibernateValidator-1.2.0.CR1\NHibernate.Validator.dll" />
-    <Content Include="References\NHibernateValidator-1.2.0.CR1\NHibernate.Validator.Specific.dll" />
-    <Content Include="References\NHibernateValidator-1.2.0.CR1\NHibernate.Validator.Specific.xml" />
-    <Content Include="References\NHibernateValidator-1.2.0.CR1\NHibernate.Validator.xml" />
-    <Content Include="References\NHibernateValidator-1.2.0.CR1\nl\NHibernate.Validator.resources.dll" />
-    <Content Include="References\NHibernateValidator-1.2.0.CR1\pl\NHibernate.Validator.resources.dll" />
-    <Content Include="References\System.Linq.Dynamic\Readme.txt" />
-    <Content Include="References\System.Linq.Dynamic\System.Linq.Dynamic.dll" />
     <Content Include="styles\Styles.css" />
     <Content Include="TODO.txt" />
     <Content Include="Views\Home\Index.aspx" />
@@ -1155,6 +1114,7 @@
     <None Include="ext\resources\resources.jsb" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Logs\" />
     <Folder Include="Views\Account\" />
   </ItemGroup>
   <ItemGroup>

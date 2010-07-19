@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
 
-namespace Nexida.Infrastructure
+namespace Rhino.Security.Mgmt.Infrastructure
 {
     /// <summary>
     /// Wraps an IQueryable object, to expose only the functionalities provided by <see cref="IPresentableSet{T}"/>.

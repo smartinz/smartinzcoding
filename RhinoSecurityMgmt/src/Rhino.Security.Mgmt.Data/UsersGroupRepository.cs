@@ -1,11 +1,11 @@
 using System.Linq;
 using NHibernate.Linq;
-using Nexida.Infrastructure;
+using Rhino.Security.Mgmt.Infrastructure;
 using Rhino.Security.Mgmt.Infrastructure;
 
 namespace Rhino.Security.Mgmt.Data
 {
-	public class UsersGroupRepository : Nexida.Infrastructure.IRepository
+	public class UsersGroupRepository : Rhino.Security.Mgmt.Infrastructure.IRepository
 	{
 		private NHibernate.ISessionFactory _northwindWithSecurity;
 		AuthorizationRepositoryFactory _authorizationRepositoryFactory;
@@ -46,7 +46,7 @@ namespace Rhino.Security.Mgmt.Data
 				queryable = queryable.Where(x => x.Name.StartsWith(name));
 			}
 
-			return new Nexida.Infrastructure.QueryablePresentableSet<Rhino.Security.Model.UsersGroup>(queryable);
+			return new Rhino.Security.Mgmt.Infrastructure.QueryablePresentableSet<Rhino.Security.Model.UsersGroup>(queryable);
 		}
 
 	}

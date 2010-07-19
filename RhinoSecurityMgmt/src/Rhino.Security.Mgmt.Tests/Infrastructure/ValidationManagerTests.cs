@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Web.Mvc;
-using Nexida.Infrastructure.Mvc;
+using Rhino.Security.Mgmt.Infrastructure.Mvc;
 using NUnit.Framework;
 
-namespace Nexida.Infrastructure.Tests
+namespace Rhino.Security.Mgmt.Tests.Infrastructure
 {
 	[TestFixture]
 	public class ValidationManagerTests
