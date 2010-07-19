@@ -11,6 +11,15 @@ Rhino.Security.UserEditPanel = Ext.extend(Ext.Panel, {
 			_this.fireEvent('itemupdated', item);
 		},
 		_formPanel = new Rhino.Security.UserFormPanel(),
+		_showOperationErrors = function (result) {
+			if (result.errors.operationError) {
+				Ext.MessageBox.show({ msg: result.errors.operationError, icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });
+			}
+			else {
+				_formPanel.getForm().markInvalid(result.errors.item);
+				Ext.MessageBox.show({ msg: 'Error saving data. Correct errors and retry.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });
+			}
+		},
 		_saveItemButtonHandler = function () {
 			_this.el.mask('Saving...', 'x-mask-loading');
 			Rpc.call({
@@ -25,8 +34,7 @@ Rhino.Security.UserEditPanel = Ext.extend(Ext.Panel, {
 						_formPanel.setUpFormForEditItem();
 						_fireItemUpdated(_formPanel.getForm().getFieldValues());
 					} else {
-						_formPanel.getForm().markInvalid(result.errors.item);
-						Ext.MessageBox.show({ msg: 'Error saving data. Correct errors and retry.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });
+						_showOperationErrors(result);
 					}
 				},
 				callback: function () {
@@ -65,9 +73,16 @@ Rhino.Security.UserEditPanel = Ext.extend(Ext.Panel, {
 					Rpc.call({
 						url: 'User/Load',
 						params: { stringId: stringId },
-						success: function (item) {
+						success: function (result) {
+							if (result.success) {
+								_formPanel.getForm().setValues(result.item);
+							}
+							else {
+								_showOperationErrors(result);
+							}
+						},
+						callback: function () {
 							_this.el.unmask();
-							_formPanel.getForm().setValues(item);
 						}
 					});
 				}

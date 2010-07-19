@@ -2,6 +2,8 @@ using System.Web.Mvc;
 using System.Collections.Generic;
 using System;
 using System.Reflection;
+using Rhino.Security.Mgmt.Dtos;
+using Rhino.Security.Model;
 
 namespace Rhino.Security.Mgmt.Controllers
 {
@@ -23,22 +25,42 @@ namespace Rhino.Security.Mgmt.Controllers
 			_stringConverter = stringConverter;
 		}
 
+		protected override void OnException(ExceptionContext filterContext)
+		{
+			var inner = filterContext.Exception.GetBaseException() as NHibernate.ObjectNotFoundException;
+			if (inner == null)
+			{
+				return;
+			}
+
+			filterContext.ExceptionHandled = true;
+			ModelState.AddModelError("operationError", Resources.StaleObjectExceptionMessage);
+
+			Log.Warn(inner.Message);
+
+			filterContext.Result = Json(new
+			{
+				success = false,
+				errors = Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
+			});
+		}
+
 		public ActionResult Save(Rhino.Security.Mgmt.Dtos.UsersGroupDto item)
 		{
 			if (item == null)
 			{
 				throw new ArgumentNullException("item");
 			}
+			if (string.IsNullOrEmpty(item.Name))
+			{
+				Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.AddErrorToModelState(ModelState, "may not be null or empty", "item", "Name");
+			}
 
+			UsersGroupDto itemToReturnDto = null;
 			using (_conversation.SetAsCurrent())
 			{
-				if (string.IsNullOrEmpty(item.Name))
-				{
-					Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.AddErrorToModelState(ModelState, "may not be null or empty", "item", "Name");
-				}
-
 				Rhino.Security.Model.UsersGroup itemToReturn = null;
-				var itemMapped = _mapper.Map<Rhino.Security.Mgmt.Dtos.UsersGroupDto, Rhino.Security.Model.UsersGroup>(item);
+				var itemMapped = _mapper.Map<UsersGroupDto, UsersGroup>(item);
 				Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.AddErrorsToModelState(ModelState, _validator.Validate(itemMapped), "item");
 				if (ModelState.IsValid)
 				{
@@ -53,34 +75,69 @@ namespace Rhino.Security.Mgmt.Controllers
 					}
 					_conversation.Flush();
 				}
-				var itemToReturnDto = itemToReturn != null ? _mapper.Map<Rhino.Security.Model.UsersGroup, Rhino.Security.Mgmt.Dtos.UsersGroupDto>(itemToReturn) : null;
-				return Json(new
-				{
-					item = itemToReturnDto,
-					success = ModelState.IsValid,
-					errors = Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
-				});
+				itemToReturnDto = itemToReturn != null ? _mapper.Map<UsersGroup, UsersGroupDto>(itemToReturn) : null;
 			}
+
+			return Json(new
+			{
+				item = itemToReturnDto,
+				success = ModelState.IsValid,
+				errors = Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
+			});
 		}
 
 		public ActionResult Load(string stringId)
 		{
+			if (string.IsNullOrEmpty(stringId))
+			{
+				throw new ArgumentException("stringId cannot be null or empty", "stringId");
+			}
+
+			UsersGroupDto itemDto = null;
+
 			using (_conversation.SetAsCurrent())
 			{
 				var item = _stringConverter.FromString(stringId);
-				var itemDto = _mapper.Map<Rhino.Security.Model.UsersGroup, Rhino.Security.Mgmt.Dtos.UsersGroupDto>(item);
-				return Json(itemDto);
+				itemDto = _mapper.Map<Rhino.Security.Model.UsersGroup, Rhino.Security.Mgmt.Dtos.UsersGroupDto>(item);
 			}
+
+			return Json(new
+			{
+				item = itemDto,
+				success = ModelState.IsValid,
+				errors = Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
+			});
 		}
 
-		public void Delete(string stringId)
+		public ActionResult Delete(string[] stringIds)
 		{
-			using (_conversation.SetAsCurrent())
+			if (stringIds == null)
 			{
-				var item = _stringConverter.FromString(stringId);
-				_repository.Delete(item);
-				_conversation.Flush();
+				throw new ArgumentNullException("stringIds");
 			}
+
+			try
+			{
+				using (_conversation.SetAsCurrent())
+				{
+					foreach (var s in stringIds)
+					{
+						var item = _stringConverter.FromString(s);
+						_repository.Delete(item);
+					}
+					_conversation.Flush();
+				}
+			}
+			catch (InvalidOperationException ex)
+			{
+				ModelState.AddModelError("operationError", ex.Message);
+			}
+
+			return Json(new
+			{
+				success = ModelState.IsValid,
+				errors = Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
+			});
 		}
 
 		public ActionResult Search(string name, int start, int limit, string sort, string dir)

@@ -19,7 +19,7 @@ namespace Rhino.Security.Mgmt.Data
 
 		public Rhino.Security.Model.User FromString(string str)
 		{
-			if(string.IsNullOrEmpty(str))
+			if (string.IsNullOrEmpty(str))
 			{
 				throw new ArgumentException("Must be a non null, non empty value", "str");
 			}

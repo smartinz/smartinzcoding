@@ -30,7 +30,7 @@ Rhino.Security.UserListField = Ext.extend(Ext.form.Field, {
 				}
 			}
 			_gridPanel.getStore().load();
-			window.close();
+			window.hide();
 		},
 		_buildWindow = function () {
 			return new Rhino.Security.UserEditWindow({

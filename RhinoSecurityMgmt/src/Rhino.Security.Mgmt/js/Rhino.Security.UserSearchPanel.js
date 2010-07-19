@@ -60,9 +60,9 @@ Rhino.Security.UserSearchPanel = Ext.extend(Ext.Panel, {
 			}
 		}),
 		_getSelectedItems = function () {
-			var sm = _gridPanel.getSelectionModel();
+			var sm = _gridPanel.getSelectionModel(),
+			selectedItems = [];
 			if (sm.getCount() > 0) {
-				var selectedItems = [];
 				Ext.each(sm.getSelections(), function (item) {
 					selectedItems.push(item.data);
 				});
@@ -109,11 +109,21 @@ Rhino.Security.UserSearchPanel = Ext.extend(Ext.Panel, {
 				if (buttonId !== 'yes') {
 					return;
 				}
+
+				_this.el.mask('Saving...', 'x-mask-loading');
 				Rpc.call({
 					url: 'User/Delete',
 					params: { stringIds: _getSelectedStringIds(selectedItems) },
 					success: function (result) {
-						_pagingToolbar.doRefresh();
+						if (result.success) {
+							_pagingToolbar.doRefresh();
+						}
+						else {
+							Ext.MessageBox.show({ msg: result.errors.operationError, icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });
+						}
+					},
+					callback: function () {
+						_this.el.unmask();
 					}
 				});
 			});

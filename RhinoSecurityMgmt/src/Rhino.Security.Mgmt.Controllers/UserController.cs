@@ -1,6 +1,8 @@
 using System.Web.Mvc;
 using System.Collections.Generic;
 using System;
+using Rhino.Security.Mgmt.Dtos;
+using Rhino.Security.Model;
 
 namespace Rhino.Security.Mgmt.Controllers
 {
@@ -22,6 +24,24 @@ namespace Rhino.Security.Mgmt.Controllers
 			_stringConverter = stringConverter;
 		}
 
+		protected override void OnException(ExceptionContext filterContext)
+		{
+			var inner = filterContext.Exception.GetBaseException() as NHibernate.ObjectNotFoundException;
+			if (inner == null)
+			{
+				return;
+			}
+
+			filterContext.ExceptionHandled = true;
+			ModelState.AddModelError("operationError", Resources.StaleObjectExceptionMessage);
+
+			filterContext.Result = Json(new  
+			{
+				success = false,
+				errors = Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
+			});
+		}
+
 		public ActionResult Save(Rhino.Security.Mgmt.Dtos.UserDto item)
 		{
 			if (item == null)
@@ -29,6 +49,7 @@ namespace Rhino.Security.Mgmt.Controllers
 				throw new ArgumentNullException("item");
 			}
 
+			Rhino.Security.Mgmt.Dtos.UserDto itemToReturnDto = null;
 			using (_conversation.SetAsCurrent())
 			{
 				Rhino.Security.Model.User itemToReturn = null;
@@ -48,36 +69,66 @@ namespace Rhino.Security.Mgmt.Controllers
 					}
 					_conversation.Flush();
 				}
-				var itemToReturnDto = itemToReturn != null ? _mapper.Map<Rhino.Security.Model.User, Rhino.Security.Mgmt.Dtos.UserDto>(itemToReturn) : null;
+				itemToReturnDto = itemToReturn != null ? _mapper.Map<Rhino.Security.Model.User, Rhino.Security.Mgmt.Dtos.UserDto>(itemToReturn) : null;
+			}
+
+			return Json(new
+			{
+				item = itemToReturnDto,
+				success = ModelState.IsValid,
+				errors = Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
+			});
+		}
+
+		public ActionResult Load(string stringId)
+		{
+			if (string.IsNullOrEmpty(stringId))
+			{
+				throw new ArgumentException("stringId cannot be null or empty", "stringId");
+			}
+
+			using (_conversation.SetAsCurrent())
+			{
+				var item = _stringConverter.FromString(stringId);
+				var itemDto = _mapper.Map<User, UserDto>(item);
+
 				return Json(new
 				{
-					item = itemToReturnDto,
+					item = itemDto,
 					success = ModelState.IsValid,
 					errors = Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
 				});
 			}
 		}
 
-		public ActionResult Load(string stringId)
+		public ActionResult Delete(string[] stringIds)
 		{
-			using (_conversation.SetAsCurrent())
+			if (stringIds == null)
 			{
-				var item = _stringConverter.FromString(stringId);
-				var itemDto = _mapper.Map<Rhino.Security.Model.User, Rhino.Security.Mgmt.Dtos.UserDto>(item);
-				return Json(itemDto);
+				throw new ArgumentNullException("stringIds");
 			}
-		}
 
-		public void Delete(string[] stringIds)
-		{
 			using (_conversation.SetAsCurrent())
 			{
-				foreach (var s in stringIds)
+				try
 				{
-					var item = _stringConverter.FromString(s);
-					_repository.Delete(item);
+					foreach (var s in stringIds)
+					{
+						var item = _stringConverter.FromString(s);
+						_repository.Delete(item);
+					}
+					_conversation.Flush();
 				}
-				_conversation.Flush();
+				catch (InvalidOperationException ex)
+				{
+					ModelState.AddModelError("operationError", ex.Message);
+				}
+
+				return Json(new
+				{
+					success = ModelState.IsValid,
+					errors = Rhino.Security.Mgmt.Infrastructure.Mvc.ValidationHelpers.BuildErrorDictionary(ModelState),
+				});
 			}
 		}
 
@@ -86,7 +137,6 @@ namespace Rhino.Security.Mgmt.Controllers
 			Log.DebugFormat("Search called");
 			using (_conversation.SetAsCurrent())
 			{
-
 				var set = _repository.Search(id, name);
 				var items = set.Skip(start).Take(limit).Sort(sort, dir == "ASC").AsEnumerable();
 				var dtos = _mapper.Map<IEnumerable<Rhino.Security.Model.User>, Rhino.Security.Mgmt.Dtos.UserDto[]>(items);

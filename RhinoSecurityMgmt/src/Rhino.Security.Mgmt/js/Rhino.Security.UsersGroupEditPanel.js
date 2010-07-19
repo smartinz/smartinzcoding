@@ -11,6 +11,15 @@ Rhino.Security.UsersGroupEditPanel = Ext.extend(Ext.Panel, {
 			_this.fireEvent('itemupdated', item);
 		},
 		_formPanel = new Rhino.Security.UsersGroupFormPanel(),
+		_showOperationErrors = function (result) {
+			if (result.errors.operationError) {
+				Ext.MessageBox.show({ msg: result.errors.operationError, icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });
+			}
+			else {
+				_formPanel.getForm().markInvalid(result.errors.item);
+				Ext.MessageBox.show({ msg: 'Error saving data. Correct errors and retry.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });
+			}
+		},
 		_saveItemButtonHandler = function () {
 			_this.el.mask('Saving...', 'x-mask-loading');
 			Rpc.call({
@@ -19,14 +28,13 @@ Rhino.Security.UsersGroupEditPanel = Ext.extend(Ext.Panel, {
 				success: function (result) {
 					if (result.success) {
 						Ext.MessageBox.show({ msg: 'Changes saved successfully.', icon: Ext.MessageBox.INFO, buttons: Ext.MessageBox.OK });
-						if (result.item) {
+						if (result.success) {
 							_formPanel.getForm().setValues(result.item);
 						}
 						_formPanel.setUpFormForEditItem();
 						_fireItemUpdated(_formPanel.getForm().getFieldValues());
 					} else {
-						_formPanel.getForm().markInvalid(result.errors.item);
-						Ext.MessageBox.show({ msg: 'Error saving data. Correct errors and retry.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });
+						_showOperationErrors(result);
 					}
 				},
 				callback: function () {
@@ -65,9 +73,16 @@ Rhino.Security.UsersGroupEditPanel = Ext.extend(Ext.Panel, {
 					Rpc.call({
 						url: 'UsersGroup/Load',
 						params: { stringId: stringId },
-						success: function (item) {
+						success: function (result) {
+							if (result.success) {
+								_formPanel.getForm().setValues(result.item);
+							}
+							else {
+								_showOperationErrors(result);
+							}
+						},
+						callback: function () {
 							_this.el.unmask();
-							_formPanel.getForm().setValues(item);
 						}
 					});
 				}

@@ -71,6 +71,11 @@ namespace Rhino.Security.Mgmt.Controllers
 
 		public ActionResult Load(string stringId)
 		{
+			if (string.IsNullOrEmpty(stringId))
+			{
+				throw new ArgumentException("stringId cannot be null or empty", "stringId");
+			}
+
 			using (_conversation.SetAsCurrent())
 			{
 				var item = _stringConverter.FromString(stringId);
@@ -81,6 +86,11 @@ namespace Rhino.Security.Mgmt.Controllers
 
 		public ActionResult Delete(string stringId)
 		{
+			if (string.IsNullOrEmpty(stringId))
+			{
+				throw new ArgumentException("stringId cannot be null or empty", "stringId");
+			}
+
 			using (_conversation.SetAsCurrent())
 			{
 				try
@@ -107,7 +117,6 @@ namespace Rhino.Security.Mgmt.Controllers
 			Log.DebugFormat("Search called");
 			using (_conversation.SetAsCurrent())
 			{
-
 				var set = _repository.Search(id, name, comment);
 				var items = set.Skip(start).Take(limit).Sort(sort, dir == "ASC").AsEnumerable();
 				var dtos = _mapper.Map<IEnumerable<Rhino.Security.Model.Operation>, Rhino.Security.Mgmt.Dtos.OperationDto[]>(items);
