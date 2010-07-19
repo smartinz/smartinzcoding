@@ -8,9 +8,9 @@ Rhino.Security.UsersGroupSearchPanel = Ext.extend(Ext.Panel, {
 	initComponent: function () {
 		var _this = this,
 		_fireEditItemEvent = function (items) {
-			Ext.each(items, function(item) {
+			Ext.each(items, function (item) {
 				_this.fireEvent('edititem', _this, item);
-			})
+			});
 		},
 		_fireNewItemEvent = function () {
 			_this.fireEvent('newitem', _this);
@@ -62,8 +62,25 @@ Rhino.Security.UsersGroupSearchPanel = Ext.extend(Ext.Panel, {
 			}
 		}),
 		_getSelectedItems = function () {
-			var sm = _gridPanel.getSelectionModel();
-			return sm.getCount() > 0 ? sm.getSelected().data : null;
+			var sm = _gridPanel.getSelectionModel(),
+			selectedItems = [];
+			if (sm.getCount() > 0) {
+				Ext.each(sm.getSelections(), function (item) {
+					selectedItems.push(item.data);
+				});
+				return selectedItems;
+			}
+			return null;
+		},
+		_getSelectedStringIds = function (items) {
+			if (items && items.length > 0) {
+				var selectedStringIds = [];
+				Ext.each(items, function (item) {
+					selectedStringIds.push(item.StringId);
+				});
+				return selectedStringIds;
+			}
+			return null;
 		},
 		_onSearchButtonClick = function (b, e) {
 			var params = _searchFormPanel.getForm().getFieldValues();
@@ -86,19 +103,29 @@ Rhino.Security.UsersGroupSearchPanel = Ext.extend(Ext.Panel, {
 			_fireEditItemEvent(selectedItems);
 		},
 		_onDeleteButtonClick = function () {
-			var selectedItem = _getSelectedItems();
-			if (!selectedItem) {
+			var selectedItems = _getSelectedItems();
+			if (!selectedItems) {
 				return;
 			}
 			Ext.MessageBox.confirm('Delete', 'Are you sure?', function (buttonId) {
 				if (buttonId !== 'yes') {
 					return;
 				}
+
+				_this.el.mask('Saving...', 'x-mask-loading');
 				Rpc.call({
 					url: 'UsersGroup/Delete',
-					params: { stringId: selectedItem.StringId },
+					params: { stringIds: _getSelectedStringIds(selectedItems) },
 					success: function (result) {
-						_pagingToolbar.doRefresh();
+						if (result.success) {
+							_pagingToolbar.doRefresh();
+						}
+						else {
+							Ext.MessageBox.show({ msg: result.errors.operationError, icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });
+						}
+					},
+					callback: function () {
+						_this.el.unmask();
 					}
 				});
 			});

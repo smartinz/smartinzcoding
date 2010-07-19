@@ -9,31 +9,35 @@ Rhino.Security.UserListField = Ext.extend(Ext.form.Field, {
 		_gridPanel,
 		_pagingToolbar,
 		_store,
+		_window,
 		_selectedItem = null,
 		_onEditEnded = function (window, item) {
-			if (_selectedItem) {
-				Ext.apply(_selectedItem, item);
-			} else {
-				var currentItems = _this.getValue(),
+			if (item !== null) {
+				if (_selectedItem) {
+					Ext.apply(_selectedItem, item);
+				} else {
+					var currentItems = _this.getValue(),
 				found = false,
 				i,
 				count = currentItems.length;
-				for (i = 0; i < count; i += 1) {
-					if (currentItems[i] && currentItems[i].StringId && currentItems[i].StringId === item.StringId) {
-						found = true;
-						break;
+					for (i = 0; i < count; i += 1) {
+						if (currentItems[i] && currentItems[i].StringId && currentItems[i].StringId === item.StringId) {
+							found = true;
+							break;
+						}
 					}
-				}
 
-				if (!found) {
-					currentItems.push(item);
+					if (!found) {
+						currentItems.push(item);
+					}
+					_gridPanel.getStore().load();
 				}
 			}
-			_gridPanel.getStore().load();
 			window.hide();
 		},
 		_buildWindow = function () {
 			return new Rhino.Security.UserEditWindow({
+				closeAction: 'hide',
 				listeners: {
 					editended: _onEditEnded
 				}
@@ -41,8 +45,8 @@ Rhino.Security.UserListField = Ext.extend(Ext.form.Field, {
 		},
 		_onNewButtonClick = function (button) {
 			_selectedItem = null;
-			var window = _buildWindow();
-			window.show(button.getEl());
+			_window = _window || _buildWindow();
+			_window.show(button.getEl());
 		},
 		_onDeleteButtonClick = function () {
 			var sm = _gridPanel.getSelectionModel(),
@@ -108,6 +112,9 @@ Rhino.Security.UserListField = Ext.extend(Ext.form.Field, {
 				_gridPanel.disable();
 			},
 			beforeDestroy: function () {
+				if (_window) {
+					_window.close();
+				}
 				Ext.destroy(_gridPanel);
 				Rhino.Security.UserListField.superclass.beforeDestroy.apply(_this, arguments);
 			},
