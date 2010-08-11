@@ -1,4 +1,35 @@
 
+USE [master]
+GO
+
+IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'RhinoSecurityAdmin')
+DROP DATABASE [RhinoSecurityAdmin]
+GO
+
+USE [master]
+GO
+
+CREATE DATABASE [RhinoSecurityAdmin]
+GO
+
+USE [RhinoSecurityAdmin]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Users]') AND type in (N'U'))
+DROP TABLE [dbo].[Users]
+GO
+
+CREATE TABLE [dbo].[Users](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](255) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
     if exists (select 1 from sys.objects where object_id = OBJECT_ID(N'[FKBBE4029387CC6C80]') AND parent_object_id = OBJECT_ID('security_EntityReferences'))
 alter table security_EntityReferences  drop constraint FKBBE4029387CC6C80
 
